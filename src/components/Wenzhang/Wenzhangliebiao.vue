@@ -4,40 +4,36 @@
       <div class="tit1">文章列表</div>
     </div>
     <div class="nav2">
-      <!-- <div class="myForm">
+      <div class="myForm">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="搜索：">
-            <div class="search">
-              <el-input
-                size="small"
-                placeholder="请输入内容"
-                v-model="formInline.search"
-                class="input-with-select"
-              >
-              </el-input>
-            </div>
-          </el-form-item>
-          <el-form-item>
-            <el-button
-              size="small"
-              icon="el-icon-search"
-              type="primary"
-              @click="onSubmit"
-              >搜索</el-button
-            >
-            <el-button size="small" @click="onReact">重置</el-button>
-          </el-form-item>
+          <el-row>
+            <el-col :span="20">
+              <el-form-item label="类型：">
+                <el-radio-group @change="changeRad" v-model="formInline.rad1" size="small">
+                  <el-radio-button v-for="(item,i) in radioArr" :key="i" :label="i">{{item}}</el-radio-button>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-form>
-      </div>-->
+      </div>
       <div class="tit1">
         <el-button @click="addWenzhang" size="small" type="primary" icon="el-icon-plus">添加文章</el-button>
       </div>
       <div class="myTable">
         <vxe-table :data="tableData">
           <vxe-table-column field="id" title="ID"></vxe-table-column>
-          <vxe-table-column field="title" title="标题"></vxe-table-column>
-          <vxe-table-column field="content" min-width="350" title="内容"></vxe-table-column>
-          <vxe-table-column field="add_time" title="发布时间"></vxe-table-column>
+          <vxe-table-column field="name" title="标题"></vxe-table-column>
+          <vxe-table-column field="img" title="文章图标">
+            <template slot-scope="scope">
+              <el-image :src="scope.row.img" fit="fill" style="width: 40px; height: 40px">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+            </template>
+          </vxe-table-column>
+          <vxe-table-column field="created_at" title="发布时间"></vxe-table-column>
           <vxe-table-column title="操作状态" width="160">
             <template slot-scope="scope">
               <div class="flex">
@@ -59,27 +55,6 @@
         ></el-pagination>
       </div>
     </div>
-    <!-- 添加/编辑靓号 -->
-    <el-dialog
-      title="添加/编辑文章"
-      :visible.sync="lhDialogVisible"
-      width="30%"
-      :before-close="lhHandleClose"
-    >
-      <div class="lhmyForm">
-        <el-form :model="lhForm" ref="lhForm" label-width="80px" class="demo-ruleForm">
-          <el-form-item label="标题：">
-            <el-input size="small" v-model="lhForm.title"></el-input>
-          </el-form-item>
-          <el-form-item label="内容：">
-            <el-input size="small" v-model="lhForm.content"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button size="small" type="primary" @click="submitForm">确定</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -101,14 +76,21 @@ export default {
   },
   data() {
     return {
+      editor: null,
       tableData: [],
       total: 0,
       lhDialogVisible: false,
       lhForm: {
         title: "",
-        content: ""
+        content: "",
+        pic: ""
       },
-      isAdd: true
+      imgFile: null,
+      isAdd: true,
+      formInline: {
+        rad1: ""
+      },
+      radioArr: []
     };
   },
   created() {
@@ -116,58 +98,19 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.article_list({
+      const res = await this.$api.articles({
         limit: this.wenzhangliebiaoPageSize,
-        page: this.wenzhangliebiaoPage
+        page: this.wenzhangliebiaoPage,
+        type: this.formInline.rad1
       });
-      console.log(res.data);
       this.tableData = res.data.data;
-      this.tableData.forEach(ele => {
-        if (ele.extract_type == "bank") {
-          ele.myExtract_type = "银行卡";
-        } else if (ele.extract_type == "alipay") {
-          ele.myExtract_type = "支付宝";
-        } else if (ele.extract_type == "wx") {
-          ele.myExtract_type = "微信";
-        }
-      });
       this.total = res.data.total;
+      const res2 = await this.$api.articlesTypes();
+      this.radioArr = res2.data;
     },
-    async submitForm() {
-      // 添加
-      if (this.isAdd) {
-        const res = await this.$api.article_add({
-          ...this.lhForm
-        });
-        console.log(res);
-        if (res.code == 200) {
-          this.$message({
-            message: res.msg,
-            type: "success"
-          });
-          this.getData();
-          this.lhDialogVisible = false;
-        } else {
-          this.$message.error(res.msg);
-        }
-      } else {
-        //  修改
-        const res = await this.$api.article_edit({
-          ...this.lhForm,
-          id: this.id
-        });
-        console.log(res);
-        if (res.code == 200) {
-          this.$message({
-            message: res.msg,
-            type: "success"
-          });
-          this.getData();
-          this.lhDialogVisible = false;
-        } else {
-          this.$message.error(res.msg);
-        }
-      }
+changeRad() {
+      console.log(this.formInline.rad1);
+      this.getData();
     },
     // 编辑
     tabEdit(row) {
@@ -175,7 +118,9 @@ export default {
       this.lhForm.title = row.title;
       this.lhForm.content = row.content;
       this.isAdd = false;
-      this.lhDialogVisible = true;
+      // this.lhDialogVisible = true;
+      this.$store.commit("wenzhangObj", row);
+      this.$router.push({ name: "Tianjiawenzhang" });
     },
     // 删除
     async tabDel(row) {
@@ -199,7 +144,9 @@ export default {
         content: ""
       };
       this.isAdd = true;
-      this.lhDialogVisible = true;
+      // this.lhDialogVisible = true;
+      this.$store.commit("wenzhangObj", null);
+      this.$router.push({ name: "Tianjiawenzhang" });
     },
     lhHandleClose() {
       this.lhDialogVisible = false;
@@ -310,6 +257,57 @@ export default {
     /deep/ .el-select {
       width: 100px;
     }
+  }
+}
+.myImg {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+  margin-right: 12px;
+  .closeBtn {
+    position: absolute;
+    top: -6px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    .el-button {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  /deep/ .image-slot {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fafafa;
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    .el-icon-picture-outline {
+      font-size: 20px;
+    }
+  }
+}
+// 详情
+.myEditor {
+  padding-top: 20px;
+  display: flex;
+  .txt {
+    color: #606266;
+    width: 90px;
+    font-size: 12px;
+    margin-right: 12px;
+    margin-top: 2px;
+    text-align: right;
+  }
+  #editor {
+    transform: translateY(-6px);
   }
 }
 </style>

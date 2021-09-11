@@ -33,15 +33,9 @@
             >
           </el-form-item>
         </el-form>
-      </div> -->
+      </div>-->
       <div class="tit1">
-        <el-button
-          @click="AddFenlei"
-          size="small"
-          type="primary"
-          icon="el-icon-plus"
-          >添加分类</el-button
-        >
+        <el-button @click="AddFenlei" size="small" type="primary" icon="el-icon-plus">添加分类</el-button>
       </div>
       <div class="myTable">
         <vxe-table
@@ -52,12 +46,8 @@
           :data="tableData"
         >
           <vxe-table-column field="id" title="ID"></vxe-table-column>
-          <vxe-table-column
-            tree-node
-            field="cate_name"
-            title="分类名称"
-          ></vxe-table-column>
-          <vxe-table-column field="pic" title="分类图标">
+          <vxe-table-column tree-node field="name" title="分类名称"></vxe-table-column>
+          <!-- <vxe-table-column field="pic" title="分类图标">
             <template slot-scope="scope">
               <el-image
                 :src="scope.row.pic"
@@ -69,26 +59,18 @@
                 </div>
               </el-image>
             </template>
-          </vxe-table-column>
+          </vxe-table-column>-->
           <vxe-table-column field="sort" title="排序"></vxe-table-column>
-          <!-- <vxe-table-column field="is_show" title="状态(是否显示)">
+          <vxe-table-column field="is_show" title="状态(是否显示)">
             <template slot-scope="scope">
-              <el-switch
-                @change="changeKG(scope.row)"
-                v-model="scope.row.is_showKG"
-              >
-              </el-switch>
+              <el-switch @change="changeKG(scope.row)" v-model="scope.row.is_showKG"></el-switch>
             </template>
-          </vxe-table-column> -->
+          </vxe-table-column>
           <vxe-table-column title="操作" width="180">
             <template slot-scope="scope">
               <div class="flex">
-                <el-button size="small" type="text" @click="tabEdit(scope.row)"
-                  >编辑</el-button
-                >
-                <el-button size="small" type="text" @click="tabDel(scope.row)"
-                  >删除</el-button
-                >
+                <el-button size="small" type="text" @click="tabEdit(scope.row)">编辑</el-button>
+                <!-- <el-button size="small" type="text" @click="tabDel(scope.row)">删除</el-button> -->
               </div>
             </template>
           </vxe-table-column>
@@ -128,19 +110,15 @@
                 </el-select>
               </el-form-item>
             </el-col>
-          </el-row> -->
+          </el-row>-->
           <el-row>
             <el-col :span="20">
-              <el-form-item label="分类名称" prop="cate_name">
-                <el-input
-                  size="small"
-                  placeholder="请输入分类名称"
-                  v-model="addForm.cate_name"
-                ></el-input>
+              <el-form-item label="分类名称" prop="name">
+                <el-input size="small" placeholder="请输入分类名称" v-model="addForm.name"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <!-- <el-row>
             <el-col :span="20">
               <el-form-item label="分类图标(180*180)">
                 <div @click="companyList('tb')" class="myImg">
@@ -179,7 +157,7 @@
                 </div>
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row>-->
           <el-row>
             <el-col :span="10">
               <el-form-item label="排序">
@@ -187,7 +165,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <!-- <el-row>
+          <el-row>
             <el-col :span="12">
               <el-form-item label="状态" prop="is_show">
                 <el-radio-group v-model="addForm.is_show">
@@ -196,16 +174,11 @@
                 </el-radio-group>
               </el-form-item>
             </el-col>
-          </el-row> -->
+          </el-row>
           <el-row>
             <el-col :span="20">
               <el-form-item>
-                <el-button
-                  size="small"
-                  type="primary"
-                  @click="AddOnSubmit('addForm')"
-                  >提交</el-button
-                >
+                <el-button size="small" type="primary" @click="AddOnSubmit('addForm')">提交</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -231,27 +204,22 @@ export default {
       searchForm: {
         pid: "",
         status: "",
-        keyword: "",
+        keyword: ""
       },
       tableData: [],
       addDialogVisible: false,
       addForm: {
-        pid: "",
-        cate_name: "",
-        pic: "",
-        big_pic: "",
-        sort: "",
-        is_show: "显示",
+        id: "",
+        name: "",
+        sort: ""
       },
       rules: {
-        cate_name: [
-          { required: true, message: "请输入分类名称", trigger: "blur" },
-        ],
-        is_show: [{ required: true, message: "请选择状态", trigger: "change" }],
+        name: [{ required: true, message: "请输入分类名称", trigger: "blur" }],
+        is_show: [{ required: true, message: "请选择状态", trigger: "change" }]
       },
       imgStatus: "",
       imgFile: "",
-      id: "",
+      id: ""
     };
   },
   created() {
@@ -259,16 +227,14 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.categoryIndex({
-        pid: 0,
-      });
+      const res = await this.$api.categories();
       console.log(res);
       this.tableData = res.data;
-      this.tableData.forEach((ele) => {
-        ele.is_showKG = ele.is_show == "1" ? true : false;
+      this.tableData.forEach(ele => {
+        ele.is_showKG = ele.status == "1" ? true : false;
         if (ele.children) {
-          ele.children.forEach((item) => {
-            item.is_showKG = item.is_show == "1" ? true : false;
+          ele.children.forEach(item => {
+            item.is_showKG = item.status == "1" ? true : false;
           });
         }
       });
@@ -276,14 +242,15 @@ export default {
     // 开关（显示/隐藏）
     async changeKG(row) {
       console.log(row);
-      const res = await this.$api.categorySave({
-        ...row,
-        is_show: row.is_showKG == true ? "1" : "0",
-      });
+      const res = await this.$api.updateCategories({
+        name:row.name,
+        sort:row.sort,
+        status: row.is_showKG == true ? "1" : "0"
+      },row.id);
       if (res.code == 200) {
         this.$message({
           message: res.msg,
-          type: "success",
+          type: "success"
         });
         this.addDialogVisible = false;
         this.getData();
@@ -304,10 +271,9 @@ export default {
     tabEdit(row) {
       console.log(row);
       this.id = row.id;
-      this.addDialogVisible = true;
-      row.is_show = row.is_show == "0" ? "隐藏" : "显示";
-      row.pid = row.pid == "0" ? "顶级菜单" : row.pid;
+      row.is_show = row.status == "0" ? "隐藏" : "显示";
       this.addForm = { ...row };
+      this.addDialogVisible = true;
     },
     async tabDel(row) {
       console.log(row);
@@ -315,7 +281,7 @@ export default {
       if (res.code == 200) {
         this.$message({
           message: res.msg,
-          type: "success",
+          type: "success"
         });
         setTimeout(() => {
           this.getData();
@@ -325,20 +291,40 @@ export default {
       }
     },
     AddOnSubmit(formName) {
-      this.addForm.is_show = this.addForm.is_show == "显示" ? 1 : 0;
       console.log(this.addForm);
-      this.$refs[formName].validate(async (valid) => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
-          const res = await this.$api.categorySave({
-            ...this.addForm,
-          });
-          if (res.code == 200) {
-            this.$message({
-              message: res.msg,
-              type: "success",
+          if (this.addForm.id == "") {
+            // 新增
+            const res = await this.$api.addCategories({
+              ...this.addForm
             });
-            this.addDialogVisible = false;
-            this.getData();
+            if (res.code == 200) {
+              this.$message({
+                message: res.msg,
+                type: "success"
+              });
+              this.addDialogVisible = false;
+              this.getData();
+            }
+          } else {
+            // 编辑
+            const res = await this.$api.updateCategories(
+              {
+                name: this.addForm.name,
+                sort: this.addForm.sort,
+                status: this.addForm.is_show == "隐藏" ? "0" : "1"
+              },
+              this.addForm.id
+            );
+            if (res.code == 200) {
+              this.$message({
+                message: res.msg,
+                type: "success"
+              });
+              this.addDialogVisible = false;
+              this.getData();
+            }
           }
         } else {
           console.log("error submit!!");
@@ -382,15 +368,15 @@ export default {
           } else if (this.imgStatus == "dt") {
             this.$set(this.addForm, "big_pic", res.data[0]);
           }
-          that.$refs.fileInputList.value = '';
+          that.$refs.fileInputList.value = "";
         } else {
           this.$message.error("图片格式不正确");
         }
       } else {
         this.$message.error("图片大小不正确");
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

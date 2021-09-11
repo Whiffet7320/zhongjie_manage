@@ -28,9 +28,7 @@
             <i class="el-icon-s-goods"></i>
             <span>商品</span>
           </template>
-          <!-- <el-menu-item :route="{ name: 'Shangpinguanli' }" index="2-1"
-            >商品管理</el-menu-item
-          >-->
+          <el-menu-item :route="{ name: 'Shangpinguanli' }" index="2-1">商品管理</el-menu-item>
           <el-menu-item :route="{ name: 'Shangpingfenlei' }" index="2-2">商品分类</el-menu-item>
           <!-- <el-menu-item :route="{ name: 'Shangpingpinglun' }" index="2-3"
             >商品评论</el-menu-item
@@ -67,6 +65,7 @@
             <span>用户</span>
           </template>
           <el-menu-item :route="{ name: 'Yonghuguanli' }" index="5-1">用户管理</el-menu-item>
+          <el-menu-item :route="{ name: 'Shifuguanli' }" index="5-4">师傅管理</el-menu-item>
           <el-menu-item :route="{ name: 'Lianghaoliebiao' }" index="5-2">靓号列表</el-menu-item>
           <el-menu-item :route="{ name: 'Tixianliebiao' }" index="5-3">提现列表</el-menu-item>
         </el-submenu>
@@ -109,10 +108,18 @@
           </template>
           <el-menu-item :route="{ name: 'Xiaoxiguanli' }" index="8-1">消息管理</el-menu-item>
           <el-menu-item :route="{ name: 'Qitashezhi' }" index="8-2">其他设置</el-menu-item>
-          <el-menu-item :route="{ name: 'Lunbotushezhi' }" index="8-3">轮播图设置</el-menu-item>
+          <!-- <el-menu-item :route="{ name: 'Lunbotushezhi' }" index="8-3">轮播图设置</el-menu-item> -->
           <el-menu-item :route="{ name: 'Lunbotuliebiao' }" index="8-4">轮播图列表</el-menu-item>
           <el-menu-item :route="{ name: 'Kaipinyeshezhi' }" index="8-5">开屏页设置</el-menu-item>
           <el-menu-item :route="{ name: 'Shujuzhongxin' }" index="8-6">数据中心</el-menu-item>
+        </el-submenu>
+        <el-submenu index="10">
+          <template slot="title">
+            <i class="el-icon-s-finance"></i>
+            <span>其他</span>
+          </template>
+          <el-menu-item :route="{ name: 'Chengshiliebiao' }" index="10-2">城市列表</el-menu-item>
+          <el-menu-item :route="{ name: 'Fankuiliebiao' }" index="10-1">反馈意见列表</el-menu-item>
         </el-submenu>
       </el-menu>
     </div>
@@ -231,6 +238,13 @@ export default {
           `用户 / <span style="color: #515a61;
         font-weight: 700;">提现列表</span>`
         );
+      } else if (to.path == "/Yonghu/Shifuguanli") {
+        this.menuActiveIndex = "5-4";
+        this.$store.commit(
+          "headerTit",
+          `用户 / <span style="color: #515a61;
+        font-weight: 700;">师傅管理</span>`
+        );
       } else if (to.path == "/Fenxiao/Fenxiaoshezhi") {
         this.menuActiveIndex = "6-1";
         this.$store.commit(
@@ -294,12 +308,39 @@ export default {
           `设置 / <span style="color: #515a61;
         font-weight: 700;">数据中心</span>`
         );
+      } else if (to.path == "/Shezhi/Chengshiliebiao") {
+        this.menuActiveIndex = "8-7";
+        this.$store.commit(
+          "headerTit",
+          `设置 / <span style="color: #515a61;
+        font-weight: 700;">城市列表</span>`
+        );
       } else if (to.path == "/Wenzhang/Wenzhangliebiao") {
         this.menuActiveIndex = "9-1";
         this.$store.commit(
           "headerTit",
           `文章 / <span style="color: #515a61;
         font-weight: 700;">文章列表</span>`
+        );
+      } else if (to.path == "/Wenzhang/Tianjiawenzhang") {
+        this.$store.commit(
+          "headerTit",
+          `文章 / 文章列表 / <span style="color: #515a61;
+        font-weight: 700;">添加/修改文章</span>`
+        );
+      } else if (to.path == "/Qita/Fankuiliebiao") {
+        this.menuActiveIndex = "10-1";
+        this.$store.commit(
+          "headerTit",
+          `其他 / <span style="color: #515a61;
+        font-weight: 700;">反馈意见列表</span>`
+        );
+      }else if (to.path == "/Qita/Chengshiliebiao") {
+        this.menuActiveIndex = "10-2";
+        this.$store.commit(
+          "headerTit",
+          `其他 / <span style="color: #515a61;
+        font-weight: 700;">城市列表</span>`
         );
       }
     }

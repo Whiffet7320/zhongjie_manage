@@ -5,24 +5,41 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    // 如师傅
+    shopObj: null,
+    zijinmingxiliebiaoPage: 1, //用户-资金余额明细列表
+    zijinmingxiliebiaoPageSize: 10,
+    yonghuguanliPage: 1, //用户列表
+    yonghuguanliPageSize: 10,
+    shifuliebiaoPage: 1, //用户-师傅列表
+    shifuliebiaoPageSize: 10,
+    shangpingliebiaoPage: 1, //商品列表
+    shangpingliebiaoPageSize: 10,
+    lunbotuliebiaoPage: 1, //轮播图列表
+    lunbotuliebiaoPageSize: 10,
+    wenzhangObj:null,
+    qitashezhiliebiaoPage: 1, //其他设置列表
+    qitashezhiliebiaoPageSize: 10,
+    wenzhangliebiaoPage: 1, //文章列表
+    wenzhangliebiaoPageSize: 10,
+    chengshiliebiaoPage: 1, //城市列表
+    chengshiliebiaoPageSize: 10,
+    fankuiliebiaoPage: 1, //反馈意见列表
+    fankuiliebiaoPageSize: 10,
+    // 
     userInfo: null,
     headerTit: '',
     yunfeimubanliebiaoPage: 1, //运费模板
     yunfeimubanliebiaoPageSize: 10,
-    shangpingliebiaoPage: 1, //商品列表
-    shangpingliebiaoPageSize: 10,
     shangpingpinglunPage: 1, //商品评论
     shangpingpinglunPageSize: 10,
     dingdanliebiaoPage: 1, //订单列表
     dingdanliebiaoPageSize: 10,
-    shopObj: null,
     pintuanShangpingliebiaoPage: 1, //拼团管理-拼团商品列表
     pintuanShangpingliebiaoPageSize: 10,
     pintuanShangpingliebiaoShopPage: 1, //拼团管理-拼团列表-添加商品
     pintuanShangpingliebiaoShopPageSize: 10,
     pintuanShopObj: null,
-    yonghuguanliPage: 1, //用户列表
-    yonghuguanliPageSize: 10,
     maichanghuodongPage: 1, //卖场活动-活动列表
     maichanghuodongPageSize: 10,
     maichanghuodongShopPage: 1, //卖场活动-活动商品列表
@@ -39,22 +56,65 @@ export default new Vuex.Store({
     jishouliebiaoPageSize: 10,
     tixianliebiaoPage: 1, //提现列表
     tixianliebiaoPageSize: 10,
-    lunbotuliebiaoPage: 1, //轮播图列表
-    lunbotuliebiaoPageSize: 10,
-    wenzhangliebiaoPage: 1, //文章列表
-    wenzhangliebiaoPageSize: 10,
     pingtuanjiluPage: 1, //拼团记录
     pingtuanjiluPageSize: 10,
   },
   mutations: {
-    userInfo(state, str) {
-      state.userInfo = str;
+    // 如师傅
+    wenzhangObj(state, str) {
+      state.wenzhangObj = str;
+    },
+    zijinmingxiliebiaoPage(state, str) {
+      state.zijinmingxiliebiaoPage = str;
+    },
+    zijinmingxiliebiaoPageSize(state, str) {
+      state.zijinmingxiliebiaoPageSize = str;
+    },
+    yonghuguanliPage(state, str) {
+      state.yonghuguanliPage = str;
+    },
+    yonghuguanliPageSize(state, str) {
+      state.yonghuguanliPageSize = str;
+    },
+    shifuliebiaoPage(state, str) {
+      state.shifuliebiaoPage = str;
+    },
+    shifuliebiaoPageSize(state, str) {
+      state.shifuliebiaoPageSize = str;
     },
     shangpingliebiaoPage(state, str) {
       state.shangpingliebiaoPage = str;
     },
     shangpingliebiaoPageSize(state, str) {
       state.shangpingliebiaoPageSize = str;
+    },
+    wenzhangliebiaoPage(state, str) {
+      state.wenzhangliebiaoPage = str;
+    },
+    wenzhangliebiaoPageSize(state, str) {
+      state.wenzhangliebiaoPageSize = str;
+    },
+    qitashezhiliebiaoPage(state, str) {
+      state.qitashezhiliebiaoPage = str;
+    },
+    qitashezhiliebiaoPageSize(state, str) {
+      state.qitashezhiliebiaoPageSize = str;
+    },
+    chengshiliebiaoPage(state, str) {
+      state.chengshiliebiaoPage = str;
+    },
+    chengshiliebiaoPageSize(state, str) {
+      state.chengshiliebiaoPageSize = str;
+    },
+    fankuiliebiaoPage(state, str) {
+      state.fankuiliebiaoPage = str;
+    },
+    fankuiliebiaoPageSize(state, str) {
+      state.fankuiliebiaoPageSize = str;
+    },
+    // 
+    userInfo(state, str) {
+      state.userInfo = str;
     },
     headerTit(state, str) {
       state.headerTit = str;
@@ -76,12 +136,6 @@ export default new Vuex.Store({
     },
     pintuanShopObj(state, str) {
       state.pintuanShopObj = str;
-    },
-    yonghuguanliPage(state, str) {
-      state.yonghuguanliPage = str;
-    },
-    yonghuguanliPageSize(state, str) {
-      state.yonghuguanliPageSize = str;
     },
     maichanghuodongPage(state, str) {
       state.maichanghuodongPage = str;
@@ -154,12 +208,6 @@ export default new Vuex.Store({
     },
     lunbotuliebiaoPageSize(state, str) {
       state.lunbotuliebiaoPageSize = str;
-    },
-    wenzhangliebiaoPage(state, str) {
-      state.wenzhangliebiaoPage = str;
-    },
-    wenzhangliebiaoPageSize(state, str) {
-      state.wenzhangliebiaoPageSize = str;
     },
     pingtuanjiluPage(state, str) {
       state.pingtuanjiluPage = str;

@@ -4,45 +4,37 @@
       <div class="tit1">轮播图列表</div>
     </div>
     <div class="nav2">
-      <!-- <div class="myForm">
+      <div class="myForm">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="搜索：">
-            <div class="search">
-              <el-input
-                size="small"
-                placeholder="请输入内容"
-                v-model="formInline.search"
-                class="input-with-select"
-              >
-              </el-input>
-            </div>
-          </el-form-item>
-          <el-form-item>
-            <el-button
-              size="small"
-              icon="el-icon-search"
-              type="primary"
-              @click="onSubmit"
-              >搜索</el-button
-            >
-            <el-button size="small" @click="onReact">重置</el-button>
-          </el-form-item>
+          <el-row>
+            <el-col :span="20">
+              <el-form-item label="类型：">
+                <el-radio-group @change="changeRad" v-model="formInline.rad1" size="small">
+                  <el-radio-button v-for="(item,i) in radioArr" :key="i" :label="i">{{item}}</el-radio-button>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-form>
-      </div>-->
+      </div>
+      <div class="tit1">
+        <el-button @click="AddLunbotu" size="small" type="primary" icon="el-icon-plus">添加轮播图</el-button>
+      </div>
       <div class="myTable">
         <vxe-table :data="tableData">
-          <vxe-table-column field="banner_id" title="ID"></vxe-table-column>
-          <vxe-table-column field="url" title="轮播图">
+          <vxe-table-column field="id" title="ID"></vxe-table-column>
+          <vxe-table-column field="name" title="轮播图名称"></vxe-table-column>
+          <vxe-table-column field="image" title="轮播图">
             <template slot-scope="scope">
-              <el-image :src="scope.row.url" fit="fill" style="width: 40px; height: 40px">
+              <el-image :src="scope.row.image" fit="fill" style="width: 40px; height: 40px">
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
                 </div>
               </el-image>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="other_url" title="跳转链接"></vxe-table-column>
-          <vxe-table-column field="add_time" title="添加时间"></vxe-table-column>
+          <vxe-table-column field="jump" title="跳转链接"></vxe-table-column>
+          <vxe-table-column field="created_at" title="添加时间"></vxe-table-column>
           <vxe-table-column title="操作状态" width="180">
             <template slot-scope="scope">
               <div class="flex">
@@ -73,7 +65,7 @@
               <el-col :span="12">
                 <el-form-item label="设置轮播图：">
                   <div @click="companyList" class="myImg">
-                    <el-image :src="ruleForm.img" fit="fill" style="width: 200px; height: 200px">
+                    <el-image :src="ruleForm.image" fit="fill" style="width: 200px; height: 200px">
                       <div slot="error" class="image-slot">
                         <i class="el-icon-picture-outline"></i>
                       </div>
@@ -87,8 +79,33 @@
             </el-row>
             <el-row>
               <el-col :span="12">
+                <el-form-item label="轮播图类型：">
+                  <el-select size="small" v-model="ruleForm.position" placeholder="请选择">
+                    <el-option v-for="(item,i) in radioArr" :key="i" :label="item" :value="i"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="轮播图名称：">
+                  <el-input size="small" v-model="ruleForm.name"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="跳转类型：">
+                  <el-select size="small" v-model="ruleForm.jump_type" placeholder="请选择">
+                    <el-option v-for="(item,i) in radioArr2" :key="i" :label="item" :value="i"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
                 <el-form-item label="跳转地址：">
-                  <el-input size="small" v-model="ruleForm.other_url"></el-input>
+                  <el-input size="small" v-model="ruleForm.jump"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -134,13 +151,22 @@ export default {
   },
   data() {
     return {
+      isAdd: false,
+      radioArr: [],
+      radioArr2:[],
+      formInline: {
+        rad1: ""
+      },
       tableData: [],
       total: 0,
       dialogVisible: false,
       imgFile: "",
       ruleForm: {
-        img: "",
-        other_url: ""
+        image: "",
+        name: "",
+        jump: "",
+        jump_type: "",
+        position: ""
       },
       id: ""
     };
@@ -150,29 +176,50 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.banner_list({
+      const res = await this.$api.banners({
         limit: this.lunbotuliebiaoPageSize,
-        page: this.lunbotuliebiaoPage
+        page: this.lunbotuliebiaoPage,
+        position: this.formInline.rad1
       });
       console.log(res.data);
       this.tableData = res.data.data;
       this.total = res.data.total;
+      const res2 = await this.$api.bannersPositions();
+      console.log(res2.data);
+      this.radioArr = res2.data;
+      const res3 = await this.$api.bannersJumpTypes();
+      console.log(res3.data);
+      this.radioArr2 = res3.data;
+    },
+    AddLunbotu() {
+      for (const key in this.ruleForm) {
+        this.$set(this.ruleForm, key, "");
+        this.isAdd = true;
+      }
+      this.dialogVisible = true;
+    },
+    changeRad() {
+      console.log(this.formInline.rad1);
+      this.getData();
     },
     // 编辑
     tabEdit(row) {
-      this.id = row.banner_id;
-      this.ruleForm.img = row.url;
-      this.ruleForm.other_url = row.other_url;
+      console.log(row);
+      this.isAdd = false;
+      this.id = row.id;
+      this.ruleForm.jump_type = row.jump_type;
+      this.ruleForm.image = row.image;
+      this.ruleForm.jump = row.jump;
+      this.ruleForm.name = row.name;
+      this.ruleForm.position = row.position;
       this.dialogVisible = true;
     },
     // 删除
     async tabDel(row) {
-      const res = await this.$api.banner_del({
-        id: row.banner_id
-      });
+      const res = await this.$api.deleteBanners(row.id);
       if (res.code == 200) {
         this.$message({
-          message: res.msg,
+          message: "删除成功",
           type: "success"
         });
         this.getData();
@@ -180,56 +227,100 @@ export default {
     },
     // 提交
     async submitForm() {
-      const res = await this.$api.banner_edit({
-        id: this.id,
-        url: this.ruleForm.img,
-        other_url: this.ruleForm.other_url
-      });
-      console.log(res);
-      if (res.code == 200) {
-        this.$message({
-          message: res.msg,
-          type: "success"
+      if (this.isAdd) {
+        // 添加
+        const res = await this.$api.addBanners({
+          jump: this.ruleForm.jump,
+          name: this.ruleForm.name,
+          image: this.ruleForm.image,
+          position: this.ruleForm.position,
+          jump_type:this.ruleForm.jump_type
         });
-        this.getData();
-        this.dialogVisible = false;
+        console.log(res);
+        if (res.code == 200) {
+          this.$message({
+            message: "添加成功",
+            type: "success"
+          });
+          this.getData();
+          this.dialogVisible = false;
+        }
+      } else {
+        // 编辑
+        const res = await this.$api.upDateBanners(
+          {
+            jump: this.ruleForm.jump,
+            name: this.ruleForm.name,
+            image: this.ruleForm.image,
+            position: this.ruleForm.position,
+            jump_type:this.ruleForm.jump_type
+          },
+          this.id
+        );
+        console.log(res);
+        if (res.code == 200) {
+          this.$message({
+            message: "修改成功",
+            type: "success"
+          });
+          this.getData();
+          this.dialogVisible = false;
+        }
       }
     },
     // 上传图片
     companyList() {
       this.$refs.fileInputList.click();
     },
+    //将文件转为blob类型
+    readFileAsBuffer(file) {
+      const reader = new FileReader();
+      return new Promise(resolve => {
+        reader.readAsDataURL(file);
+        reader.onload = function() {
+          const base64File = reader.result.replace(
+            /^data:\w+\/\w+;base64,/,
+            ""
+          );
+          resolve(new window.OSS.Buffer(base64File, "base64"));
+        };
+      });
+    },
+    async uploading(flag) {
+      // console.log(document.getElementById("file0").value);
+      if (flag) {
+        var file_re = await this.readFileAsBuffer(this.imgFile);
+        const res = await this.$api.uploadToken();
+        let myData = res.data;
+        console.log(myData);
+        let client = new window.OSS.Wrapper({
+          region: myData.region, //oss地址
+          accessKeyId: myData.accessKeyId, //ak
+          accessKeySecret: myData.accessKeySecret, //secret
+          stsToken: myData.stsToken,
+          bucket: myData.bucket //oss名字
+        });
+        var imgtype = this.imgFile.type.substr(6, 4);
+        var store = `${new Date().getTime()}.${imgtype}`;
+        client.put(store, file_re).then(() => {
+          //这个结果就是url
+          console.log(store);
+          // var oss_imgurl = client.signatureUrl(store);
+          var oss_imgurl = `http://${myData.bucket}.${myData.url}/${store}`;
+          this.$set(this.ruleForm, "image", oss_imgurl);
+          console.log(oss_imgurl);
+        });
+      }
+    },
     // 删除图片
     delImg() {
-      this.$set(this.ruleForm, "img", "");
+      this.$set(this.lhForm, "pic", "");
     },
-    async companyLogo(event) {
-      const that = this;
+    companyLogo(event) {
       var file = event.target.files[0];
-      var fileSize = file.size; //文件大小
-      var filetType = file.type; //文件类型
-      //创建文件读取对象
-      // console.log(file);
-      if (fileSize <= 10240 * 1024) {
-        if (
-          filetType == "image/png" ||
-          filetType == "image/jpeg" ||
-          filetType == "image/gif"
-        ) {
-          this.imgFile = new FormData();
-          this.imgFile.append("image", file);
-          sessionStorage.setItem("img", 123);
-          const res = await that.$api.upload_pic(this.imgFile);
-          console.log(res);
-          this.$set(this.ruleForm, "img", res.data.paht);
-          console.log(this.ruleForm);
-          that.$refs.fileInputList.value = "";
-        } else {
-          this.$message.error("图片格式不正确");
-        }
-      } else {
-        this.$message.error("图片大小不正确");
-      }
+      this.imgFile = file;
+      this.uploading(true);
+      this.$refs.fileInputList.value = "";
     },
     handleClose() {
       this.dialogVisible = false;

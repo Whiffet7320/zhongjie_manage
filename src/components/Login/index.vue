@@ -1,10 +1,10 @@
 <template>
   <div id="login">
     <div class="container">
-      <img class="bacImage" src="../../assets/image/back.png" alt="" />
-      <img class="leftImg" src="../../assets/image/hb.png" alt="" />
+      <img class="bacImage" src="../../assets/image/back.png" alt />
+      <img class="leftImg" src="../../assets/image/hb.png" alt />
       <div class="loginBox">
-        <div class="tit1">分销管理系统</div>
+        <div class="tit1">后台管理系统</div>
         <div class="tit2">欢迎你回来~</div>
         <div class="loginBox2">
           <el-form
@@ -93,33 +93,33 @@ export default {
       loginForm: {
         username: "admin",
         checkPass: "",
-        password: "",
+        password: ""
       },
       rules: {
         username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
+          { required: true, message: "请输入用户名", trigger: "blur" }
         ],
         password: [{ validator: validatePass, trigger: "blur" }],
-        checkPass: [{ validator: validatePass2, trigger: "blur" }],
+        checkPass: [{ validator: validatePass2, trigger: "blur" }]
       },
-      isRegister: true,
+      isRegister: true
     };
   },
   methods: {
     // 登录
     async onLogin() {
-      const res = await this.$api.login(
-        this.loginForm.username,
-        this.loginForm.password
-      );
+      const res = await this.$api.login({
+        phone: this.loginForm.username,
+        password: this.loginForm.password
+      });
       console.log(res);
       if (res.code == 200) {
-        sessionStorage.setItem("token", res.data.token);
+        sessionStorage.setItem("token", res.data.token_info.access_token);
         sessionStorage.setItem("isLogin", true);
-        sessionStorage.setItem("userInfo", JSON.stringify(res.data.info));
+        sessionStorage.setItem("userInfo", JSON.stringify(res.data.user));
         this.$message({
           message: res.message,
-          type: "success",
+          type: "success"
         });
         setTimeout(() => {
           this.$router.push({ path: "/" });
@@ -128,8 +128,8 @@ export default {
       } else {
         this.$message.error(res.message);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

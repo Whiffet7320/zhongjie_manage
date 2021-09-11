@@ -56,6 +56,10 @@ const routes = [{
         path: 'Wenzhangliebiao',
         name: 'Wenzhangliebiao',
         component: () => import('./components/Wenzhang/Wenzhangliebiao'),
+    }, {
+        path: 'Tianjiawenzhang',
+        name: 'Tianjiawenzhang',
+        component: () => import('./components/Wenzhang/Tianjiawenzhang'),
     }]
 }, {
     path: '/Yingxiao',
@@ -95,6 +99,10 @@ const routes = [{
         name: 'Yonghuguanli',
         component: () => import('./components/Yonghu/Yonghuguanli'),
     }, {
+        path: 'Shifuguanli',
+        name: 'Shifuguanli',
+        component: () => import('./components/Yonghu/Shifuguanli'),
+    }, {
         path: 'Lianghaoliebiao',
         name: 'Lianghaoliebiao',
         component: () => import('./components/Yonghu/Lianghaoliebiao'),
@@ -124,6 +132,19 @@ const routes = [{
         path: 'Yongjinjilu',
         name: 'Yongjinjilu',
         component: () => import('./components/Caiwu/Yongjinjilu'),
+    }, ]
+}, {
+    path: '/Qita',
+    name: 'Qita',
+    component: () => import('./components/Qita'),
+    children: [{
+        path: 'Fankuiliebiao',
+        name: 'Fankuiliebiao',
+        component: () => import('./components/Qita/Fankuiliebiao'),
+    }, {
+        path: 'Chengshiliebiao',
+        name: 'Chengshiliebiao',
+        component: () => import('./components/Qita/Chengshiliebiao'),
     }, ]
 }, {
     path: '/Shezhi',

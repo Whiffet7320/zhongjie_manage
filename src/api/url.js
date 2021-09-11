@@ -1,9 +1,27 @@
 export default {
-    // baseUrl: '',
-    // baseUrl: 'http://192.168.50.142:9083',
-    // baseUrl: 'http://192.168.1.128:8094',
-    baseUrl:'http://pinapi.hxqhhhh.shop',
+    // 如师傅
+    baseUrl:'http://192.168.50.96:8001',
+    // baseUrl:'http://rushifu.5laoye.com',
     login: '/admin/login', //登录
+    users:'/admin/users',//用户列表
+    usersIdMoneyRecords:'/admin/users',//用户积分列表
+    categories:'/admin/categories',//分类列表
+    addCategories:'/admin/categories',//新增分类
+    updateCategories:'/admin/categories',//修改分类
+    items:'/admin/items',//商品/服务列表
+    uploadToken:'/api/upload/token',//阿里云上传sts
+    idCards:'/admin/id-cards',//身份认证
+    demandQuotes:'/admin/demand-quotes',//需求单列表
+    ordersId:'/admin/orders',//修改订单信息
+    articles:'/admin/articles',//文章列表
+    articlesTypes:'/admin/articles-types',//文章类型
+    banners:'/admin/banners',//banner列表
+    bannersPositions:'/admin/banners-positions',//banner位置列表
+    bannersJumpTypes:'/admin/banners-jump-types',//banner跳转类型
+    globalConfigs:'/admin/global-configs',//全局变量
+    areas:'/admin/areas',//所有城市分页
+    feedbacks:'/admin/feedbacks',//反馈列表
+    // 模板
     productList:'/admin/product/list',//商品列表
     loginInfo:'/admin/login/info',
     productUpload:'/admin/product/upload',//上传商品图片

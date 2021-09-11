@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="nav2">
-      <!-- <div class="myForm">
+      <div class="myForm">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="用户搜索：">
             <div class="search">
@@ -27,7 +27,7 @@
                   slot="prepend"
                   placeholder="请选择"
                 >
-                  <el-option label="全部" value="1"></el-option>
+                  <!-- <el-option label="全部" value="1"></el-option> -->
                   <el-option label="UID" value="2"></el-option>
                   <el-option label="手机号" value="3"></el-option>
                   <el-option label="用户名称" value="4"></el-option>
@@ -36,15 +36,11 @@
             </div>
           </el-form-item>
           <el-form-item>
-            <el-button size="small" icon="el-icon-search" type="primary" @click="onSubmit"
-              >搜索</el-button
-            >
-            <el-button size="small" @click="onReact"
-              >重置</el-button
-            >
+            <el-button size="small" icon="el-icon-search" type="primary" @click="onSubmit">搜索</el-button>
+            <el-button size="small" @click="onReact">重置</el-button>
           </el-form-item>
         </el-form>
-      </div>-->
+      </div>
       <div class="tit1">
         <!-- <el-button
           @click="toAddShop"
@@ -61,17 +57,17 @@
               <template>
                 <div class="xiala">
                   <el-row :gutter="20">
-                    <el-col :span="6">
-                      <div class="item">上级邀请人邀请码：{{row.parent_uniqid}}</div>
+                    <el-col :span="10">
+                      <div class="item">用户创建时间：{{row.created_at}}</div>
                     </el-col>
                     <el-col :span="6">
-                      <div class="item">邀请总人数：{{row.spread_count}}</div>
+                      <div class="item">积分：{{ row.level }}</div>
                     </el-col>
                     <el-col :span="6">
-                      <div class="item">等级：{{ row.level }}</div>
+                      <div class="item">性别：{{ row.user_info.gender == 1? '男' : '女' }}</div>
                     </el-col>
                   </el-row>
-                  <div style="margin-top: 16px"></div>
+                  <!-- <div style="margin-top: 16px"></div>
                   <el-row :gutter="20">
                     <el-col :span="6">
                       <div class="item">积分：{{row.integral}}</div>
@@ -79,31 +75,34 @@
                     <el-col :span="6">
                       <div class="item">会员过期时间：{{row.myOverdue_vip_time}}</div>
                     </el-col>
-                  </el-row>
+                  </el-row>-->
                 </div>
               </template>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="user_id" title="ID"></vxe-table-column>
+          <vxe-table-column field="id" title="ID"></vxe-table-column>
           <vxe-table-column field="avatar" title="头像">
             <template slot-scope="scope">
-              <el-image :src="scope.row.avatar" fit="fill" style="width: 40px; height: 40px">
+              <el-image
+                :src="scope.row.user_info.avatar"
+                fit="fill"
+                style="width: 40px; height: 40px"
+              >
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
                 </div>
               </el-image>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="nickname" title="姓名"></vxe-table-column>
+          <vxe-table-column field="user_info.nick_name" title="姓名"></vxe-table-column>
           <vxe-table-column field="phone" title="手机号"></vxe-table-column>
-          <vxe-table-column field="myIs_vip" title="是否会员"></vxe-table-column>
-          <vxe-table-column field="now_money" title="余额"></vxe-table-column>
-          <vxe-table-column title="操作状态" width="190">
+          <vxe-table-column field="money" title="余额"></vxe-table-column>
+          <vxe-table-column title="操作状态" width="150">
             <template slot-scope="scope">
               <div class="flex">
                 <el-button size="small" @click="toEdit(scope.row)" type="text">编辑</el-button>
                 <el-button size="small" @click="seeMingxi(scope.row)" type="text">查看明细</el-button>
-                <el-button size="small" @click="toPingtuanjilu(scope.row)" type="text">拼团记录</el-button>
+                <!-- <el-button size="small" @click="toPingtuanjilu(scope.row)" type="text">拼团记录</el-button> -->
               </div>
             </template>
           </vxe-table-column>
@@ -126,11 +125,11 @@
         <el-form ref="mingxiFrom" :model="mingxiFrom" label-width="80px">
           <el-row>
             <el-col :span="20">
-              <el-form-item label="拼团状态：">
+              <el-form-item label="状态：">
                 <el-radio-group @change="changeMingxiRadio" v-model="mingxiFrom.rad1" size="small">
-                  <el-radio-button label="1">积分明细</el-radio-button>
-                  <el-radio-button label="2">收益明细</el-radio-button>
-                  <el-radio-button label="3">资金余额明细</el-radio-button>
+                  <el-radio-button label="1">资金余额明细</el-radio-button>
+                  <el-radio-button label="2">积分明细</el-radio-button>
+                  <!-- <el-radio-button label="3">收益明细</el-radio-button> -->
                 </el-radio-group>
               </el-form-item>
             </el-col>
@@ -141,17 +140,17 @@
         <vxe-table :data="mingxiTableData">
           <vxe-table-column field="user_id" title="ID"></vxe-table-column>
           <vxe-table-column field="myPm" title="支出/获得"></vxe-table-column>
-          <vxe-table-column field="number" title="变动金额"></vxe-table-column>
-          <vxe-table-column field="balance" title="变动后金额"></vxe-table-column>
-          <vxe-table-column field="mark" width="250" title="备注"></vxe-table-column>
-          <vxe-table-column field="pay_way" width="120" title="支付方式"></vxe-table-column>
-          <vxe-table-column field="myAdd_time" title="时间"></vxe-table-column>
+          <vxe-table-column field="value" title="变动金额"></vxe-table-column>
+          <vxe-table-column field="after_money" title="变动后金额"></vxe-table-column>
+          <!-- <vxe-table-column field="mark" width="250" title="备注"></vxe-table-column> -->
+          <!-- <vxe-table-column field="pay_way" width="120" title="支付方式"></vxe-table-column> -->
+          <vxe-table-column field="created_at" title="时间"></vxe-table-column>
         </vxe-table>
         <el-pagination
           class="fenye"
-          @size-change="this.handleSizeChange"
-          @current-change="this.handleCurrentChange"
-          :current-page="this.yonghuguanliPage"
+          @size-change="this.zijinmingxiHandleSizeChange"
+          @current-change="this.zijinmingxiHandleCurrentChange"
+          :current-page="this.zijinmingxiliebiaoPage"
           :page-size="10"
           :page-sizes="[10, 15, 20, 30]"
           layout="total,sizes, prev, pager, next, jumper"
@@ -193,7 +192,12 @@
 import { mapState } from "vuex";
 export default {
   computed: {
-    ...mapState(["yonghuguanliPage", "yonghuguanliPageSize"])
+    ...mapState([
+      "yonghuguanliPage",
+      "yonghuguanliPageSize",
+      "zijinmingxiliebiaoPage",
+      "zijinmingxiliebiaoPageSize"
+    ])
   },
   watch: {
     yonghuguanliPage: function(page) {
@@ -202,6 +206,14 @@ export default {
     },
     yonghuguanliPageSize: function(pageSize) {
       this.$store.commit("yonghuguanliPageSize", pageSize);
+      this.getData();
+    },
+    zijinmingxiliebiaoPage: function(page) {
+      this.$store.commit("zijinmingxiliebiaoPage", page);
+      this.getData();
+    },
+    zijinmingxiliebiaoPageSize: function(pageSize) {
+      this.$store.commit("zijinmingxiliebiaoPageSize", pageSize);
       this.getData();
     }
   },
@@ -237,42 +249,28 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.userIndex({
+      const res = await this.$api.users({
         limit: this.yonghuguanliPageSize,
-        page: this.yonghuguanliPage
+        page: this.yonghuguanliPage,
+        type: 0,
+        id: this.formInline.select == 2 ? this.formInline.search : "",
+        phone: this.formInline.select == 3 ? this.formInline.search : "",
+        nick_name: this.formInline.select == 4 ? this.formInline.search : ""
       });
       console.log(res.data.data);
       this.total = res.data.total;
       this.tableData = res.data.data;
-      this.tableData.forEach(ele => {
-        ele.myIs_vip = ele.is_vip == "1" ? "是" : "否";
-        ele.myOverdue_vip_time = this.formatDate(ele.overdue_vip_time * 1000);
-      });
-      const res2 = await this.$api.categoryIndex({
-        pid: 0
-      });
-      res2.data.forEach(ele => {
-        ele.value = ele.id;
-        ele.label = ele.cate_name;
-        if (ele.children) {
-          ele.children.forEach(item => {
-            item.value = item.id;
-            item.label = item.cate_name;
-          });
-        }
-      });
-      this.options = res2.data;
     },
     async getMingxiData() {
-      const res = await this.$api.user_bill_log({
-        user_id: this.mingxiUser_id,
-        way: this.mingxiFrom.rad1
+      const res = await this.$api.usersIdMoneyRecords({
+        id: this.mingxiUser_id,
+        page: this.zijinmingxiliebiaoPage,
+        limit: this.zijinmingxiliebiaoPageSize
       });
       console.log(res.data);
       this.mingxiTableData = res.data.data;
       this.mingxiTableData.forEach(ele => {
-        ele.myPm = ele.pm == "1" ? "获得" : "支出";
-        ele.myAdd_time = this.formatDate(ele.add_time * 1000);
+        ele.myPm = ele.is_in == "1" ? "获得" : "支出";
       });
       this.mingxiTotal = res.data.total;
     },
@@ -310,7 +308,8 @@ export default {
       this.editDialogVisible = true;
     },
     async seeMingxi(row) {
-      this.mingxiUser_id = row.user_id;
+      console.log(row)
+      this.mingxiUser_id = row.id;
       this.getMingxiData();
       this.dialogVisible = true;
     },
@@ -323,9 +322,14 @@ export default {
       });
     },
     onSubmit() {
-      console.log("submit!");
+      console.log(this.formInline);
+      this.getData()
     },
-    onReact() {},
+    onReact() {
+      this.formInline.search = '';
+      this.formInline.select = '';
+      this.getData()
+    },
     handleClose() {
       this.dialogVisible = false;
     },
@@ -357,6 +361,14 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.$store.commit("yonghuguanliPage", val);
+    },
+    zijinmingxiHandleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.$store.commit("zijinmingxiliebiaoPageSize", val);
+    },
+    zijinmingxiHandleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.$store.commit("zijinmingxiliebiaoPage", val);
     }
   }
 };
@@ -397,6 +409,7 @@ export default {
     /deep/ .el-form-item {
       margin-right: 30px;
       margin-bottom: 0;
+      vertical-align: text-top;
     }
     .search {
       margin-top: 5px;

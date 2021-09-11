@@ -4,9 +4,8 @@
       <div class="tit1">商品管理</div>
       <div class="tit2">
         <el-tabs v-model="activeName" @tab-click="tabsHandleClick">
-          <el-tab-pane label="出售中的商品" name="1"></el-tab-pane>
-          <el-tab-pane label="下架的商品" name="2"></el-tab-pane>
-          <el-tab-pane label="已经售馨商品" name="3"></el-tab-pane>
+          <el-tab-pane label="如商城商品" name="1"></el-tab-pane>
+          <el-tab-pane label="报价商品" name="2"></el-tab-pane>
         </el-tabs>
       </div>
     </div>
@@ -52,16 +51,16 @@
                 <div class="xiala">
                   <el-row :gutter="20">
                     <el-col :span="6">
-                      <div class="item">商品分类：3C数码/手机</div>
+                      <div class="item">商品分类：{{row.category_id}}</div>
                     </el-col>
                     <el-col :span="6">
-                      <div class="item">商品市场价格：3C数码/手机</div>
+                      <div class="item">商品创建时间：{{row.created_at}}</div>
                     </el-col>
-                    <el-col :span="6">
+                    <!-- <el-col :span="6">
                       <div class="item">成本价：{{ row.price }}</div>
-                    </el-col>
+                    </el-col> -->
                   </el-row>
-                  <div style="margin-top: 16px"></div>
+                  <!-- <div style="margin-top: 16px"></div>
                   <el-row :gutter="20">
                     <el-col :span="6">
                       <div class="item">收藏：3C数码/手机</div>
@@ -69,7 +68,7 @@
                     <el-col :span="6">
                       <div class="item">虚拟销量：3C数码/手机</div>
                     </el-col>
-                  </el-row>
+                  </el-row> -->
                 </div>
               </template>
             </template>
@@ -78,7 +77,7 @@
           <vxe-table-column field="role" title="商品图">
             <template slot-scope="scope">
               <el-image
-                :src="scope.row.image"
+                :src="scope.row.main_img"
                 fit="fill"
                 style="width: 40px; height: 40px"
               >
@@ -89,18 +88,18 @@
             </template>
           </vxe-table-column>
           <vxe-table-column
-            field="product_name"
+            field="name"
             title="商品名称"
           ></vxe-table-column>
           <vxe-table-column field="price" title="商品售价"></vxe-table-column>
           <vxe-table-column field="ficti" title="销量"></vxe-table-column>
           <vxe-table-column field="stock" title="库存"></vxe-table-column>
           <vxe-table-column field="sort" title="排序"></vxe-table-column>
-          <vxe-table-column field="is_show" title="状态(是否上架)">
+          <vxe-table-column field="myStatus" title="状态(是否上架)">
             <template slot-scope="scope">
               <el-switch
                 @change="changeKG(scope.row)"
-                v-model="scope.row.is_showKG"
+                v-model="scope.row.myStatus"
               >
               </el-switch>
             </template>
@@ -164,7 +163,7 @@ export default {
   },
   data() {
     return {
-      activeName: "3",
+      activeName: "2",
       formInline: {
         user: "",
         region: "",
@@ -179,7 +178,7 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.productList({
+      const res = await this.$api.items({
         limit: this.shangpingliebiaoPageSize,
         page: this.shangpingliebiaoPage,
       });
@@ -187,30 +186,15 @@ export default {
       this.total = res.data.total;
       this.tableData = res.data.data;
       this.tableData.forEach((ele) => {
-        ele.is_showKG = ele.is_show == "1" ? true : false;
+        ele.myStatus = ele.status == "1" ? true : false;
       });
-      const res2 = await this.$api.categoryIndex({
-        pid: 0,
-      });
-      res2.data.forEach((ele) => {
-        ele.value = ele.id;
-        ele.label = ele.cate_name;
-        if (ele.children) {
-          ele.children.forEach((item) => {
-            item.value = item.id;
-            item.label = item.cate_name;
-          });
-        }
-      });
-      this.options = res2.data;
     },
     // 开关（上架/下架）
     async changeKG(row) {
       console.log(row);
-      const res = await this.$api.productShow({
-        id: row.id,
-        show: row.is_showKG == true ? "1" : "0",
-      });
+      const res = await this.$api.upDateItems({
+        status: row.myStatus == true ? "1" : "0",
+      },row.id);
       if (res.code == 200) {
         this.$message({
           message: res.msg,

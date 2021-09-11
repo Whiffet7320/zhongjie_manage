@@ -19,7 +19,24 @@ let myDelete = axios.create({
     method: 'delete',
     timeout: 1000,
 })
+let myPut = axios.create({
+    baseURL: urls.baseUrl,
+    method: 'put',
+    timeout: 1000,
+})
 
+myPut.interceptors.request.use(config => {
+    if (sessionStorage.getItem("token")) {
+        config.headers = {
+            // 'X-Token': sessionStorage.getItem("token"),
+            'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
+        }
+    }
+    return config;
+}, error => {
+    console.log(error);
+    return Promise.reject();
+})
 myDelete.interceptors.request.use(config => {
     if (sessionStorage.getItem("token")) {
         config.headers = {
@@ -152,17 +169,313 @@ myGet.interceptors.response.use(response => {
         }
     }
 })
+myPut.interceptors.response.use(response => {
+    // console.log(response)
+    if (response.status === 200) {
+        return response.data
+    }
+    // if (response.status === 200 && response.data.code == '200') {
+    //     vue.$message({
+    //         message: response.data.msg,
+    //         type: "success",
+    //     });
+    //     return response.data;
+    // }
+    else {
+        vue.$message.error(response.data.info);
+        Promise.reject();
+    }
+}, error => {
+    //错误跳转
+    console.log(error)
+    if (error.response.status === 500) {
+        console.log(vue)
+        if (error.response.data.info != '参数错误') {
+            vue.$message.error(error.response.data.info);
+        }
+    } else if (error.response.status === 401) {
+        sessionStorage.setItem("isLogin", false);
+        console.log(sessionStorage.getItem("isLogin"));
+        router.push({
+            path: "/"
+        })
+        router.go(0)
+        return Promise.reject();
+    } else if (error.response.status === 404) {
+        vue.$alert('页面不存在', '404错误', {
+            confirmButtonText: '确定',
+        });
+        return Promise.reject();
+    } else if (error.response.status === 402) {
+        vue.$alert('请求次数限制', '402错误', {
+            confirmButtonText: '确定',
+        });
+        return Promise.reject();
+    } else {
+        if (error.response.data.info != '参数错误') {
+            vue.$message.error(error.response.data.info);
+        }
+    }
+})
+myDelete.interceptors.response.use(response => {
+    // console.log(response)
+    if (response.status === 200) {
+        return response.data
+    }
+    // if (response.status === 200 && response.data.code == '200') {
+    //     vue.$message({
+    //         message: response.data.msg,
+    //         type: "success",
+    //     });
+    //     return response.data;
+    // }
+    else {
+        vue.$message.error(response.data.info);
+        Promise.reject();
+    }
+}, error => {
+    //错误跳转
+    console.log(error)
+    if (error.response.status === 500) {
+        console.log(vue)
+        if (error.response.data.info != '参数错误') {
+            vue.$message.error(error.response.data.info);
+        }
+    } else if (error.response.status === 401) {
+        sessionStorage.setItem("isLogin", false);
+        console.log(sessionStorage.getItem("isLogin"));
+        router.push({
+            path: "/"
+        })
+        router.go(0)
+        return Promise.reject();
+    } else if (error.response.status === 404) {
+        vue.$alert('页面不存在', '404错误', {
+            confirmButtonText: '确定',
+        });
+        return Promise.reject();
+    } else if (error.response.status === 402) {
+        vue.$alert('请求次数限制', '402错误', {
+            confirmButtonText: '确定',
+        });
+        return Promise.reject();
+    } else {
+        if (error.response.data.info != '参数错误') {
+            vue.$message.error(error.response.data.info);
+        }
+    }
+})
 
 export default {
-    login(account, password) {
+    login(obj) {
         return myPost({
             url: urls.login,
             data: {
-                account,
-                password,
+                ...obj
             }
         })
     },
+    users(obj) {
+        return myGet({
+            url: urls.users,
+            params: {
+                ...obj
+            }
+        })
+    },
+    usersIdMoneyRecords(obj) {
+        return myGet({
+            url: `${urls.usersIdMoneyRecords}/${obj.id}/money-records`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    categories() {
+        return myGet({
+            url: urls.categories,
+        })
+    },
+    addCategories(obj) {
+        return myPost({
+            url: urls.addCategories,
+            data:{
+                ...obj
+            }
+        })
+    },
+    updateCategories(obj,id) {
+        return myPut({
+            url: `${urls.updateCategories}/${id}`,
+            data:{
+                ...obj
+            }
+        })
+    },
+    items(obj) {
+        return myGet({
+            url: urls.items,
+            params: {
+                ...obj
+            }
+        })
+    },
+    addItems(obj) {
+        return myPost({
+            url: urls.items,
+            data: {
+                ...obj
+            }
+        })
+    },
+    upDateItems(obj,id) {
+        return myPut({
+            url: `${urls.items}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    uploadToken() {
+		return myGet({
+			url: urls.uploadToken,
+		})
+    },
+    idCards(obj,id) {
+        return myPut({
+            url: `${urls.idCards}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    demandQuotes(obj) {
+		return myGet({
+            url: urls.demandQuotes,
+            params: {
+                ...obj
+            }
+		})
+    },
+    ordersId(obj,id) {
+        return myPut({
+            url: `${urls.ordersId}/${id}`,
+            data:{
+                ...obj
+            }
+        })
+    },
+    articles(obj) {
+		return myGet({
+            url: urls.articles,
+            params: {
+                ...obj
+            }
+		})
+    },
+    addArticles(obj) {
+		return myPost({
+            url: urls.articles,
+            data: {
+                ...obj
+            }
+		})
+    },
+    upDateArticles(obj,id) {
+		return myPut({
+            url: `${urls.articles}/${id}`,
+            data: {
+                ...obj
+            }
+		})
+    },
+    articlesTypes() {
+		return myGet({
+            url: urls.articlesTypes,
+		})
+    },
+    banners(obj) {
+		return myGet({
+            url: urls.banners,
+            params: {
+                ...obj
+            }
+		})
+    },
+    addBanners(obj) {
+		return myPost({
+            url: urls.banners,
+            data: {
+                ...obj
+            }
+		})
+    },
+    upDateBanners(obj,id) {
+		return myPut({
+            url: `${urls.banners}/${id}`,
+            data: {
+                ...obj
+            }
+		})
+    },
+    deleteBanners(id) {
+		return myDelete({
+            url: `${urls.banners}/${id}`,
+		})
+    },
+    bannersPositions() {
+		return myGet({
+            url: urls.bannersPositions,
+		})
+    },
+    bannersJumpTypes() {
+		return myGet({
+            url: urls.bannersJumpTypes,
+		})
+    },
+    globalConfigs(obj) {
+		return myGet({
+            url: urls.globalConfigs,
+            data:{
+                ...obj
+            }
+		})
+    },
+    upDateGlobalConfigs(obj,id) {
+		return myPut({
+            url: `${urls.globalConfigs}/${id}`,
+            data: {
+                ...obj
+            }
+		})
+    },
+    areas(obj) {
+		return myGet({
+            url: urls.areas,
+            params: {
+                ...obj
+            }
+		})
+    },
+    feedbacks(obj) {
+		return myGet({
+            url: urls.feedbacks,
+            params: {
+                ...obj
+            }
+		})
+    },
+    upDatefeedbacks(obj,id) {
+		return myPut({
+            url: `${urls.feedbacks}/${id}`,
+            data: {
+                ...obj
+            }
+		})
+    },
+    // 
+
+
     productList(obj) {
         return myGet({
             url: urls.productList,
