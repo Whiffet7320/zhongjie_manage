@@ -21,6 +21,13 @@ export default {
     globalConfigs:'/admin/global-configs',//全局变量
     areas:'/admin/areas',//所有城市分页
     feedbacks:'/admin/feedbacks',//反馈列表
+    withdraw:'/admin/withdraw',//提现列表
+    fixedPosition:'/admin/fixed-position',//固定位置
+    positions:'/admin/positions',//固定位置列表
+    fixedPositionItem:'/admin/fixed-position-item',//固定位置商品列表
+    itemAll:'/admin/items-all',//全部商品
+    turntableItem:'/admin/turntable-item',//奖品列表
+    awards:'/admin/awards',//中奖列表
     // 模板
     productList:'/admin/product/list',//商品列表
     loginInfo:'/admin/login/info',

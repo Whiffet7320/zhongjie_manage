@@ -731,6 +731,7 @@ export default {
         this.ruleForm.status = this.shopObj.status.toString();
         this.ruleForm.type = this.shopObj.type.toString();
         this.updateId = this.shopObj.id;
+        this.ruleForm.prev_images.push(null)
         delete this.ruleForm.created_at;
         delete this.ruleForm.is_showKG;
         delete this.ruleForm.updated_at;
@@ -882,9 +883,9 @@ export default {
       console.log(i);
       if (val == "xqt") {
         this.$set(this.ruleForm, "image", "");
-      } else if (this.imgStatus == "zt") {
+      } else if (val == "zt") {
         this.$set(this.ruleForm, "recommend_image", "");
-      } else if (this.imgStatus == "llt") {
+      } else if (val == "llt") {
         this.$set(this.ruleForm.prev_images, i, "");
       }
       ``;

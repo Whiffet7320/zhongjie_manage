@@ -124,9 +124,7 @@ changeRad() {
     },
     // 删除
     async tabDel(row) {
-      const res = await this.$api.article_del({
-        id: row.id
-      });
+      const res = await this.$api.deleteArticles(row.id); 
       if (res.code == 200) {
         this.$message({
           message: res.msg,

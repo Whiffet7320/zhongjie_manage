@@ -32,15 +32,21 @@
       <div class="myTable">
         <vxe-table :data="tableData">
           <vxe-table-column field="id" title="ID"></vxe-table-column>
-          <vxe-table-column field="real_name" title="用户姓名"></vxe-table-column>
-          <vxe-table-column field="myExtract_type" title="提现方式"></vxe-table-column>
-          <vxe-table-column field="bank_code" title="银行卡号"></vxe-table-column>
-          <vxe-table-column field="bank_address" title="银行分行地址"></vxe-table-column>
-          <vxe-table-column field="alipay_code" title="支付宝账户"></vxe-table-column>
-          <vxe-table-column field="wechat" title="微信号"></vxe-table-column>
-          <vxe-table-column field="balance" title="提现前余额"></vxe-table-column>
-          <vxe-table-column field="extract_price" title="提现金额"></vxe-table-column>
-          <vxe-table-column field="mark" title="备注"></vxe-table-column>
+          <vxe-table-column field="name" title="持卡人"></vxe-table-column>
+          <vxe-table-column field="bank_name" title="银行名称"></vxe-table-column>
+          <vxe-table-column field="card_num" title="银行卡号"></vxe-table-column>
+          <vxe-table-column field="open_card_name" title="开户行名称"></vxe-table-column>
+          <vxe-table-column field="open_card_address" title="开户行地址"></vxe-table-column>
+          <vxe-table-column field="myStatus" title="提现状态"></vxe-table-column>
+          <vxe-table-column field="money" title="提现金额"></vxe-table-column>
+          <vxe-table-column title="操作状态" width="120">
+            <template slot-scope="scope">
+              <div class="flex">
+                <el-button size="small" :disabled='scope.row.status != 0' @click="succ(scope.row)" type="text">成功</el-button>
+                <el-button size="small" :disabled='scope.row.status != 0' @click="err(scope.row)" type="text">失败</el-button>
+              </div>
+            </template>
+          </vxe-table-column>
         </vxe-table>
         <el-pagination
           class="fenye"
@@ -84,22 +90,55 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.user_extract({
+      const res = await this.$api.withdraw({
         limit: this.tixianliebiaoPageSize,
         page: this.tixianliebiaoPage
       });
       console.log(res.data);
       this.tableData = res.data.data;
-      this.tableData.forEach(ele=>{
-          if(ele.extract_type == 'bank'){
-              ele.myExtract_type = '银行卡'
-          }else if(ele.extract_type == 'alipay'){
-              ele.myExtract_type = '支付宝'
-          }else if(ele.extract_type == 'wx'){
-              ele.myExtract_type = '微信'
-          }
-      })
+      this.tableData.forEach(ele => {
+        ele.myStatus =
+          ele.status == 0
+            ? "申请提现"
+            : ele.status == 1
+            ? "提现成功"
+            : "提现失败";
+      });
       this.total = res.data.total;
+    },
+    async succ(row) {
+      const res = await this.$api.upDateWithdraw(
+        {
+          status: 1
+        },
+        row.id
+      );
+      if (res.code == 200) {
+        this.$message({
+          message: "操作成功",
+          type: "success"
+        });
+        this.getData();
+      }else{
+        this.$message.error(res.msg);
+      }
+    },
+    async err(row) {
+      const res = await this.$api.upDateWithdraw(
+        {
+          status: 2
+        },
+        row.id
+      );
+      if (res.code == 200) {
+        this.$message({
+          message: "操作成功",
+          type: "success"
+        });
+        this.getData();
+      }else{
+        this.$message.error(res.msg);
+      }
     },
     // 分页
     handleSizeChange(val) {

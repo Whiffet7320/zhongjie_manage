@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <div class="nav1">
-      <div class="tit1">轮播图列表</div>
+      <div class="tit1">固定位置列表</div>
     </div>
     <div class="nav2">
       <div class="myForm">
@@ -17,29 +17,38 @@
           </el-row>
         </el-form>
       </div>
-      <div class="tit1">
-        <el-button @click="AddLunbotu" size="small" type="primary" icon="el-icon-plus">添加轮播图</el-button>
-      </div>
+      <!-- <div class="tit1">
+        <el-button @click="AddLunbotu" size="small" type="primary" icon="el-icon-plus">添加固定位置</el-button>
+      </div> -->
       <div class="myTable">
         <vxe-table :data="tableData">
           <vxe-table-column field="id" title="ID"></vxe-table-column>
-          <vxe-table-column field="name" title="轮播图名称"></vxe-table-column>
-          <vxe-table-column field="image" title="轮播图">
+          <vxe-table-column field="title" title="主标题"></vxe-table-column>
+          <vxe-table-column field="sub_title" title="副标题"></vxe-table-column>
+          <vxe-table-column field="bg_img" title="背景图">
             <template slot-scope="scope">
-              <el-image :src="scope.row.image" fit="fill" style="width: 40px; height: 40px">
+              <el-image :src="scope.row.bg_img" fit="fill" style="width: 40px; height: 40px">
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
                 </div>
               </el-image>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="jump" title="跳转链接"></vxe-table-column>
+          <vxe-table-column field="icon" title="图标">
+            <template slot-scope="scope">
+              <el-image :src="scope.row.icon" fit="fill" style="width: 40px; height: 40px">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+            </template>
+          </vxe-table-column>
           <vxe-table-column field="created_at" title="添加时间"></vxe-table-column>
-          <vxe-table-column title="操作状态" width="180">
+          <vxe-table-column title="操作状态" width="100">
             <template slot-scope="scope">
               <div class="flex">
                 <el-button size="small" @click="tabEdit(scope.row)" type="text">编辑</el-button>
-                <el-button size="small" @click="tabDel(scope.row)" type="text">删除</el-button>
+                <!-- <el-button size="small" @click="tabDel(scope.row)" type="text">删除</el-button> -->
               </div>
             </template>
           </vxe-table-column>
@@ -48,7 +57,7 @@
           class="fenye"
           @size-change="this.handleSizeChange"
           @current-change="this.handleCurrentChange"
-          :current-page="this.lunbotuliebiaoPage"
+          :current-page="this.gudingweizhiliebiaoPage"
           :page-size="10"
           :page-sizes="[10, 15, 20, 30]"
           layout="total,sizes, prev, pager, next, jumper"
@@ -56,21 +65,40 @@
         ></el-pagination>
       </div>
     </div>
-    <!-- 编辑轮播图 -->
-    <el-dialog title="编辑轮播图" :visible.sync="dialogVisible" width="700px" :before-close="handleClose">
+    <!-- 编辑/新增固定位置 -->
+    <el-dialog
+      title="编辑/新增固定位置"
+      :visible.sync="dialogVisible"
+      width="60%"
+      :before-close="handleClose"
+    >
       <div class="nav2">
         <div class="myForm">
           <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
             <el-row>
-              <el-col :span="18">
-                <el-form-item label="设置轮播图：">
-                  <div @click="companyList" class="myImg">
-                    <el-image :src="ruleForm.image" fit="fill" style="width: 200px; height: 200px">
+              <el-col :span="12">
+                <el-form-item label="主标题：">
+                  <el-input size="small" v-model="ruleForm.title"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="副标题：">
+                  <el-input size="small" v-model="ruleForm.sub_title"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="背景图：">
+                  <div @click="companyList('bg')" class="myImg">
+                    <el-image :src="ruleForm.bg_img" fit="fill" style="width: 100px; height: 100px">
                       <div slot="error" class="image-slot">
                         <i class="el-icon-picture-outline"></i>
                       </div>
                     </el-image>
-                    <div @click.stop="delImg" class="closeBtn">
+                    <div @click.stop="delImg('bg')" class="closeBtn">
                       <el-button circle>×</el-button>
                     </div>
                   </div>
@@ -78,34 +106,27 @@
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="18">
-                <el-form-item label="轮播图类型：">
+              <el-col :span="12">
+                <el-form-item label="图标：">
+                  <div @click="companyList('icon')" class="myImg">
+                    <el-image :src="ruleForm.icon" fit="fill" style="width: 100px; height: 100px">
+                      <div slot="error" class="image-slot">
+                        <i class="el-icon-picture-outline"></i>
+                      </div>
+                    </el-image>
+                    <div @click.stop="delImg('icon')" class="closeBtn">
+                      <el-button circle>×</el-button>
+                    </div>
+                  </div>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="类型：">
                   <el-select size="small" v-model="ruleForm.position" placeholder="请选择">
                     <el-option v-for="(item,i) in radioArr" :key="i" :label="item" :value="i"></el-option>
                   </el-select>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="18">
-                <el-form-item label="轮播图名称：">
-                  <el-input size="small" v-model="ruleForm.name"></el-input>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="18">
-                <el-form-item label="跳转类型：">
-                  <el-select size="small" v-model="ruleForm.jump_type" placeholder="请选择">
-                    <el-option v-for="(item,i) in radioArr2" :key="i" :label="item" :value="i"></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="18">
-                <el-form-item label="跳转地址：">
-                  <el-input size="small" v-model="ruleForm.jump"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -137,15 +158,15 @@
 import { mapState } from "vuex";
 export default {
   computed: {
-    ...mapState(["lunbotuliebiaoPage", "lunbotuliebiaoPageSize"])
+    ...mapState(["gudingweizhiliebiaoPage", "gudingweizhiliebiaoPageSize"])
   },
   watch: {
-    lunbotuliebiaoPage: function(page) {
-      this.$store.commit("lunbotuliebiaoPage", page);
+    gudingweizhiliebiaoPage: function(page) {
+      this.$store.commit("gudingweizhiliebiaoPage", page);
       this.getData();
     },
-    lunbotuliebiaoPageSize: function(pageSize) {
-      this.$store.commit("lunbotuliebiaoPageSize", pageSize);
+    gudingweizhiliebiaoPageSize: function(pageSize) {
+      this.$store.commit("gudingweizhiliebiaoPageSize", pageSize);
       this.getData();
     }
   },
@@ -153,7 +174,6 @@ export default {
     return {
       isAdd: false,
       radioArr: [],
-      radioArr2:[],
       formInline: {
         rad1: ""
       },
@@ -162,12 +182,13 @@ export default {
       dialogVisible: false,
       imgFile: "",
       ruleForm: {
-        image: "",
-        name: "",
-        jump: "",
-        jump_type: "",
+        title: "",
+        sub_title: "",
+        bg_img: "",
+        icon: "",
         position: ""
       },
+      imgStatus:'',
       id: ""
     };
   },
@@ -176,20 +197,22 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.banners({
-        limit: this.lunbotuliebiaoPageSize,
-        page: this.lunbotuliebiaoPage,
+      const res = await this.$api.fixedPosition({
+        limit: this.gudingweizhiliebiaoPageSize,
+        page: this.gudingweizhiliebiaoPage,
         position: this.formInline.rad1
       });
       console.log(res.data);
       this.tableData = res.data.data;
       this.total = res.data.total;
-      const res2 = await this.$api.bannersPositions();
+      const res2 = await this.$api.positions();
       console.log(res2.data);
       this.radioArr = res2.data;
-      const res3 = await this.$api.bannersJumpTypes();
-      console.log(res3.data);
-      this.radioArr2 = res3.data;
+    },
+    huifu(row) {
+      this.id = row.id;
+      console.log(row);
+      this.dialogVisible = true;
     },
     AddLunbotu() {
       for (const key in this.ruleForm) {
@@ -207,16 +230,16 @@ export default {
       console.log(row);
       this.isAdd = false;
       this.id = row.id;
-      this.ruleForm.jump_type = row.jump_type;
-      this.ruleForm.image = row.image;
-      this.ruleForm.jump = row.jump;
-      this.ruleForm.name = row.name;
+      this.ruleForm.title = row.title;
+      this.ruleForm.sub_title = row.sub_title;
+      this.ruleForm.bg_img = row.bg_img;
+      this.ruleForm.icon = row.icon;
       this.ruleForm.position = row.position;
       this.dialogVisible = true;
     },
     // 删除
     async tabDel(row) {
-      const res = await this.$api.deleteBanners(row.id);
+      const res = await this.$api.deleteFixedPosition(row.id);
       if (res.code == 200) {
         this.$message({
           message: "删除成功",
@@ -228,15 +251,13 @@ export default {
     // 提交
     async submitForm() {
       if (this.isAdd) {
-        // 添加
-        const res = await this.$api.addBanners({
-          jump: this.ruleForm.jump,
-          name: this.ruleForm.name,
-          image: this.ruleForm.image,
-          position: this.ruleForm.position,
-          jump_type:this.ruleForm.jump_type
-        });
-        console.log(res);
+        // 新增
+        const res = await this.$api.addFixedPosition(
+          {
+            ...this.ruleForm
+          },
+        );
+        console.log(res.data);
         if (res.code == 200) {
           this.$message({
             message: "添加成功",
@@ -246,18 +267,13 @@ export default {
           this.dialogVisible = false;
         }
       } else {
-        // 编辑
-        const res = await this.$api.upDateBanners(
+        const res = await this.$api.upDateFixedPosition(
           {
-            jump: this.ruleForm.jump,
-            name: this.ruleForm.name,
-            image: this.ruleForm.image,
-            position: this.ruleForm.position,
-            jump_type:this.ruleForm.jump_type
+            ...this.ruleForm
           },
           this.id
         );
-        console.log(res);
+        console.log(res.data);
         if (res.code == 200) {
           this.$message({
             message: "修改成功",
@@ -269,7 +285,8 @@ export default {
       }
     },
     // 上传图片
-    companyList() {
+    companyList(val) {
+      this.imgStatus = val;
       this.$refs.fileInputList.click();
     },
     //将文件转为blob类型
@@ -307,14 +324,19 @@ export default {
           console.log(store);
           // var oss_imgurl = client.signatureUrl(store);
           var oss_imgurl = `http://${myData.bucket}.${myData.url}/${store}`;
-          this.$set(this.ruleForm, "image", oss_imgurl);
+          this.$set(this.ruleForm, this.imgStatus == 'bg'?'bg_img':'icon', oss_imgurl);
           console.log(oss_imgurl);
         });
       }
     },
     // 删除图片
-    delImg() {
-      this.$set(this.lhForm, "pic", "");
+    delImg(val) {
+      console.log(val);
+      if (val == "bg") {
+        this.$set(this.ruleForm, "bg_img", "");
+      } else {
+        this.$set(this.ruleForm, "icon", "");
+      }
     },
     companyLogo(event) {
       var file = event.target.files[0];
@@ -328,11 +350,11 @@ export default {
     // 分页
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-      this.$store.commit("lunbotuliebiaoPageSize", val);
+      this.$store.commit("gudingweizhiliebiaoPageSize", val);
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.$store.commit("lunbotuliebiaoPage", val);
+      this.$store.commit("gudingweizhiliebiaoPage", val);
     }
   }
 };
@@ -374,9 +396,6 @@ export default {
       margin-right: 30px;
       margin-bottom: 0;
     }
-    /deep/ .el-select {
-        width: 100%;
-      }
     .search {
       /deep/ .el-select {
         width: 100px;
@@ -437,8 +456,8 @@ export default {
   }
   .myImg {
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
     display: inline-block;
     margin-right: 12px;
     .closeBtn {
@@ -459,8 +478,8 @@ export default {
       border: 1px solid #ddd;
       border-radius: 4px;
       background-color: #fafafa;
-      width: 198px;
-      height: 198px;
+      width: 98px;
+      height: 98px;
       display: flex;
       align-items: center;
       justify-content: center;

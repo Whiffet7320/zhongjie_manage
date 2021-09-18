@@ -1,8 +1,25 @@
 <template>
   <div id="login">
     <div class="container">
-      <img class="bacImage" src="../../assets/image/back.png" alt />
-      <img class="leftImg" src="../../assets/image/hb.png" alt />
+      <vue-particles
+        color="#fff"
+        :particleOpacity="0.5"
+        :particlesNumber="50"
+        shapeType="circle"
+        :particleSize="4"
+        linesColor="#ebbfcc"
+        :linesWidth="2"
+        :lineLinked="true"
+        :lineOpacity="0.4"
+        :linesDistance="150"
+        :moveSpeed="2"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="push"
+        class="lizi"
+      >
+      </vue-particles>
       <div class="loginBox">
         <div class="tit1">后台管理系统</div>
         <div class="tit2">欢迎你回来~</div>
@@ -136,7 +153,7 @@ export default {
 #login {
   width: 100%;
   height: 100vh;
-  background-color: #ddd;
+  background-color: #000000;
   .container {
     position: relative;
     width: 100%;

@@ -39,6 +39,15 @@
                 </el-col>
               </el-row>
               <el-row>
+                <el-col :span="12">
+                  <el-form-item label="类型：">
+                    <el-select size="small" v-model="lhForm.type" placeholder="请选择">
+                      <el-option v-for="(item,i) in radioArr" :key="i" :label="item" :value="i"></el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
                 <el-col :span="20">
                   <div class="myEditor">
                     <div class="txt">商品详情：</div>
@@ -76,6 +85,8 @@ export default {
   },
   data() {
     return {
+      radioArr: [],
+      radioArr2:[],
       editId: "",
       activeName: "1",
       editor: null,
@@ -85,7 +96,8 @@ export default {
       lhForm: {
         title: "",
         content: "",
-        pic: ""
+        pic: "",
+        type:'',
       },
       imgFile: null,
       isAdd: true
@@ -104,6 +116,8 @@ export default {
         this.lhForm.content = this.wenzhangObj.content;
         this.lhForm.type = this.wenzhangObj.type;
       }
+      const res = await this.$api.articlesTypes();
+      this.radioArr = res.data;
       console.log(this.lhForm);
     },
     // 上传图片
@@ -172,7 +186,7 @@ export default {
           name: this.lhForm.title,
           img: this.lhForm.pic,
           content: this.lhForm.content,
-          type:this.lhForm.type,
+          type: this.lhForm.type
         });
         console.log(res);
         if (res.code == 200) {
@@ -194,7 +208,7 @@ export default {
             name: this.lhForm.title,
             img: this.lhForm.pic,
             content: this.lhForm.content,
-            type:this.lhForm.type,
+            type: this.lhForm.type
           },
           this.editId
         );
@@ -426,7 +440,7 @@ export default {
       };
     });
     this.editor.create();
-    this.editor.txt.html(this.lhForm.content);
+     this.editor.txt.html(this.lhForm.content);
   }
 };
 </script>

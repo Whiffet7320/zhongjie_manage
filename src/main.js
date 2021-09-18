@@ -10,8 +10,14 @@ import 'viewerjs/dist/viewer.css';
 import 'xe-utils';
 import VXETable from 'vxe-table';
 import 'vxe-table/lib/style.css';
+import VueParticles from 'vue-particles'  
+Vue.use(VueParticles)  
 Vue.use(VXETable)
 
+// function uploadOSS(){
+  
+// }
+// Vue.prototype.$uploadOSS = uploadOSS;
 Vue.prototype.$api = api;
 // Vue.prototype.$url = 'http://192.168.1.128:8094/admin'
 Vue.prototype.$url = 'http://pinapi.hxqhhhh.shop'

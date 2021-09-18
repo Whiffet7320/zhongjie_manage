@@ -66,7 +66,7 @@
           </template>
           <el-menu-item :route="{ name: 'Yonghuguanli' }" index="5-1">用户管理</el-menu-item>
           <el-menu-item :route="{ name: 'Shifuguanli' }" index="5-4">师傅管理</el-menu-item>
-          <el-menu-item :route="{ name: 'Lianghaoliebiao' }" index="5-2">靓号列表</el-menu-item>
+          <!-- <el-menu-item :route="{ name: 'Lianghaoliebiao' }" index="5-2">靓号列表</el-menu-item> -->
           <el-menu-item :route="{ name: 'Tixianliebiao' }" index="5-3">提现列表</el-menu-item>
         </el-submenu>
         <el-submenu index="6">
@@ -118,8 +118,12 @@
             <i class="el-icon-s-finance"></i>
             <span>其他</span>
           </template>
+          <el-menu-item :route="{ name: 'Jiangpingliebiao' }" index="10-5">奖品列表</el-menu-item>
+          <el-menu-item :route="{ name: 'Zhongjiangliebiao' }" index="10-6">中奖列表</el-menu-item>
           <el-menu-item :route="{ name: 'Chengshiliebiao' }" index="10-2">城市列表</el-menu-item>
           <el-menu-item :route="{ name: 'Fankuiliebiao' }" index="10-1">反馈意见列表</el-menu-item>
+          <el-menu-item :route="{ name: 'Gudingweizhi' }" index="10-3">固定位置列表</el-menu-item>
+          <el-menu-item :route="{ name: 'Gudingweizhishangping' }" index="10-4">固定位置商品列表</el-menu-item>
         </el-submenu>
       </el-menu>
     </div>
@@ -335,12 +339,40 @@ export default {
           `其他 / <span style="color: #515a61;
         font-weight: 700;">反馈意见列表</span>`
         );
-      }else if (to.path == "/Qita/Chengshiliebiao") {
+      } else if (to.path == "/Qita/Chengshiliebiao") {
         this.menuActiveIndex = "10-2";
         this.$store.commit(
           "headerTit",
           `其他 / <span style="color: #515a61;
         font-weight: 700;">城市列表</span>`
+        );
+      } else if (to.path == "/Qita/Gudingweizhi") {
+        this.menuActiveIndex = "10-3";
+        this.$store.commit(
+          "headerTit",
+          `其他 / <span style="color: #515a61;
+        font-weight: 700;">固定位置列表</span>`
+        );
+      } else if (to.path == "/Qita/Gudingweizhishangping") {
+        this.menuActiveIndex = "10-4";
+        this.$store.commit(
+          "headerTit",
+          `其他 / <span style="color: #515a61;
+        font-weight: 700;">固定位置商品列表</span>`
+        );
+      } else if (to.path == "/Qita/Jiangpingliebiao") {
+        this.menuActiveIndex = "10-5";
+        this.$store.commit(
+          "headerTit",
+          `其他 / <span style="color: #515a61;
+        font-weight: 700;">奖品列表</span>`
+        );
+      } else if (to.path == "/Qita/Zhongjiangliebiao") {
+        this.menuActiveIndex = "10-6";
+        this.$store.commit(
+          "headerTit",
+          `其他 / <span style="color: #515a61;
+        font-weight: 700;">中奖列表</span>`
         );
       }
     }

@@ -299,15 +299,15 @@ export default {
     addCategories(obj) {
         return myPost({
             url: urls.addCategories,
-            data:{
+            data: {
                 ...obj
             }
         })
     },
-    updateCategories(obj,id) {
+    updateCategories(obj, id) {
         return myPut({
             url: `${urls.updateCategories}/${id}`,
-            data:{
+            data: {
                 ...obj
             }
         })
@@ -328,7 +328,7 @@ export default {
             }
         })
     },
-    upDateItems(obj,id) {
+    upDateItems(obj, id) {
         return myPut({
             url: `${urls.items}/${id}`,
             data: {
@@ -337,11 +337,11 @@ export default {
         })
     },
     uploadToken() {
-		return myGet({
-			url: urls.uploadToken,
-		})
+        return myGet({
+            url: urls.uploadToken,
+        })
     },
-    idCards(obj,id) {
+    idCards(obj, id) {
         return myPut({
             url: `${urls.idCards}/${id}`,
             data: {
@@ -350,128 +350,262 @@ export default {
         })
     },
     demandQuotes(obj) {
-		return myGet({
+        return myGet({
             url: urls.demandQuotes,
             params: {
                 ...obj
             }
-		})
+        })
     },
-    ordersId(obj,id) {
+    ordersId(obj, id) {
         return myPut({
             url: `${urls.ordersId}/${id}`,
-            data:{
+            data: {
                 ...obj
             }
         })
     },
     articles(obj) {
-		return myGet({
+        return myGet({
             url: urls.articles,
             params: {
                 ...obj
             }
-		})
+        })
     },
     addArticles(obj) {
-		return myPost({
+        return myPost({
             url: urls.articles,
             data: {
                 ...obj
             }
-		})
+        })
     },
-    upDateArticles(obj,id) {
-		return myPut({
+    upDateArticles(obj, id) {
+        return myPut({
             url: `${urls.articles}/${id}`,
             data: {
                 ...obj
             }
-		})
+        })
+    },
+    deleteArticles(id) {
+        return myDelete({
+            url: `${urls.articles}/${id}`,
+        })
     },
     articlesTypes() {
-		return myGet({
+        return myGet({
             url: urls.articlesTypes,
-		})
+        })
     },
     banners(obj) {
-		return myGet({
+        return myGet({
             url: urls.banners,
             params: {
                 ...obj
             }
-		})
+        })
     },
     addBanners(obj) {
-		return myPost({
+        return myPost({
             url: urls.banners,
             data: {
                 ...obj
             }
-		})
+        })
     },
-    upDateBanners(obj,id) {
-		return myPut({
+    upDateBanners(obj, id) {
+        return myPut({
             url: `${urls.banners}/${id}`,
             data: {
                 ...obj
             }
-		})
+        })
     },
     deleteBanners(id) {
-		return myDelete({
+        return myDelete({
             url: `${urls.banners}/${id}`,
-		})
+        })
     },
     bannersPositions() {
-		return myGet({
+        return myGet({
             url: urls.bannersPositions,
-		})
+        })
     },
     bannersJumpTypes() {
-		return myGet({
+        return myGet({
             url: urls.bannersJumpTypes,
-		})
+        })
     },
     globalConfigs(obj) {
-		return myGet({
+        return myGet({
             url: urls.globalConfigs,
-            data:{
+            data: {
                 ...obj
             }
-		})
+        })
     },
-    upDateGlobalConfigs(obj,id) {
-		return myPut({
+    upDateGlobalConfigs(obj, id) {
+        return myPut({
             url: `${urls.globalConfigs}/${id}`,
             data: {
                 ...obj
             }
-		})
+        })
     },
     areas(obj) {
-		return myGet({
+        return myGet({
             url: urls.areas,
             params: {
                 ...obj
             }
-		})
+        })
     },
     feedbacks(obj) {
-		return myGet({
+        return myGet({
             url: urls.feedbacks,
             params: {
                 ...obj
             }
-		})
+        })
     },
-    upDatefeedbacks(obj,id) {
-		return myPut({
+    upDatefeedbacks(obj, id) {
+        return myPut({
             url: `${urls.feedbacks}/${id}`,
             data: {
                 ...obj
             }
-		})
+        })
+    },
+    withdraw(obj) {
+        return myGet({
+            url: urls.withdraw,
+            params: {
+                ...obj
+            }
+        })
+    },
+    upDateWithdraw(obj, id) {
+        return myPut({
+            url: `${urls.withdraw}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    fixedPosition(obj) {
+        return myGet({
+            url: urls.fixedPosition,
+            params: {
+                ...obj
+            }
+        })
+    },
+    positions() {
+        return myGet({
+            url: urls.positions,
+        })
+    },
+    addFixedPosition(obj) {
+        return myPost({
+            url: urls.fixedPosition,
+            data:{
+                ...obj
+            }
+        })
+    },
+    upDateFixedPosition(obj, id) {
+        return myPut({
+            url: `${urls.fixedPosition}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    deleteFixedPosition(id) {
+        return myDelete({
+            url: `${urls.fixedPosition}/${id}`,
+        })
+    },
+    fixedPositionItem(obj) {
+        return myGet({
+            url: urls.fixedPositionItem,
+            params: {
+                ...obj
+            }
+        })
+    },
+    addFixedPositionItem(obj) {
+        return myPost({
+            url: urls.fixedPositionItem,
+            data:{
+                ...obj
+            }
+        })
+    },
+    upDateFixedPositionItem(obj, id) {
+        return myPut({
+            url: `${urls.fixedPositionItem}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    deleteFixedPositionItem(id) {
+        return myDelete({
+            url: `${urls.fixedPositionItem}/${id}`,
+        })
+    },
+    itemAll() {
+        return myGet({
+            url: urls.itemAll,
+        })
+    },
+    turntableItem(obj) {
+        return myGet({
+            url: urls.turntableItem,
+            params: {
+                ...obj
+            }
+        })
+    },
+    addTurntableItem(obj) {
+        return myPost({
+            url: urls.turntableItem,
+            data:{
+                ...obj
+            }
+        })
+    },
+    upDateTurntableItem(obj, id) {
+        return myPut({
+            url: `${urls.turntableItem}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    deleteTurntableItem(id) {
+        return myDelete({
+            url: `${urls.turntableItem}/${id}`,
+        })
+    },
+    awards(obj) {
+        return myGet({
+            url: urls.awards,
+            params: {
+                ...obj
+            }
+        })
+    },
+    upDateAwards(obj, id) {
+        return myPut({
+            url: `${urls.awards}/${id}`,
+            data: {
+                ...obj
+            }
+        })
     },
     // 
 

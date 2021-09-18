@@ -26,6 +26,16 @@ export default new Vuex.Store({
     chengshiliebiaoPageSize: 10,
     fankuiliebiaoPage: 1, //反馈意见列表
     fankuiliebiaoPageSize: 10,
+    tixianliebiaoPage: 1, //提现列表
+    tixianliebiaoPageSize: 10,
+    gudingweizhiliebiaoPage: 1, //固定位置列表
+    gudingweizhiliebiaoPageSize: 10,
+    gudingweizhishangpingliebiaoPage: 1, //固定位置商品列表
+    gudingweizhishangpingliebiaoPageSize: 10,
+    jiangpingliebiaoPage: 1, //奖品列表
+    jiangpingliebiaoPageSize: 10,
+    zhongjiangliebiaoPage: 1, //中奖列表
+    zhongjiangliebiaoPageSize: 10,
     // 
     userInfo: null,
     headerTit: '',
@@ -54,8 +64,6 @@ export default new Vuex.Store({
     lianghaoliebiaoPageSize: 10,
     jishouliebiaoPage: 1, //寄售列表
     jishouliebiaoPageSize: 10,
-    tixianliebiaoPage: 1, //提现列表
-    tixianliebiaoPageSize: 10,
     pingtuanjiluPage: 1, //拼团记录
     pingtuanjiluPageSize: 10,
   },
@@ -112,6 +120,37 @@ export default new Vuex.Store({
     fankuiliebiaoPageSize(state, str) {
       state.fankuiliebiaoPageSize = str;
     },
+    tixianliebiaoPage(state, str) {
+      state.tixianliebiaoPage = str;
+    },
+    tixianliebiaoPageSize(state, str) {
+      state.tixianliebiaoPageSize = str;
+    },
+    gudingweizhiliebiaoPage(state, str) {
+      state.gudingweizhiliebiaoPage = str;
+    },
+    gudingweizhiliebiaoPageSize(state, str) {
+      state.gudingweizhiliebiaoPageSize = str;
+    },
+    gudingweizhishangpingliebiaoPage(state, str) {
+      state.gudingweizhishangpingliebiaoPage = str;
+    },
+    gudingweizhishangpingliebiaoPageSize(state, str) {
+      state.gudingweizhishangpingliebiaoPageSize = str;
+    },
+    jiangpingliebiaoPage(state, str) {
+      state.jiangpingliebiaoPage = str;
+    },
+    jiangpingliebiaoPageSize(state, str) {
+      state.jiangpingliebiaoPageSize = str;
+    },
+    zhongjiangliebiaoPage(state, str) {
+      state.zhongjiangliebiaoPage = str;
+    },
+    zhongjiangliebiaoPageSize(state, str) {
+      state.zhongjiangliebiaoPageSize = str;
+    },
+
     // 
     userInfo(state, str) {
       state.userInfo = str;
@@ -196,12 +235,6 @@ export default new Vuex.Store({
     },
     yunfeimubanliebiaoPageSize(state, str) {
       state.yunfeimubanliebiaoPageSize = str;
-    },
-    tixianliebiaoPage(state, str) {
-      state.tixianliebiaoPage = str;
-    },
-    tixianliebiaoPageSize(state, str) {
-      state.tixianliebiaoPageSize = str;
     },
     lunbotuliebiaoPage(state, str) {
       state.lunbotuliebiaoPage = str;

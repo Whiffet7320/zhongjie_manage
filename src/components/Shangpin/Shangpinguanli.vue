@@ -13,35 +13,18 @@
       <div class="myForm">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="商品分类：">
-            <el-cascader
-              size="small"
-              :options="options"
-              :props="{ checkStrictly: true }"
-              clearable
-            ></el-cascader>
+            <el-cascader size="small" :options="options" :props="{ checkStrictly: true }" clearable></el-cascader>
           </el-form-item>
           <el-form-item label="商品搜索：">
-            <el-input
-              size="small"
-              v-model="formInline.user"
-              placeholder="商品搜索"
-            ></el-input>
+            <el-input size="small" v-model="formInline.user" placeholder="商品搜索"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="small" type="primary" @click="onSubmit"
-              >查询</el-button
-            >
+            <el-button size="small" type="primary" @click="onSubmit">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
       <div class="tit1">
-        <el-button
-          @click="toAddShop"
-          size="small"
-          type="primary"
-          icon="el-icon-plus"
-          >添加商品</el-button
-        >
+        <el-button @click="toAddShop" size="small" type="primary" icon="el-icon-plus">添加商品</el-button>
       </div>
       <div class="myTable">
         <vxe-table :data="tableData">
@@ -58,7 +41,7 @@
                     </el-col>
                     <!-- <el-col :span="6">
                       <div class="item">成本价：{{ row.price }}</div>
-                    </el-col> -->
+                    </el-col>-->
                   </el-row>
                   <!-- <div style="margin-top: 16px"></div>
                   <el-row :gutter="20">
@@ -68,16 +51,36 @@
                     <el-col :span="6">
                       <div class="item">虚拟销量：3C数码/手机</div>
                     </el-col>
-                  </el-row> -->
+                  </el-row>-->
                 </div>
               </template>
             </template>
           </vxe-table-column>
           <vxe-table-column field="id" title="商品ID"></vxe-table-column>
-          <vxe-table-column field="role" title="商品图">
+          <vxe-table-column field="role" title="商品主图">
+            <template slot-scope="scope">
+              <el-image :src="scope.row.main_img" fit="fill" style="width: 40px; height: 40px">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+            </template>
+          </vxe-table-column>
+          <vxe-table-column field="role" title="商品详情图">
+            <template slot-scope="scope">
+              <el-image :src="scope.row.detail_img" fit="fill" style="width: 40px; height: 40px">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+            </template>
+          </vxe-table-column>
+          <vxe-table-column field="role" width="180" title="商品浏览图">
             <template slot-scope="scope">
               <el-image
-                :src="scope.row.main_img"
+                v-for="(item,i) in scope.row.prev_images"
+                :key="i"
+                :src="item"
                 fit="fill"
                 style="width: 40px; height: 40px"
               >
@@ -87,44 +90,22 @@
               </el-image>
             </template>
           </vxe-table-column>
-          <vxe-table-column
-            field="name"
-            title="商品名称"
-          ></vxe-table-column>
+          <vxe-table-column field="name" title="商品名称"></vxe-table-column>
           <vxe-table-column field="price" title="商品售价"></vxe-table-column>
           <vxe-table-column field="ficti" title="销量"></vxe-table-column>
           <vxe-table-column field="stock" title="库存"></vxe-table-column>
           <vxe-table-column field="sort" title="排序"></vxe-table-column>
           <vxe-table-column field="myStatus" title="状态(是否上架)">
             <template slot-scope="scope">
-              <el-switch
-                @change="changeKG(scope.row)"
-                v-model="scope.row.myStatus"
-              >
-              </el-switch>
+              <el-switch @change="changeKG(scope.row)" v-model="scope.row.myStatus"></el-switch>
             </template>
           </vxe-table-column>
           <vxe-table-column title="操作状态" width="180">
             <template slot-scope="scope">
               <div class="flex">
-                <el-button
-                  size="small"
-                  @click="toEditShop(scope.row)"
-                  type="text"
-                  >编辑</el-button
-                >
-                <el-button
-                  size="small"
-                  @click="toEditShop(scope.row)"
-                  type="text"
-                  >查看评论</el-button
-                >
-                <el-button
-                  size="small"
-                  @click="toEditShop(scope.row)"
-                  type="text"
-                  >删除</el-button
-                >
+                <el-button size="small" @click="toEditShop(scope.row)" type="text">编辑</el-button>
+                <el-button size="small" @click="toEditShop(scope.row)" type="text">查看评论</el-button>
+                <el-button size="small" @click="toEditShop(scope.row)" type="text">删除</el-button>
               </div>
             </template>
           </vxe-table-column>
@@ -138,8 +119,7 @@
           :page-sizes="[10, 15, 20, 30]"
           layout="total,sizes, prev, pager, next, jumper"
           :total="this.total"
-        >
-        </el-pagination>
+        ></el-pagination>
       </div>
     </div>
   </div>
@@ -149,28 +129,28 @@
 import { mapState } from "vuex";
 export default {
   computed: {
-    ...mapState(["shangpingliebiaoPage", "shangpingliebiaoPageSize"]),
+    ...mapState(["shangpingliebiaoPage", "shangpingliebiaoPageSize"])
   },
   watch: {
-    shangpingliebiaoPage: function (page) {
+    shangpingliebiaoPage: function(page) {
       this.$store.commit("shangpingliebiaoPage", page);
       this.getData();
     },
-    shangpingliebiaoPageSize: function (pageSize) {
+    shangpingliebiaoPageSize: function(pageSize) {
       this.$store.commit("shangpingliebiaoPageSize", pageSize);
       this.getData();
-    },
+    }
   },
   data() {
     return {
       activeName: "2",
       formInline: {
         user: "",
-        region: "",
+        region: ""
       },
       options: [],
       tableData: [],
-      total: 0,
+      total: 0
     };
   },
   created() {
@@ -180,25 +160,33 @@ export default {
     async getData() {
       const res = await this.$api.items({
         limit: this.shangpingliebiaoPageSize,
-        page: this.shangpingliebiaoPage,
+        page: this.shangpingliebiaoPage
       });
       console.log(res.data.data);
       this.total = res.data.total;
       this.tableData = res.data.data;
-      this.tableData.forEach((ele) => {
+      this.tableData.forEach(ele => {
         ele.myStatus = ele.status == "1" ? true : false;
+        ele.prev_images.forEach(item=>{
+          if(!item){
+            ele.prev_images.pop()
+          }
+        })
       });
     },
     // 开关（上架/下架）
     async changeKG(row) {
       console.log(row);
-      const res = await this.$api.upDateItems({
-        status: row.myStatus == true ? "1" : "0",
-      },row.id);
+      const res = await this.$api.upDateItems(
+        {
+          status: row.myStatus == true ? "1" : "0"
+        },
+        row.id
+      );
       if (res.code == 200) {
         this.$message({
           message: res.msg,
-          type: "success",
+          type: "success"
         });
         this.getData();
       }
@@ -226,8 +214,8 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.$store.commit("shangpingliebiaoPage", val);
-    },
-  },
+    }
+  }
 };
 </script>
 

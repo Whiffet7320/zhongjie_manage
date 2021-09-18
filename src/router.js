@@ -145,6 +145,22 @@ const routes = [{
         path: 'Chengshiliebiao',
         name: 'Chengshiliebiao',
         component: () => import('./components/Qita/Chengshiliebiao'),
+    }, {
+        path: 'Gudingweizhi',
+        name: 'Gudingweizhi',
+        component: () => import('./components/Qita/Gudingweizhi'),
+    }, {
+        path: 'Gudingweizhishangping',
+        name: 'Gudingweizhishangping',
+        component: () => import('./components/Qita/Gudingweizhishangping'),
+    },{
+        path: 'Jiangpingliebiao',
+        name: 'Jiangpingliebiao',
+        component: () => import('./components/Qita/Jiangpingliebiao'),
+    },{
+        path: 'Zhongjiangliebiao',
+        name: 'Zhongjiangliebiao',
+        component: () => import('./components/Qita/Zhongjiangliebiao'),
     }, ]
 }, {
     path: '/Shezhi',
