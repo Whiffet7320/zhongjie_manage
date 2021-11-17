@@ -7,29 +7,25 @@ axios.defaults.headers['Content-Type'] = "application/json;charset=UTF-8";
 let myPost = axios.create({
     baseURL: urls.baseUrl,
     method: 'post',
-    timeout: 1000,
 })
 let myGet = axios.create({
     baseURL: urls.baseUrl,
     method: 'get',
-    timeout: 1000,
 })
 let myDelete = axios.create({
     baseURL: urls.baseUrl,
     method: 'delete',
-    timeout: 1000,
 })
 let myPut = axios.create({
     baseURL: urls.baseUrl,
     method: 'put',
-    timeout: 1000,
 })
 
 myPut.interceptors.request.use(config => {
     if (sessionStorage.getItem("token")) {
         config.headers = {
-            // 'X-Token': sessionStorage.getItem("token"),
-            'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
+            'token': sessionStorage.getItem("token"),
+            // 'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
         }
     }
     return config;
@@ -40,8 +36,8 @@ myPut.interceptors.request.use(config => {
 myDelete.interceptors.request.use(config => {
     if (sessionStorage.getItem("token")) {
         config.headers = {
-            // 'X-Token': sessionStorage.getItem("token"),
-            'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
+            'token': sessionStorage.getItem("token"),
+            // 'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
             // 'Access-Control-Allow-Origin': '*',
             // "access-control-allow-credentials": "true"
         }
@@ -54,8 +50,7 @@ myDelete.interceptors.request.use(config => {
 myPost.interceptors.request.use(config => {
     if (sessionStorage.getItem("token")) {
         config.headers = {
-            // 'X-Token': sessionStorage.getItem("token"),
-            'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
+            'token': sessionStorage.getItem("token"),
         }
     }
     return config;
@@ -67,7 +62,7 @@ myPost.interceptors.request.use(config => {
 myGet.interceptors.request.use(config => {
     if (sessionStorage.getItem("token")) {
         config.headers = {
-            'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
+            'token': sessionStorage.getItem("token"),
         }
     }
     return config;
@@ -275,6 +270,156 @@ export default {
             }
         })
     },
+    gaobai(obj) {
+        return myGet({
+            url: `${urls.gaobai}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    gaobaiXiangqin(id) {
+        return myGet({
+            url: `${urls.gaobai}/${id}`,
+        })
+    },
+    comment_list(obj) {
+        return myGet({
+            url: `${urls.comment_list}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    getjishi(obj) {
+        return myGet({
+            url: urls.jishi,
+            params: {
+                ...obj
+            }
+        })
+    },
+    shudong(obj) {
+        return myGet({
+            url: `${urls.shudong}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    article(obj) {
+        return myGet({
+            url: `${urls.article}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    upLoadArticle(obj, id) {
+        return myPut({
+            url: `${urls.article}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    update_status(obj) {
+        return myPost({
+            url: `${urls.update_status}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    shudong_comment_list(obj) {
+        return myGet({
+            url: urls.shudong_comment_list,
+            params: {
+                ...obj
+            }
+        })
+    },
+    video_list(obj) {
+        return myGet({
+            url: urls.video_list,
+            params: {
+                ...obj
+            }
+        })
+    },
+    add_video(obj) {
+        return myPost({
+            url: `${urls.add_video}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    addUpload_video(obj) {
+        return myPost({
+            url: `${urls.upload_video}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    is_best(obj) {
+        return myPost({
+            url: `${urls.is_best}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    upload_video(obj) {
+        return myGet({
+            url: urls.upload_video,
+            params: {
+                ...obj
+            }
+        })
+    },
+    getbaoxiu(obj) {
+        return myGet({
+            url: urls.baoxiu,
+            params: {
+                ...obj
+            }
+        })
+    },
+    getfengjing(obj) {
+        return myGet({
+            url: urls.fengjing,
+            params: {
+                ...obj
+            }
+        })
+    },
+    getshougou(obj) {
+        return myGet({
+            url: urls.shougou,
+            params: {
+                ...obj
+            }
+        })
+    },
+    getpinche(obj) {
+        return myGet({
+            url: urls.pinche,
+            params: {
+                ...obj
+            }
+        })
+    },
+    getpindan(obj) {
+        return myGet({
+            url: urls.pindan,
+            params: {
+                ...obj
+            }
+        })
+    },
+    // 
     users(obj) {
         return myGet({
             url: urls.users,
@@ -291,9 +436,20 @@ export default {
             }
         })
     },
-    categories() {
+    usersIdScoreRecords(obj) {
+        return myGet({
+            url: `${urls.usersIdMoneyRecords}/${obj.id}/score-records`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    categories(obj) {
         return myGet({
             url: urls.categories,
+            params: {
+                ...obj
+            }
         })
     },
     addCategories(obj) {
@@ -307,6 +463,22 @@ export default {
     updateCategories(obj, id) {
         return myPut({
             url: `${urls.updateCategories}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    score(obj) {
+        return myPut({
+            url: `${urls.score}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    money(obj) {
+        return myPut({
+            url: `${urls.money}`,
             data: {
                 ...obj
             }
@@ -334,6 +506,11 @@ export default {
             data: {
                 ...obj
             }
+        })
+    },
+    deleteItems(id) {
+        return myDelete({
+            url: `${urls.items}/${id}`,
         })
     },
     uploadToken() {
@@ -510,7 +687,7 @@ export default {
     addFixedPosition(obj) {
         return myPost({
             url: urls.fixedPosition,
-            data:{
+            data: {
                 ...obj
             }
         })
@@ -539,7 +716,7 @@ export default {
     addFixedPositionItem(obj) {
         return myPost({
             url: urls.fixedPositionItem,
-            data:{
+            data: {
                 ...obj
             }
         })
@@ -573,7 +750,7 @@ export default {
     addTurntableItem(obj) {
         return myPost({
             url: urls.turntableItem,
-            data:{
+            data: {
                 ...obj
             }
         })
@@ -602,6 +779,22 @@ export default {
     upDateAwards(obj, id) {
         return myPut({
             url: `${urls.awards}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    goodsOrder(obj) {
+        return myGet({
+            url: urls.goodsOrder,
+            params: {
+                ...obj
+            }
+        })
+    },
+    goodsOrderFahuo(obj, id) {
+        return myPut({
+            url: `${urls.goodsOrder}/${id}/delivery`,
             data: {
                 ...obj
             }

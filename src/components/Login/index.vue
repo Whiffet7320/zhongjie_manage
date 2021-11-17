@@ -126,14 +126,14 @@ export default {
     // 登录
     async onLogin() {
       const res = await this.$api.login({
-        phone: this.loginForm.username,
+        account: this.loginForm.username,
         password: this.loginForm.password
       });
       console.log(res);
       if (res.code == 200) {
-        sessionStorage.setItem("token", res.data.token_info.access_token);
+        sessionStorage.setItem("token", res.data.token);
         sessionStorage.setItem("isLogin", true);
-        sessionStorage.setItem("userInfo", JSON.stringify(res.data.user));
+        sessionStorage.setItem("userInfo", JSON.stringify(res.data.info));
         this.$message({
           message: res.message,
           type: "success"

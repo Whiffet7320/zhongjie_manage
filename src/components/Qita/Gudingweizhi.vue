@@ -323,7 +323,7 @@ export default {
           //这个结果就是url
           console.log(store);
           // var oss_imgurl = client.signatureUrl(store);
-          var oss_imgurl = `http://${myData.bucket}.${myData.url}/${store}`;
+          var oss_imgurl = `https://${myData.bucket}.${myData.url}/${store}`;
           this.$set(this.ruleForm, this.imgStatus == 'bg'?'bg_img':'icon', oss_imgurl);
           console.log(oss_imgurl);
         });

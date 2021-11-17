@@ -34,6 +34,7 @@
             </template>
           </vxe-table-column>
           <vxe-table-column field="jump" title="跳转链接"></vxe-table-column>
+          <vxe-table-column field="tag" title="标签名"></vxe-table-column>
           <vxe-table-column field="created_at" title="添加时间"></vxe-table-column>
           <vxe-table-column title="操作状态" width="180">
             <template slot-scope="scope">
@@ -109,6 +110,13 @@
                 </el-form-item>
               </el-col>
             </el-row>
+            <el-row>
+              <el-col :span="18">
+                <el-form-item label="标签名：">
+                  <el-input size="small" v-model="ruleForm.tag"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
             <el-form-item>
               <el-button
                 icon="el-icon-s-promotion"
@@ -166,7 +174,8 @@ export default {
         name: "",
         jump: "",
         jump_type: "",
-        position: ""
+        position: "",
+        tag:'',
       },
       id: ""
     };
@@ -212,6 +221,7 @@ export default {
       this.ruleForm.jump = row.jump;
       this.ruleForm.name = row.name;
       this.ruleForm.position = row.position;
+      this.ruleForm.tag = row.tag;
       this.dialogVisible = true;
     },
     // 删除
@@ -234,7 +244,8 @@ export default {
           name: this.ruleForm.name,
           image: this.ruleForm.image,
           position: this.ruleForm.position,
-          jump_type:this.ruleForm.jump_type
+          jump_type:this.ruleForm.jump_type,
+          tag:this.ruleForm.tag,
         });
         console.log(res);
         if (res.code == 200) {
@@ -253,7 +264,8 @@ export default {
             name: this.ruleForm.name,
             image: this.ruleForm.image,
             position: this.ruleForm.position,
-            jump_type:this.ruleForm.jump_type
+            jump_type:this.ruleForm.jump_type,
+            tag:this.ruleForm.tag,
           },
           this.id
         );
@@ -306,7 +318,7 @@ export default {
           //这个结果就是url
           console.log(store);
           // var oss_imgurl = client.signatureUrl(store);
-          var oss_imgurl = `http://${myData.bucket}.${myData.url}/${store}`;
+          var oss_imgurl = `https://${myData.bucket}.${myData.url}/${store}`;
           this.$set(this.ruleForm, "image", oss_imgurl);
           console.log(oss_imgurl);
         });

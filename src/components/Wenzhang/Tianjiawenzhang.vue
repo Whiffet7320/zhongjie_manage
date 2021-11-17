@@ -18,13 +18,13 @@
               <el-row>
                 <el-col :span="12">
                   <el-form-item label="标题：">
-                    <el-input size="small" v-model="lhForm.title"></el-input>
+                    <el-input disabled size="small" v-model="lhForm.title"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
+              <!-- <el-row>
                 <el-col :span="12">
-                  <el-form-item label="图片：">
+                  <el-form-item label="封面图：">
                     <div @click="companyList" class="myImg">
                       <el-image :src="lhForm.pic" fit="fill" style="width: 60px; height: 60px">
                         <div slot="error" class="image-slot">
@@ -37,12 +37,13 @@
                     </div>
                   </el-form-item>
                 </el-col>
-              </el-row>
+              </el-row> -->
               <el-row>
                 <el-col :span="12">
                   <el-form-item label="类型：">
-                    <el-select size="small" v-model="lhForm.type" placeholder="请选择">
-                      <el-option v-for="(item,i) in radioArr" :key="i" :label="item" :value="i"></el-option>
+                    <el-select disabled size="small" v-model="lhForm.type" placeholder="请选择">
+                      <el-option label="咨询" value="advice"></el-option>
+                      <el-option label="新闻" value="news"></el-option>
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -56,7 +57,7 @@
                 </el-col>
               </el-row>
               <el-form-item>
-                <el-button size="small" type="primary" @click="onSubmitForm">保存</el-button>
+                <!-- <el-button size="small" type="primary" @click="onSubmitForm">保存</el-button> -->
                 <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
               </el-form-item>
             </el-form>
@@ -108,13 +109,14 @@ export default {
   },
   methods: {
     async getData() {
+      console.log(this.wenzhangObj)
       if (this.wenzhangObj) {
         // 编辑
         this.editId = this.wenzhangObj.id;
-        this.lhForm.title = this.wenzhangObj.name;
-        this.lhForm.pic = this.wenzhangObj.img;
+        this.lhForm.title = this.wenzhangObj.title;
+        // this.lhForm.pic = this.wenzhangObj.img;
         this.lhForm.content = this.wenzhangObj.content;
-        this.lhForm.type = this.wenzhangObj.type;
+        this.lhForm.type = this.wenzhangObj.tag;
       }
       const res = await this.$api.articlesTypes();
       this.radioArr = res.data;
@@ -164,7 +166,7 @@ export default {
           //这个结果就是url
           console.log(store);
           // var oss_imgurl = client.signatureUrl(store);
-          var oss_imgurl = `http://${myData.bucket}.${myData.url}/${store}`;
+          var oss_imgurl = `https://${myData.bucket}.${myData.url}/${store}`;
           this.$set(this.lhForm, "pic", oss_imgurl);
           console.log(oss_imgurl);
         });
@@ -203,12 +205,12 @@ export default {
         }
       } else {
         // 编辑
-        const res = await this.$api.upDateArticles(
+        const res = await this.$api.upLoadArticle(
           {
-            name: this.lhForm.title,
+            title: this.lhForm.title,
             img: this.lhForm.pic,
             content: this.lhForm.content,
-            type: this.lhForm.type
+            tag: this.lhForm.type
           },
           this.editId
         );

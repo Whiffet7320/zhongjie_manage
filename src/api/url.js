@@ -1,8 +1,23 @@
 export default {
-    // 如师傅
-    baseUrl:'http://192.168.50.96:8001',
-    // baseUrl:'http://rushifu.5laoye.com',
+    // 校园帮帮
+    baseUrl: 'https://schoolhelp.5laoye.com', //https://schoolhelp.5laoye.com  http://192.168.50.142:9004
     login: '/admin/login', //登录
+    gaobai: '/admin/gaobai', //告白
+    jishi: "/admin/jishi", //集市
+    shudong: '/admin/shudong', //树洞
+    baoxiu: "/admin/baoxiu", //报修
+    fengjing: "/admin/fengjing", //风景
+    shougou: "/admin/shougou", //收购 1失物 2拾物
+    pinche: "/admin/pinche", //拼车
+    pindan: "/admin/pindan", //拼单
+    comment_list: '/admin/comment_list', //评论列表
+    shudong_comment_list:'/admin/shudong_comment_list',//
+    update_status:'/admin/update_status',//状态修改
+    article:'/admin/article',//文章列表
+    add_video:'/admin/add_video',//上传音乐
+    video_list:'/admin/video_list',//
+    is_best:'/admin/is_best',// 树洞设为精选
+    // 
     users:'/admin/users',//用户列表
     usersIdMoneyRecords:'/admin/users',//用户积分列表
     categories:'/admin/categories',//分类列表
@@ -28,6 +43,9 @@ export default {
     itemAll:'/admin/items-all',//全部商品
     turntableItem:'/admin/turntable-item',//奖品列表
     awards:'/admin/awards',//中奖列表
+    goodsOrder:'/admin/goods-order',//商品订单列表
+    money:'/admin/money',//修改用户金钱
+    score:'/admin/score',//修改用户积分
     // 模板
     productList:'/admin/product/list',//商品列表
     loginInfo:'/admin/login/info',

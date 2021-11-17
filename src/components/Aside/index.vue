@@ -19,30 +19,31 @@
         text-color="#fff"
         router
       >
-        <el-menu-item :route="{ name: 'Shouye' }" index="1-1">
+        <!-- <el-menu-item :route="{ name: 'Shouye' }" index="1-1">
           <i class="el-icon-s-home"></i>
           <span slot="title">首页</span>
-        </el-menu-item>
+        </el-menu-item>-->
         <el-submenu index="2">
           <template slot="title">
-            <i class="el-icon-s-goods"></i>
-            <span>商品</span>
+            <i class="el-icon-s-promotion"></i>
+            <span>校园表白</span>
           </template>
-          <el-menu-item :route="{ name: 'Shangpinguanli' }" index="2-1">商品管理</el-menu-item>
-          <el-menu-item :route="{ name: 'Shangpingfenlei' }" index="2-2">商品分类</el-menu-item>
+          <el-menu-item :route="{ name: 'Biaobaiqiang' }" index="2-1">表白墙</el-menu-item>
+          <!-- <el-menu-item :route="{ name: 'Shangpingfenlei' }" index="2-2">商品分类</el-menu-item> -->
           <!-- <el-menu-item :route="{ name: 'Shangpingpinglun' }" index="2-3"
             >商品评论</el-menu-item
           >-->
-          <el-menu-item :route="{ name: 'Yunfeimoban' }" index="2-4">运费模板</el-menu-item>
+          <!-- <el-menu-item :route="{ name: 'Yunfeimoban' }" index="2-4">运费模板</el-menu-item> -->
         </el-submenu>
         <el-submenu index="3">
           <template slot="title">
-            <i class="el-icon-s-order"></i>
-            <span>订单</span>
+            <i class="el-icon-s-shop"></i>
+            <span>校园集市</span>
           </template>
-          <el-menu-item :route="{ name: 'Dingdanguanli' }" index="3-1">订单管理</el-menu-item>
+          <el-menu-item :route="{ name: 'Bangbangzhuanmai' }" index="3-1">帮帮转卖</el-menu-item>
+          <el-menu-item :route="{ name: 'Bangbangshougou' }" index="3-2">帮帮收购</el-menu-item>
         </el-submenu>
-        <el-submenu index="4">
+        <!-- <el-submenu index="4">
           <template slot="title">
             <i class="el-icon-s-ticket"></i>
             <span>营销</span>
@@ -58,23 +59,21 @@
             <span slot="title">卖场活动</span>
             <el-menu-item :route="{ name: 'Maichanghuodong' }" index="4-2-1">活动列表</el-menu-item>
           </el-submenu>
-        </el-submenu>
+        </el-submenu>-->
         <el-submenu index="5">
           <template slot="title">
-            <i class="el-icon-s-custom"></i>
-            <span>用户</span>
+            <i class="el-icon-s-help"></i>
+            <span>校园树洞</span>
           </template>
-          <el-menu-item :route="{ name: 'Yonghuguanli' }" index="5-1">用户管理</el-menu-item>
-          <el-menu-item :route="{ name: 'Shifuguanli' }" index="5-4">师傅管理</el-menu-item>
-          <!-- <el-menu-item :route="{ name: 'Lianghaoliebiao' }" index="5-2">靓号列表</el-menu-item> -->
-          <el-menu-item :route="{ name: 'Tixianliebiao' }" index="5-3">提现列表</el-menu-item>
+          <el-menu-item :route="{ name: 'Shudongliebiao' }" index="5-1">树洞列表</el-menu-item>
         </el-submenu>
         <el-submenu index="6">
           <template slot="title">
             <i class="el-icon-share"></i>
-            <span>分销</span>
+            <span>校园一角</span>
           </template>
-          <el-menu-item :route="{ name: 'Fenxiaoshezhi' }" index="6-1">分销设置</el-menu-item>
+          <el-menu-item :route="{ name: 'Xiaoyuanfengjing' }" index="6-1">校园风景</el-menu-item>
+          <el-menu-item :route="{ name: 'Bangbangbaoxiu' }" index="6-2">帮帮报修</el-menu-item>
         </el-submenu>
         <!-- <el-submenu index="7">
           <template slot="title">
@@ -94,6 +93,22 @@
             >
           </el-submenu>
         </el-submenu>-->
+         <el-submenu index="8">
+          <template slot="title">
+            <i class="el-icon-s-claim"></i>
+            <span>失物招领</span>
+          </template>
+          <el-menu-item :route="{ name: 'Bangbangxunzhu' }" index="8-1">帮帮寻主</el-menu-item>
+          <el-menu-item :route="{ name: 'Bangbangxunwu' }" index="8-2">帮帮寻物</el-menu-item>
+        </el-submenu>
+        <el-submenu index="11">
+          <template slot="title">
+            <i class="el-icon-s-grid"></i>
+            <span>校园拼单</span>
+          </template>
+          <el-menu-item :route="{ name: 'Bangbangpinche' }" index="11-1">帮帮拼车</el-menu-item>
+          <el-menu-item :route="{ name: 'Bangbangpindan' }" index="11-2">帮帮拼单</el-menu-item>
+        </el-submenu>
         <el-submenu index="9">
           <template slot="title">
             <i class="el-icon-s-finance"></i>
@@ -101,19 +116,19 @@
           </template>
           <el-menu-item :route="{ name: 'Wenzhangliebiao' }" index="9-1">文章列表</el-menu-item>
         </el-submenu>
-        <el-submenu index="8">
+        <!-- <el-submenu index="8">
           <template slot="title">
             <i class="el-icon-s-tools"></i>
             <span>设置</span>
           </template>
           <el-menu-item :route="{ name: 'Xiaoxiguanli' }" index="8-1">消息管理</el-menu-item>
           <el-menu-item :route="{ name: 'Qitashezhi' }" index="8-2">其他设置</el-menu-item>
-          <!-- <el-menu-item :route="{ name: 'Lunbotushezhi' }" index="8-3">轮播图设置</el-menu-item> -->
+          <el-menu-item :route="{ name: 'Lunbotushezhi' }" index="8-3">轮播图设置</el-menu-item>
           <el-menu-item :route="{ name: 'Lunbotuliebiao' }" index="8-4">轮播图列表</el-menu-item>
           <el-menu-item :route="{ name: 'Kaipinyeshezhi' }" index="8-5">开屏页设置</el-menu-item>
           <el-menu-item :route="{ name: 'Shujuzhongxin' }" index="8-6">数据中心</el-menu-item>
-        </el-submenu>
-        <el-submenu index="10">
+        </el-submenu> -->
+        <!-- <el-submenu index="10">
           <template slot="title">
             <i class="el-icon-s-finance"></i>
             <span>其他</span>
@@ -124,7 +139,7 @@
           <el-menu-item :route="{ name: 'Fankuiliebiao' }" index="10-1">反馈意见列表</el-menu-item>
           <el-menu-item :route="{ name: 'Gudingweizhi' }" index="10-3">固定位置列表</el-menu-item>
           <el-menu-item :route="{ name: 'Gudingweizhishangping' }" index="10-4">固定位置商品列表</el-menu-item>
-        </el-submenu>
+        </el-submenu> -->
       </el-menu>
     </div>
   </div>
@@ -138,46 +153,26 @@ export default {
       if (to.path == "/Shouye") {
         this.menuActiveIndex = "1-1";
         this.$store.commit("headerTit", "首页");
-      } else if (to.path == "/Shangpin/Shangpinguanli") {
+      } else if (to.path == "/Xiaoyuanbiaobai/Biaobaiqiang") {
         this.menuActiveIndex = "2-1";
         this.$store.commit(
           "headerTit",
-          `商品 / <span style="color: #515a61;
-        font-weight: 700;">商品管理</span>`
+          `校园表白 / <span style="color: #515a61;
+        font-weight: 700;">表白墙</span>`
         );
-      } else if (to.path == "/Shangpin/Tianjiashangping") {
-        this.$store.commit(
-          "headerTit",
-          `商品 / 商品管理 / <span style="color: #515a61;
-        font-weight: 700;">添加/修改商品</span>`
-        );
-      } else if (to.path == "/Shangpin/Shangpingfenlei") {
-        this.menuActiveIndex = "2-2";
-        this.$store.commit(
-          "headerTit",
-          `商品 / <span style="color: #515a61;
-        font-weight: 700;">商品分类</span>`
-        );
-      } else if (to.path == "/Shangpin/Shangpingpinglun") {
-        this.menuActiveIndex = "2-3";
-        this.$store.commit(
-          "headerTit",
-          `商品 / <span style="color: #515a61;
-        font-weight: 700;">商品评论</span>`
-        );
-      } else if (to.path == "/Shangpin/Yunfeimoban") {
-        this.menuActiveIndex = "2-4";
-        this.$store.commit(
-          "headerTit",
-          `商品 / <span style="color: #515a61;
-        font-weight: 700;">运费模板</span>`
-        );
-      } else if (to.path == "/Dingdan/Dingdanguanli") {
+      } else if (to.path == "/Xiaoyuanjishi/Bangbangzhuanmai") {
         this.menuActiveIndex = "3-1";
         this.$store.commit(
           "headerTit",
-          `订单 / <span style="color: #515a61;
-        font-weight: 700;">订单管理</span>`
+          `校园集市 / <span style="color: #515a61;
+        font-weight: 700;">帮帮转卖</span>`
+        );
+      } else if (to.path == "/Xiaoyuanjishi/Bangbangshougou") {
+        this.menuActiveIndex = "3-2";
+        this.$store.commit(
+          "headerTit",
+          `校园集市 / <span style="color: #515a61;
+        font-weight: 700;">帮帮收购</span>`
         );
       } else if (to.path == "/Yingxiao/Pingtuanshangping") {
         this.menuActiveIndex = "4-1-1";
@@ -221,40 +216,26 @@ export default {
           `营销 / 卖场活动 / <span style="color: #515a61;
         font-weight: 700;">活动列表</span>`
         );
-      } else if (to.path == "/Yonghu/Yonghuguanli") {
+      } else if (to.path == "/Xiaoyuanshudong/Shudongliebiao") {
         this.menuActiveIndex = "5-1";
         this.$store.commit(
           "headerTit",
-          `用户 / <span style="color: #515a61;
-        font-weight: 700;">用户管理</span>`
+          `校园树洞 / <span style="color: #515a61;
+        font-weight: 700;">树洞列表</span>`
         );
-      } else if (to.path == "/Yonghu/Lianghaoliebiao") {
-        this.menuActiveIndex = "5-2";
-        this.$store.commit(
-          "headerTit",
-          `用户 / <span style="color: #515a61;
-        font-weight: 700;">靓号列表</span>`
-        );
-      } else if (to.path == "/Yonghu/Tixianliebiao") {
-        this.menuActiveIndex = "5-3";
-        this.$store.commit(
-          "headerTit",
-          `用户 / <span style="color: #515a61;
-        font-weight: 700;">提现列表</span>`
-        );
-      } else if (to.path == "/Yonghu/Shifuguanli") {
-        this.menuActiveIndex = "5-4";
-        this.$store.commit(
-          "headerTit",
-          `用户 / <span style="color: #515a61;
-        font-weight: 700;">师傅管理</span>`
-        );
-      } else if (to.path == "/Fenxiao/Fenxiaoshezhi") {
+      } else if (to.path == "/Xiaoyuanyijiao/Xiaoyuanfengjing") {
         this.menuActiveIndex = "6-1";
         this.$store.commit(
           "headerTit",
-          `分销 / <span style="color: #515a61;
-        font-weight: 700;">分销设置</span>`
+          `校园一角 / <span style="color: #515a61;
+        font-weight: 700;">校园风景</span>`
+        );
+      } else if (to.path == "/Xiaoyuanyijiao/Bangbangbaoxiu") {
+        this.menuActiveIndex = "6-2";
+        this.$store.commit(
+          "headerTit",
+          `校园一角 / <span style="color: #515a61;
+        font-weight: 700;">帮帮报修</span>`
         );
       } else if (to.path == "/Caiwu/Tixianshenqing") {
         this.menuActiveIndex = "7-1-1";
@@ -270,19 +251,19 @@ export default {
           `财务 / 佣金记录 / <span style="color: #515a61;
         font-weight: 700;">佣金记录</span>`
         );
-      } else if (to.path == "/Shezhi/Xiaoxiguanli") {
+      } else if (to.path == "/Shiwuzhaoling/Bangbangxunzhu") {
         this.menuActiveIndex = "8-1";
         this.$store.commit(
           "headerTit",
-          `设置 / <span style="color: #515a61;
-        font-weight: 700;">消息管理</span>`
+          `失物招领 / <span style="color: #515a61;
+        font-weight: 700;">帮帮寻主</span>`
         );
-      } else if (to.path == "/Shezhi/Qitashezhi") {
+      } else if (to.path == "/Shiwuzhaoling/Bangbangxunwu") {
         this.menuActiveIndex = "8-2";
         this.$store.commit(
           "headerTit",
-          `设置 / <span style="color: #515a61;
-        font-weight: 700;">其他设置</span>`
+          `失物招领 / <span style="color: #515a61;
+        font-weight: 700;">帮帮寻物</span>`
         );
       } else if (to.path == "/Shezhi/Lunbotushezhi") {
         this.menuActiveIndex = "8-3";
@@ -325,6 +306,20 @@ export default {
           "headerTit",
           `文章 / <span style="color: #515a61;
         font-weight: 700;">文章列表</span>`
+        );
+      } else if (to.path == "/Xiaoyuanpindan/Bangbangpinche") {
+        this.menuActiveIndex = "11-1";
+        this.$store.commit(
+          "headerTit",
+          `校园拼单 / <span style="color: #515a61;
+        font-weight: 700;">帮帮拼车</span>`
+        );
+      } else if (to.path == "/Xiaoyuanpindan/Bangbangpindan") {
+        this.menuActiveIndex = "11-2";
+        this.$store.commit(
+          "headerTit",
+          `校园拼单 / <span style="color: #515a61;
+        font-weight: 700;">帮帮拼单</span>`
         );
       } else if (to.path == "/Wenzhang/Tianjiawenzhang") {
         this.$store.commit(

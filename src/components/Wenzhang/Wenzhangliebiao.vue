@@ -4,41 +4,25 @@
       <div class="tit1">文章列表</div>
     </div>
     <div class="nav2">
-      <div class="myForm">
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-row>
-            <el-col :span="20">
-              <el-form-item label="类型：">
-                <el-radio-group @change="changeRad" v-model="formInline.rad1" size="small">
-                  <el-radio-button v-for="(item,i) in radioArr" :key="i" :label="i">{{item}}</el-radio-button>
-                </el-radio-group>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-      </div>
-      <div class="tit1">
+      <!-- <div class="tit1">
         <el-button @click="addWenzhang" size="small" type="primary" icon="el-icon-plus">添加文章</el-button>
-      </div>
+      </div> -->
       <div class="myTable">
         <vxe-table :data="tableData">
           <vxe-table-column field="id" title="ID"></vxe-table-column>
-          <vxe-table-column field="name" title="标题"></vxe-table-column>
-          <vxe-table-column field="img" title="文章图标">
+          <vxe-table-column field="title" title="标题"></vxe-table-column>
+          <vxe-table-column field="myTag" title="类型"></vxe-table-column>
+          <vxe-table-column field="myStatus" title="状态(是否通过)">
             <template slot-scope="scope">
-              <el-image :src="scope.row.img" fit="fill" style="width: 40px; height: 40px">
-                <div slot="error" class="image-slot">
-                  <i class="el-icon-picture-outline"></i>
-                </div>
-              </el-image>
+              <el-switch @change="changeKG(scope.row)" v-model="scope.row.myStatus"></el-switch>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="created_at" title="发布时间"></vxe-table-column>
+          <vxe-table-column field="add_time" title="发布时间"></vxe-table-column>
           <vxe-table-column title="操作状态" width="160">
             <template slot-scope="scope">
               <div class="flex">
-                <el-button size="small" @click="tabEdit(scope.row)" type="text">编辑</el-button>
-                <el-button size="small" @click="tabDel(scope.row)" type="text">删除</el-button>
+                <el-button size="small" @click="tabEdit(scope.row)" type="text">查看详情</el-button>
+                <!-- <el-button size="small" @click="tabDel(scope.row)" type="text">删除</el-button> -->
               </div>
             </template>
           </vxe-table-column>
@@ -47,7 +31,7 @@
           class="fenye"
           @size-change="this.handleSizeChange"
           @current-change="this.handleCurrentChange"
-          :current-page="this.wenzhangliebiaoPage"
+          :current-page="this.wenzhangPage"
           :page-size="10"
           :page-sizes="[10, 15, 20, 30]"
           layout="total,sizes, prev, pager, next, jumper"
@@ -62,15 +46,15 @@
 import { mapState } from "vuex";
 export default {
   computed: {
-    ...mapState(["wenzhangliebiaoPage", "wenzhangliebiaoPageSize"])
+    ...mapState(["wenzhangPage", "wenzhangPageSize"])
   },
   watch: {
-    wenzhangliebiaoPage: function(page) {
-      this.$store.commit("wenzhangliebiaoPage", page);
+    wenzhangPage: function(page) {
+      this.$store.commit("wenzhangPage", page);
       this.getData();
     },
-    wenzhangliebiaoPageSize: function(pageSize) {
-      this.$store.commit("wenzhangliebiaoPageSize", pageSize);
+    wenzhangPageSize: function(pageSize) {
+      this.$store.commit("wenzhangPageSize", pageSize);
       this.getData();
     }
   },
@@ -98,17 +82,35 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.articles({
-        limit: this.wenzhangliebiaoPageSize,
-        page: this.wenzhangliebiaoPage,
+      const res = await this.$api.article({
+        limit: this.wenzhangPageSize,
+        page: this.wenzhangPage,
         type: this.formInline.rad1
       });
       this.tableData = res.data.data;
       this.total = res.data.total;
-      const res2 = await this.$api.articlesTypes();
-      this.radioArr = res2.data;
+      this.tableData.forEach(ele => {
+        ele.myStatus = ele.status == "0" ? true : false;
+        ele.myTag = ele.tag == "advice" ? "咨询" : "新闻";
+      });
     },
-changeRad() {
+    // 开关（上架/下架）
+    async changeKG(row) {
+      console.log(row);
+      const res = await this.$api.update_status({
+        status: row.myStatus == true ? "0" : "1",
+        id: row.id,
+        type: "article"
+      });
+      if (res.code == 200) {
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+        this.getData();
+      }
+    },
+    changeRad() {
       console.log(this.formInline.rad1);
       this.getData();
     },
@@ -124,7 +126,7 @@ changeRad() {
     },
     // 删除
     async tabDel(row) {
-      const res = await this.$api.deleteArticles(row.id); 
+      const res = await this.$api.deleteArticles(row.id);
       if (res.code == 200) {
         this.$message({
           message: res.msg,
@@ -152,11 +154,11 @@ changeRad() {
     // 分页
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-      this.$store.commit("wenzhangliebiaoPageSize", val);
+      this.$store.commit("wenzhangPageSize", val);
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
-      this.$store.commit("wenzhangliebiaoPage", val);
+      this.$store.commit("wenzhangPage", val);
     }
   }
 };

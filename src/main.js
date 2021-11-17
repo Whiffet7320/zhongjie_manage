@@ -19,9 +19,8 @@ Vue.use(VXETable)
 // }
 // Vue.prototype.$uploadOSS = uploadOSS;
 Vue.prototype.$api = api;
-// Vue.prototype.$url = 'http://192.168.1.128:8094/admin'
-Vue.prototype.$url = 'http://pinapi.hxqhhhh.shop'
-// Vue.prototype.$url = 'http://192.168.50.142:9083'
+// Vue.prototype.$url = 'http://192.168.50.142:9004'
+Vue.prototype.$url = 'https://schoolhelp.5laoye.com'
 
 Vue.use(ElementUI);
 Vue.use(Viewer)

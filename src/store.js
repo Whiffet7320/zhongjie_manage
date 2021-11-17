@@ -5,248 +5,112 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    // 如师傅
-    shopObj: null,
-    zijinmingxiliebiaoPage: 1, //用户-资金余额明细列表
-    zijinmingxiliebiaoPageSize: 10,
-    yonghuguanliPage: 1, //用户列表
-    yonghuguanliPageSize: 10,
-    shifuliebiaoPage: 1, //用户-师傅列表
-    shifuliebiaoPageSize: 10,
-    shangpingliebiaoPage: 1, //商品列表
-    shangpingliebiaoPageSize: 10,
-    lunbotuliebiaoPage: 1, //轮播图列表
-    lunbotuliebiaoPageSize: 10,
-    wenzhangObj:null,
-    qitashezhiliebiaoPage: 1, //其他设置列表
-    qitashezhiliebiaoPageSize: 10,
-    wenzhangliebiaoPage: 1, //文章列表
-    wenzhangliebiaoPageSize: 10,
-    chengshiliebiaoPage: 1, //城市列表
-    chengshiliebiaoPageSize: 10,
-    fankuiliebiaoPage: 1, //反馈意见列表
-    fankuiliebiaoPageSize: 10,
-    tixianliebiaoPage: 1, //提现列表
-    tixianliebiaoPageSize: 10,
-    gudingweizhiliebiaoPage: 1, //固定位置列表
-    gudingweizhiliebiaoPageSize: 10,
-    gudingweizhishangpingliebiaoPage: 1, //固定位置商品列表
-    gudingweizhishangpingliebiaoPageSize: 10,
-    jiangpingliebiaoPage: 1, //奖品列表
-    jiangpingliebiaoPageSize: 10,
-    zhongjiangliebiaoPage: 1, //中奖列表
-    zhongjiangliebiaoPageSize: 10,
-    // 
-    userInfo: null,
+    // 校园帮帮
+    biaobaiqiangPage: 1, //表白墙列表
+    biaobaiqiangPageSize: 10,
+    jishiShougouPage: 1, //集市-收购列表
+    jishiShougouPageSize: 10,
+    jishizhuanmaiPage: 1, //集市-转卖列表
+    jishizhuanmaiPageSize: 10,
+    shudongPage: 1, //树洞列表
+    shudongPageSize: 10,
     headerTit: '',
-    yunfeimubanliebiaoPage: 1, //运费模板
-    yunfeimubanliebiaoPageSize: 10,
-    shangpingpinglunPage: 1, //商品评论
-    shangpingpinglunPageSize: 10,
-    dingdanliebiaoPage: 1, //订单列表
-    dingdanliebiaoPageSize: 10,
-    pintuanShangpingliebiaoPage: 1, //拼团管理-拼团商品列表
-    pintuanShangpingliebiaoPageSize: 10,
-    pintuanShangpingliebiaoShopPage: 1, //拼团管理-拼团列表-添加商品
-    pintuanShangpingliebiaoShopPageSize: 10,
-    pintuanShopObj: null,
-    maichanghuodongPage: 1, //卖场活动-活动列表
-    maichanghuodongPageSize: 10,
-    maichanghuodongShopPage: 1, //卖场活动-活动商品列表
-    maichanghuodongShopPageSize: 10,
-    maichanghuodongSeeShopPage: 1, //卖场活动-查看添加活动商品列表
-    maichanghuodongSeeShopPageSize: 10,
-    maichanghuodongnoAddSeeShopPage: 1, //卖场活动-查看商品列表
-    maichanghuodongnoAddSeeShopPageSize: 10,
-    pingtuanliebiaoPage: 1, //拼团管理-拼团分类列表
-    pingtuanliebiaoPageSize: 10,
-    lianghaoliebiaoPage: 1, //用户-靓号列表
-    lianghaoliebiaoPageSize: 10,
-    jishouliebiaoPage: 1, //寄售列表
-    jishouliebiaoPageSize: 10,
-    pingtuanjiluPage: 1, //拼团记录
-    pingtuanjiluPageSize: 10,
+    fengjingPage: 1, //风景列表
+    fengjingPageSize: 10,
+    baoxiuPage: 1, //报修列表
+    baoxiuPageSize: 10,
+    xunwuPage: 1, //寻物列表
+    xunwuPageSize: 10,
+    xunzhuPage: 1, //寻主列表
+    xunzhuPageSize: 10,
+    pindanPage: 1, //拼单列表
+    pindanPageSize: 10,
+    pinchePage: 1, //拼车列表
+    pinchePageSize: 10,
+    biaobaiqiangPinglunPage: 1, //表白墙-评论列表
+    biaobaiqiangPinglunPageSize: 10,
+    wenzhangPage: 1, //文章列表
+    wenzhangPageSize: 10,
+    wenzhangObj:null,
   },
   mutations: {
-    // 如师傅
-    wenzhangObj(state, str) {
-      state.wenzhangObj = str;
-    },
-    zijinmingxiliebiaoPage(state, str) {
-      state.zijinmingxiliebiaoPage = str;
-    },
-    zijinmingxiliebiaoPageSize(state, str) {
-      state.zijinmingxiliebiaoPageSize = str;
-    },
-    yonghuguanliPage(state, str) {
-      state.yonghuguanliPage = str;
-    },
-    yonghuguanliPageSize(state, str) {
-      state.yonghuguanliPageSize = str;
-    },
-    shifuliebiaoPage(state, str) {
-      state.shifuliebiaoPage = str;
-    },
-    shifuliebiaoPageSize(state, str) {
-      state.shifuliebiaoPageSize = str;
-    },
-    shangpingliebiaoPage(state, str) {
-      state.shangpingliebiaoPage = str;
-    },
-    shangpingliebiaoPageSize(state, str) {
-      state.shangpingliebiaoPageSize = str;
-    },
-    wenzhangliebiaoPage(state, str) {
-      state.wenzhangliebiaoPage = str;
-    },
-    wenzhangliebiaoPageSize(state, str) {
-      state.wenzhangliebiaoPageSize = str;
-    },
-    qitashezhiliebiaoPage(state, str) {
-      state.qitashezhiliebiaoPage = str;
-    },
-    qitashezhiliebiaoPageSize(state, str) {
-      state.qitashezhiliebiaoPageSize = str;
-    },
-    chengshiliebiaoPage(state, str) {
-      state.chengshiliebiaoPage = str;
-    },
-    chengshiliebiaoPageSize(state, str) {
-      state.chengshiliebiaoPageSize = str;
-    },
-    fankuiliebiaoPage(state, str) {
-      state.fankuiliebiaoPage = str;
-    },
-    fankuiliebiaoPageSize(state, str) {
-      state.fankuiliebiaoPageSize = str;
-    },
-    tixianliebiaoPage(state, str) {
-      state.tixianliebiaoPage = str;
-    },
-    tixianliebiaoPageSize(state, str) {
-      state.tixianliebiaoPageSize = str;
-    },
-    gudingweizhiliebiaoPage(state, str) {
-      state.gudingweizhiliebiaoPage = str;
-    },
-    gudingweizhiliebiaoPageSize(state, str) {
-      state.gudingweizhiliebiaoPageSize = str;
-    },
-    gudingweizhishangpingliebiaoPage(state, str) {
-      state.gudingweizhishangpingliebiaoPage = str;
-    },
-    gudingweizhishangpingliebiaoPageSize(state, str) {
-      state.gudingweizhishangpingliebiaoPageSize = str;
-    },
-    jiangpingliebiaoPage(state, str) {
-      state.jiangpingliebiaoPage = str;
-    },
-    jiangpingliebiaoPageSize(state, str) {
-      state.jiangpingliebiaoPageSize = str;
-    },
-    zhongjiangliebiaoPage(state, str) {
-      state.zhongjiangliebiaoPage = str;
-    },
-    zhongjiangliebiaoPageSize(state, str) {
-      state.zhongjiangliebiaoPageSize = str;
-    },
-
-    // 
-    userInfo(state, str) {
-      state.userInfo = str;
-    },
     headerTit(state, str) {
       state.headerTit = str;
     },
-    dingdanliebiaoPage(state, str) {
-      state.dingdanliebiaoPage = str;
+    biaobaiqiangPage(state, str) {
+      state.biaobaiqiangPage = str;
     },
-    dingdanliebiaoPageSize(state, str) {
-      state.dingdanliebiaoPageSize = str;
+    biaobaiqiangPageSize(state, str) {
+      state.biaobaiqiangPageSize = str;
     },
-    shopObj(state, str) {
-      state.shopObj = str;
+    jishiShougouPage(state, str) {
+      state.jishiShougouPage = str;
     },
-    pintuanShangpingliebiaoPage(state, str) {
-      state.pintuanShangpingliebiaoPage = str;
+    jishiShougouPageSize(state, str) {
+      state.jishiShougouPageSize = str;
     },
-    pintuanShangpingliebiaoPageSize(state, str) {
-      state.pintuanShangpingliebiaoPageSize = str;
+    jishizhuanmaiPage(state, str) {
+      state.jishizhuanmaiPage = str;
     },
-    pintuanShopObj(state, str) {
-      state.pintuanShopObj = str;
+    jishizhuanmaiPageSize(state, str) {
+      state.jishizhuanmaiPageSize = str;
     },
-    maichanghuodongPage(state, str) {
-      state.maichanghuodongPage = str;
+    shudongPage(state, str) {
+      state.shudongPage = str;
     },
-    maichanghuodongPageSize(state, str) {
-      state.maichanghuodongPageSize = str;
+    shudongPageSize(state, str) {
+      state.shudongPageSize = str;
     },
-    maichanghuodongShopPage(state, str) {
-      state.maichanghuodongShopPage = str;
+    fengjingPage(state, str) {
+      state.fengjingPage = str;
     },
-    maichanghuodongShopPageSize(state, str) {
-      state.maichanghuodongShopPageSize = str;
+    fengjingPageSize(state, str) {
+      state.fengjingPageSize = str;
     },
-    maichanghuodongSeeShopPage(state, str) {
-      state.maichanghuodongSeeShopPage = str;
+    baoxiuPage(state, str) {
+      state.baoxiuPage = str;
     },
-    maichanghuodongSeeShopPageSize(state, str) {
-      state.maichanghuodongSeeShopPageSize = str;
+    baoxiuPageSize(state, str) {
+      state.baoxiuPageSize = str;
     },
-    pingtuanliebiaoPage(state, str) {
-      state.pingtuanliebiaoPage = str;
+    xunwuPage(state, str) {
+      state.xunwuPage = str;
     },
-    pingtuanliebiaoPageSize(state, str) {
-      state.pingtuanliebiaoPageSize = str;
+    xunwuPageSize(state, str) {
+      state.xunwuPageSize = str;
     },
-    lianghaoliebiaoPage(state, str) {
-      state.lianghaoliebiaoPage = str;
+    xunzhuPage(state, str) {
+      state.xunzhuPage = str;
     },
-    lianghaoliebiaoPageSize(state, str) {
-      state.lianghaoliebiaoPageSize = str;
+    xunzhuPageSize(state, str) {
+      state.xunzhuPageSize = str;
     },
-    shangpingpinglunPage(state, str) {
-      state.shangpingpinglunPage = str;
+    pindanPage(state, str) {
+      state.pindanPage = str;
     },
-    shangpingpinglunPageSize(state, str) {
-      state.shangpingpinglunPageSize = str;
+    pindanPageSize(state, str) {
+      state.pindanPageSize = str;
     },
-    pintuanShangpingliebiaoShopPage(state, str) {
-      state.pintuanShangpingliebiaoShopPage = str;
+    pinchePage(state, str) {
+      state.pinchePage = str;
     },
-    pintuanShangpingliebiaoShopPageSize(state, str) {
-      state.pintuanShangpingliebiaoShopPageSize = str;
+    pinchePageSize(state, str) {
+      state.pinchePageSize = str;
     },
-    maichanghuodongnoAddSeeShopPage(state, str) {
-      state.maichanghuodongnoAddSeeShopPage = str;
+    biaobaiqiangPinglunPage(state, str) {
+      state.biaobaiqiangPinglunPage = str;
     },
-    maichanghuodongnoAddSeeShopPageSize(state, str) {
-      state.maichanghuodongnoAddSeeShopPageSize = str;
+    biaobaiqiangPinglunPageSize(state, str) {
+      state.biaobaiqiangPinglunPageSize = str;
     },
-    jishouliebiaoPage(state, str) {
-      state.jishouliebiaoPage = str;
+    wenzhangPage(state, str) {
+      state.wenzhangPage = str;
     },
-    jishouliebiaoPageSize(state, str) {
-      state.jishouliebiaoPageSize = str;
+    wenzhangPageSize(state, str) {
+      state.wenzhangPageSize = str;
     },
-    yunfeimubanliebiaoPage(state, str) {
-      state.yunfeimubanliebiaoPage = str;
-    },
-    yunfeimubanliebiaoPageSize(state, str) {
-      state.yunfeimubanliebiaoPageSize = str;
-    },
-    lunbotuliebiaoPage(state, str) {
-      state.lunbotuliebiaoPage = str;
-    },
-    lunbotuliebiaoPageSize(state, str) {
-      state.lunbotuliebiaoPageSize = str;
-    },
-    pingtuanjiluPage(state, str) {
-      state.pingtuanjiluPage = str;
-    },
-    pingtuanjiluPageSize(state, str) {
-      state.pingtuanjiluPageSize = str;
+    wenzhangObj(state, str) {
+      state.wenzhangObj = str;
     },
   },
   actions: {
