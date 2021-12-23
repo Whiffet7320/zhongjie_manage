@@ -16,17 +16,15 @@
             </el-col>
           </el-row>
         </el-form>
-      </div> -->
+      </div>-->
       <!-- <div class="tit1">
         <el-button @click="addWenzhang" size="small" type="primary" icon="el-icon-plus">添加文章</el-button>
-      </div> -->
+      </div>-->
       <div class="myTable">
         <vxe-table :data="tableData">
           <vxe-table-column field="id" title="ID"></vxe-table-column>
-          <vxe-table-column field="key" title="名称"></vxe-table-column>
+          <vxe-table-column field="name" title="名称"></vxe-table-column>
           <vxe-table-column field="value" title="内容"></vxe-table-column>
-          <vxe-table-column field="desc" title="描述"></vxe-table-column>
-          <vxe-table-column field="created_at" title="发布时间"></vxe-table-column>
           <vxe-table-column title="操作状态" width="160">
             <template slot-scope="scope">
               <div class="flex">
@@ -36,16 +34,6 @@
             </template>
           </vxe-table-column>
         </vxe-table>
-        <el-pagination
-          class="fenye"
-          @size-change="this.handleSizeChange"
-          @current-change="this.handleCurrentChange"
-          :current-page="this.qitashezhiliebiaoPage"
-          :page-size="10"
-          :page-sizes="[10, 15, 20, 30]"
-          layout="total,sizes, prev, pager, next, jumper"
-          :total="this.total"
-        ></el-pagination>
       </div>
     </div>
     <!-- 编辑设置 -->
@@ -56,30 +44,41 @@
       :before-close="addHandleClose"
     >
       <div class="myAddForm">
-        <el-form
-          :model="lhForm"
-          ref="lhForm"
-          label-width="60px"
-          class="demo-addForm"
-        >
+        <el-form :model="lhForm" ref="lhForm" label-width="60px" class="demo-addForm">
           <el-row>
             <el-col :span="20">
               <el-form-item label="设置名称：">
-                <el-input disabled size="small" placeholder="请输入设置名称" v-model="lhForm.key"></el-input>
+                <el-input disabled size="small" placeholder="请输入设置名称" v-model="lhForm.name"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="20">
               <el-form-item label="名称描述：">
-                <el-input disabled size="small" placeholder="请输入名称描述" v-model="lhForm.desc"></el-input>
+                <el-input disabled size="small" placeholder="请输入名称描述" v-model="lhForm.tag"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
-            <el-col :span="20">
+          <el-row v-if="lhForm.tag != 'img'">
+            <el-col :span="20" >
               <el-form-item label="设置值：">
                 <el-input size="small" placeholder="请输入设置值" v-model="lhForm.value"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row v-else>
+            <el-col :span="18">
+              <el-form-item label="设置值：">
+                <div @click="companyList" class="myImg">
+                  <el-image :src="lhForm.value" fit="fill" style="width: 60px; height: 60px">
+                    <div slot="error" class="image-slot">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
+                  <div @click.stop="delImg" class="closeBtn">
+                    <el-button circle>×</el-button>
+                  </div>
+                </div>
               </el-form-item>
             </el-col>
           </el-row>
@@ -93,6 +92,15 @@
         </el-form>
       </div>
     </el-dialog>
+    <input
+      type="file"
+      name="companyLogo"
+      id="file0"
+      class="displayN"
+      multiple="multiple"
+      @change="companyLogo($event)"
+      ref="fileInputList"
+    />
   </div>
 </template>
 
@@ -114,7 +122,7 @@ export default {
   },
   data() {
     return {
-      addDialogVisible:false,
+      addDialogVisible: false,
       editor: null,
       tableData: [],
       total: 0,
@@ -122,7 +130,7 @@ export default {
       lhForm: {
         key: "",
         value: "",
-        desc:"",
+        desc: ""
       },
       imgFile: null,
       isAdd: true
@@ -133,31 +141,42 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.globalConfigs({
-        limit: this.qitashezhiliebiaoPageSize,
-        page: this.qitashezhiliebiaoPage
-      });
-      this.tableData = res.data.data;
-      this.total = res.data.total;
+      const res = await this.$api.webconfig_detail();
+      this.tableData = res.data;
     },
     addHandleClose() {
       this.addDialogVisible = false;
     },
-    async AddOnSubmit(){
-      const res = await this.$api.upDateGlobalConfigs({
-        value:this.lhForm.value
-      },this.id)
-      console.log(res)
+    async companyLogo(event) {
+      var file = event.target.files[0];
+      this.imgFile = new FormData();
+      this.imgFile.append("image", file);
+      sessionStorage.setItem("img", 123);
+      const res = await this.$api.productUpload(this.imgFile);
+      console.log(res);
+      this.$set(this.lhForm, "value", res);
+      this.$refs.fileInputList.value = "";
+    },
+    // 上传图片
+    companyList() {
+      this.$refs.fileInputList.click();
+    },
+    async AddOnSubmit() {
+      const res = await this.$api.webconfig_update({
+        value: this.lhForm.value,
+        tag: this.lhForm.tag
+      });
+      console.log(res);
       if (res.code == 200) {
-          this.$message({
-            message: '修改成功',
-            type: "success"
-          });
-          this.getData();
-          this.addDialogVisible = false;
-        } else {
-          this.$message.error(res.msg);
-        }
+        this.$message({
+          message: "修改成功",
+          type: "success"
+        });
+        this.getData();
+        this.addDialogVisible = false;
+      } else {
+        this.$message.error(res.msg);
+      }
     },
     async submitForm() {
       // 添加
@@ -197,8 +216,10 @@ export default {
     },
     // 编辑
     tabEdit(row) {
+      console.log(row)
       this.id = row.id;
-      this.lhForm.key = row.key;
+      this.lhForm.name = row.name;
+      this.lhForm.tag = row.tag;
       this.lhForm.value = row.value;
       this.addDialogVisible = true;
     },
@@ -225,8 +246,8 @@ export default {
       };
       this.isAdd = true;
       // this.lhDialogVisible = true;
-      this.$store.commit('wenzhangObj',null);
-      this.$router.push({name:'Tianjiawenzhang'})
+      this.$store.commit("wenzhangObj", null);
+      this.$router.push({ name: "Tianjiawenzhang" });
     },
     lhHandleClose() {
       this.lhDialogVisible = false;
@@ -407,5 +428,8 @@ export default {
   /deep/ .el-button {
     width: 100%;
   }
+}
+.displayN {
+  display: none;
 }
 </style>

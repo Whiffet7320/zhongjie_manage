@@ -15,6 +15,28 @@ const routes = [{
             component: () => import('./components/Home/Shouye'),
         }, ]
     }, {
+        path: '/Yonghu',
+        name: 'Yonghu',
+        component: () => import('./components/Yonghu'),
+        children: [{
+            path: 'Yonghuguanli',
+            name: 'Yonghuguanli',
+            component: () => import('./components/Yonghu/Yonghuguanli'),
+        }]
+    }, {
+        path: '/Dingdan',
+        name: 'Dingdan',
+        component: () => import('./components/Dingdan'),
+        children: [{
+            path: 'Dingdanguanli',
+            name: 'Dingdanguanli',
+            component: () => import('./components/Dingdan/Dingdanguanli'),
+        },{
+            path: 'Tixianliebiao',
+            name: 'Tixianliebiao',
+            component: () => import('./components/Dingdan/Tixianliebiao'),
+        }]
+    }, {
         path: '/Xiaoyuanbiaobai',
         name: 'Xiaoyuanbiaobai',
         component: () => import('./components/Xiaoyuanbiaobai'),
@@ -86,7 +108,7 @@ const routes = [{
         }]
     },
     // 
-     {
+    {
         path: '/Wenzhang',
         name: 'Wenzhang',
         component: () => import('./components/Wenzhang'),

@@ -20,7 +20,7 @@ Vue.use(VXETable)
 // Vue.prototype.$uploadOSS = uploadOSS;
 Vue.prototype.$api = api;
 // Vue.prototype.$url = 'http://192.168.50.142:9004'
-Vue.prototype.$url = 'https://schoolhelp.5laoye.com'
+Vue.prototype.$url = 'http://192.168.50.142:9007'
 
 Vue.use(ElementUI);
 Vue.use(Viewer)
