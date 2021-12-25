@@ -19,29 +19,7 @@
       </div>-->
       <div class="myTable">
         <vxe-table :data="tableData">
-          <vxe-table-column type="expand" width="30" :fixed="null">
-            <template #content="{ row }">
-              <template>
-                <div class="xiala">
-                  <el-row :gutter="20">
-                    <el-col :span="5">
-                      <div class="item">收货人：{{row.addressinfo.real_name}}</div>
-                    </el-col>
-                    <el-col :span="5">
-                      <div class="item">收货人手机号：{{row.addressinfo.phone}}</div>
-                    </el-col>
-                  </el-row>
-                  <div style="margin-top: 16px"></div>
-                  <el-row :gutter="20">
-                    <el-col :span="10">
-                      <div class="item">地址：{{row.addressinfo.province}} {{row.addressinfo.city}} {{row.addressinfo.district}} {{row.addressinfo.detail}}</div>
-                    </el-col>
-                  </el-row>
-                </div>
-              </template>
-            </template>
-          </vxe-table-column>
-          <vxe-table-column field="trade_no" title="订单号"></vxe-table-column>
+          <vxe-table-column field="id" title="ID"></vxe-table-column>
           <!-- <vxe-table-column field="myNickname" title="昵称"></vxe-table-column>
           <vxe-table-column field="avatar" title="发布者头像">
             <template slot-scope="scope">
@@ -57,21 +35,21 @@
               </el-image>
             </template>
           </vxe-table-column>-->
-          <vxe-table-column field="pay_price" title="支付金额"></vxe-table-column>
+          <vxe-table-column field="withdraw_price" title="提现金额"></vxe-table-column>
+          <vxe-table-column field="myTime" title="申请时间"></vxe-table-column>
           <vxe-table-column field="myStatus" title="状态"></vxe-table-column>
-          <vxe-table-column field="express_name" title="快递公司"></vxe-table-column>
-          <vxe-table-column field="express_code" title="快递单号"></vxe-table-column>
-          <vxe-table-column field="remark" title="备注"></vxe-table-column>
+          <vxe-table-column field="bankinfo.bank_name" title="银行卡开户行"></vxe-table-column>
+          <vxe-table-column field="bankinfo.bank_number" title="银行卡卡号"></vxe-table-column>
           <vxe-table-column title="操作状态" width="140">
             <template slot-scope="scope">
               <div class="flex">
                 <el-button
                   size="small"
-                  :disabled="scope.row.status != 0 || scope.row.paid != 1"
-                  @click="fahuo(scope.row)"
+                  :disabled="scope.row.paid != 0"
+                  @click="tongguo(scope.row)"
                   type="text"
-                >发货</el-button>
-                <el-button size="small" @click="toDelShop(scope.row)" type="text">删除</el-button>
+                >通过</el-button>
+                <el-button :disabled="scope.row.paid != 0" size="small" @click="jujue(scope.row)" type="text">拒绝</el-button>
               </div>
             </template>
           </vxe-table-column>
@@ -236,20 +214,9 @@ export default {
       this.total = res.data.total;
       this.tableData = res.data.data;
       this.tableData.forEach(ele => {
-        ele.myNickname =
-          ele.nickname == "" || !ele.nickname ? "未实名用户" : ele.nickname;
-        if (ele.paid == 1) {
-          ele.myStatus =
-            ele.status == 0
-              ? "待发货"
-              : ele.status == 1
-              ? "已发货"
-              : ele.status == 2
-              ? "已完成"
-              : "已取消";
-        } else {
-          ele.myStatus = "待付款";
-        }
+        ele.myTime = this.formatDateTime(ele.add_time)
+        ele.myStatus =
+          ele.paid == 0 ? "待审核" : ele.paid == 1 ? "通过" : "拒绝";
         if (ele.img_paths) {
           ele.myImg_paths = ele.img_paths.split(",");
           ele.myImg_paths.forEach((img, i) => {
@@ -257,6 +224,32 @@ export default {
           });
         }
       });
+    },
+    async jujue(row){
+      const res = await this.$api.withdraw_check({
+        paid:2,
+        id:row.id
+      })
+      if (res.code == 200) {
+        this.$message({
+          message: res.message,
+          type: "success"
+        });
+        this.getData();
+      }
+    },
+    async tongguo(row){
+      const res = await this.$api.withdraw_check({
+        paid:1,
+        id:row.id
+      })
+      if (res.code == 200) {
+        this.$message({
+          message: res.message,
+          type: "success"
+        });
+        this.getData();
+      }
     },
     async submitForm() {
       const res = await this.$api.order_send({
@@ -273,9 +266,24 @@ export default {
         this.fahuoDialogVisible = false;
       }
     },
+    formatDateTime(inputTime) {
+      var date = new Date(inputTime * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+      var y = date.getFullYear();
+      var m = date.getMonth() + 1;
+      m = m < 10 ? "0" + m : m;
+      var d = date.getDate();
+      d = d < 10 ? "0" + d : d;
+      var h = date.getHours();
+      h = h < 10 ? "0" + h : h;
+      var minute = date.getMinutes();
+      var second = date.getSeconds();
+      minute = minute < 10 ? "0" + minute : minute;
+      second = second < 10 ? "0" + second : second;
+      return y + "-" + m + "-" + d + " " + h + ":" + minute + ":" + second;
+    },
     fahuo(row) {
-      this.fahuoForm.express_code = '';
-      this.fahuoForm.express_name = '';
+      this.fahuoForm.express_code = "";
+      this.fahuoForm.express_name = "";
       this.fahuoId = row.id;
       this.fahuoDialogVisible = true;
     },

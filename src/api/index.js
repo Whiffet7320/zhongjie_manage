@@ -323,6 +323,19 @@ export default {
             }
         })
     },
+    express_list() {
+        return myGet({
+            url: `${urls.express_list}`,
+        })
+    },
+    withdraw_check(obj) {
+        return myPost({
+            url: urls.withdraw_check,
+            data: {
+                ...obj
+            }
+        })
+    },
     async productUpload(image) {
         var configs = {
             headers: {

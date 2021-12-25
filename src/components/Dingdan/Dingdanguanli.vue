@@ -4,16 +4,19 @@
       <div class="tit1">订单管理</div>
     </div>
     <div class="nav2">
-      <!-- <div class="myForm">
+      <div class="myForm">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="关键词搜索：">
-            <el-input size="small" v-model="formInline.name"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button size="small" type="primary" @click="onSubmit">查询</el-button>
+          <el-form-item label="订单状态：">
+            <el-radio-group v-model="formInline.rad1" size="small" @change="changRad1">
+              <el-radio-button label="-1">全部</el-radio-button>
+              <el-radio-button label="0">待发货</el-radio-button>
+              <el-radio-button label="1">待收货</el-radio-button>
+              <el-radio-button label="2">交易完成</el-radio-button>
+              <el-radio-button label="3">已取消</el-radio-button>
+            </el-radio-group>
           </el-form-item>
         </el-form>
-      </div>-->
+      </div>
       <!-- <div class="tit1">
         <el-button @click="toAddShop" size="small" type="primary" icon="el-icon-plus">添加商品</el-button>
       </div>-->
@@ -34,7 +37,9 @@
                   <div style="margin-top: 16px"></div>
                   <el-row :gutter="20">
                     <el-col :span="10">
-                      <div class="item">地址：{{row.addressinfo.province}} {{row.addressinfo.city}} {{row.addressinfo.district}} {{row.addressinfo.detail}}</div>
+                      <div
+                        class="item"
+                      >地址：{{row.addressinfo.province}} {{row.addressinfo.city}} {{row.addressinfo.district}} {{row.addressinfo.detail}}</div>
                     </el-col>
                   </el-row>
                 </div>
@@ -100,8 +105,10 @@
           <el-form-item label="快递单号">
             <el-input size="small" v-model="fahuoForm.express_code"></el-input>
           </el-form-item>
-          <el-form-item label="快递名称">
-            <el-input size="small" v-model="fahuoForm.express_name"></el-input>
+          <el-form-item label="快递公司">
+            <el-select size="small" v-model="fahuoForm.express_name" placeholder="请选择">
+              <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item>
             <el-button size="small" type="primary" @click="submitForm">发货</el-button>
@@ -214,6 +221,7 @@ export default {
       //
       activeName: "1",
       formInline: {
+        rad1:'-1',
         category_id: "",
         name: ""
       },
@@ -224,13 +232,20 @@ export default {
   },
   created() {
     this.$store.commit("biaobaiqiangPinglunPage", 1);
+    this.getFenleiData();
     this.getData();
   },
   methods: {
+    async getFenleiData() {
+      const res = await this.$api.express_list();
+      console.log(res);
+      this.options = res.data;
+    },
     async getData() {
       const res = await this.$api.order_list({
         limit: this.jishiShougouPageSize,
-        page: this.jishiShougouPage
+        page: this.jishiShougouPage,
+        status:this.formInline.rad1
       });
       console.log(res.data.data);
       this.total = res.data.total;
@@ -258,10 +273,14 @@ export default {
         }
       });
     },
+    changRad1(e){
+      console.log(e)
+      this.getData()
+    },
     async submitForm() {
       const res = await this.$api.order_send({
         id: this.fahuoId,
-        express_name: this.fahuoForm.express_name,
+        express_id: this.fahuoForm.express_name,
         express_code: this.fahuoForm.express_code
       });
       if (res.code == 200) {
@@ -274,8 +293,8 @@ export default {
       }
     },
     fahuo(row) {
-      this.fahuoForm.express_code = '';
-      this.fahuoForm.express_name = '';
+      this.fahuoForm.express_code = "";
+      this.fahuoForm.express_name = "";
       this.fahuoId = row.id;
       this.fahuoDialogVisible = true;
     },

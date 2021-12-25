@@ -10,4 +10,6 @@ export default {
     user_check_realname:'/admin/user_check_realname',//修改实名认证状态
     order_send:'/admin/order_send',//订单发货
     withdraw_list:'/admin/withdraw_list',//提现列表
+    express_list:'/admin/express_list',//快递列表
+    withdraw_check:'/admin/withdraw_check',//提现审核
 }
