@@ -154,7 +154,10 @@
           <el-row>
             <el-col :span="20">
               <el-form-item label="工具下载地址">
+                <el-button size="small" v-if="isAdd" @click="$refs.fileInputList1.click();">选择文件</el-button>
+                <el-button size="small" v-else @click="$refs.fileInputList1.click();">更换文件</el-button>
                 <input
+                  class="displayN"
                   name="companyfile"
                   size="small"
                   type="file"
@@ -382,10 +385,10 @@ export default {
       this.addForm.category_id = row.category_id;
       this.addForm.country_id = row.country_id;
     //   this.$set(this.$refs.fileInputList1,'value',row.mytool_url)
-    //   this.$refs.fileInputList1.value = row.mytool_url;
-      this.addForm.tool_url = row.mytool_url;
-      this.addForm.file_size = row.myfile_size;
-      this.addForm.file_type = row.myfile_type;
+      // this.$refs.fileInputList1.value = row.tool_url;
+      this.addForm.tool_url = row.tool_url;
+      this.addForm.file_size = row.file_size;
+      this.addForm.file_type = row.file_type;
       this.addDialogVisible = true;
     },
     async tabDel(row) {

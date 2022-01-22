@@ -233,7 +233,10 @@ export default {
   },
   methods: {
     async getFenleiData() {
-      const res = await this.$api.user_list();
+      const res = await this.$api.user_list({
+        page:1,
+        limit:1000000
+      });
       console.log(res);
       this.options = res.data.data;
     },
