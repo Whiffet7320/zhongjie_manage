@@ -82,7 +82,7 @@
       <div class="fahuomyForm">
         <el-form :model="fahuoForm" ref="fahuoForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="用户">
-            <el-select size="small" v-model="fahuoForm.user_id" placeholder="请选择">
+            <el-select size="small" filterable v-model="fahuoForm.user_id" placeholder="请选择">
               <el-option v-for="item in options" :key="item.uid" :label="item.nickname" :value="item.uid"></el-option>
             </el-select>
           </el-form-item>
