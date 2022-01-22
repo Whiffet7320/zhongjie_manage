@@ -19,56 +19,6 @@
       </div>-->
       <div class="myTable">
         <vxe-table :data="tableData">
-          <vxe-table-column type="expand" width="30" :fixed="null">
-            <template #content="{ row }">
-              <template>
-                <div class="xiala" v-if='row.realname'>
-                  <el-row :gutter="20">
-                    <el-col :span="6">
-                      <div class="item">姓名：{{row.realname.real_name}}</div>
-                    </el-col>
-                    <el-col :span="6">
-                      <div class="item">身份证号：{{row.realname.id_number}}</div>
-                    </el-col>
-                  </el-row>
-                  <div style="margin-top: 16px"></div>
-                  <el-row :gutter="20">
-                    <el-col :span="18">
-                      <div class="imgDiv">
-                        <el-image
-                          style="width:260px;height:150px;margin-right:8px;"
-                          :src="row.realname.front_img"
-                          :preview-src-list="row.myImg_paths"
-                          fit="fill"
-                        >
-                          <div slot="error" class="image-slot">
-                            <i class="el-icon-picture-outline"></i>
-                          </div>
-                        </el-image>
-                        <el-image
-                          style="width:260px;height:150px;margin-right:8px;"
-                          :src="row.realname.back_img"
-                          :preview-src-list="row.myImg_paths"
-                          fit="fill"
-                        >
-                          <div slot="error" class="image-slot">
-                            <i class="el-icon-picture-outline"></i>
-                          </div>
-                        </el-image>
-                      </div>
-                    </el-col>
-                  </el-row>
-                </div>
-                <div class="xiala" v-else>
-                  <el-row :gutter="20">
-                    <el-col :span="6">
-                      <div class="item">还未实名认证</div>
-                    </el-col>
-                  </el-row>
-                </div>
-              </template>
-            </template>
-          </vxe-table-column>
           <vxe-table-column field="uid" title="ID"></vxe-table-column>
           <vxe-table-column field="myNickname" title="昵称"></vxe-table-column>
           <vxe-table-column field="avatar" title="发布者头像">
@@ -85,25 +35,19 @@
               </el-image>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="now_money" title="余额"></vxe-table-column>
+          <vxe-table-column field="p_user_name" title="邀请人"></vxe-table-column>
           <vxe-table-column field="brokerage_price" title="佣金"></vxe-table-column>
           <vxe-table-column field="integral" title="积分"></vxe-table-column>
-          <vxe-table-column field="myStatus" title="状态"></vxe-table-column>
+          <vxe-table-column field="level" title="等级">
+            <template slot-scope="scope">
+              <el-input size="small" @change='xgLL(scope.row,$event)' v-model="scope.row.level" placeholder></el-input>
+            </template>
+          </vxe-table-column>
           <!-- <vxe-table-column field="myStatus" width="120" title="状态(是否通过)">
             <template slot-scope="scope">
               <el-switch @change="changeKG(scope.row)" v-model="scope.row.myStatus"></el-switch>
             </template>
           </vxe-table-column>-->
-          <vxe-table-column title="操作状态(审核)" width="140">
-            <template slot-scope="scope">
-              <div class="flex">
-                <el-button size="small" :disabled='!scope.row.realname || scope.row.realname.status != 0' @click="tongguo(scope.row)" type="text">通过</el-button>
-                <el-button size="small" :disabled='!scope.row.realname || scope.row.realname.status != 0' @click="jujue(scope.row)" type="text">拒绝</el-button>
-                <!-- <el-button size="small" @click="toEditShop(scope.row)" type="text">查看评论</el-button> -->
-                <!-- <el-button size="small" @click="toDelShop(scope.row)" type="text">删除</el-button> -->
-              </div>
-            </template>
-          </vxe-table-column>
         </vxe-table>
         <el-pagination
           class="fenye"
@@ -241,6 +185,8 @@ export default {
         ele.myStatus = ele.realname && ele.realname.status == 0 ? '待审核' : ele.realname && ele.realname.status == 1 ? '审核通过' : '未实名'; 
         ele.myNickname =
           ele.nickname == "" || !ele.nickname ? "匿名用户" : ele.nickname;
+        ele.myPname =
+          ele.pname ? ele.pname.nickname : '无'
         if(ele.realname){
           ele.realname.front_img = `${this.$url}/${ele.realname.front_img}`
           ele.realname.back_img = `${this.$url}/${ele.realname.back_img}`
@@ -252,6 +198,19 @@ export default {
           });
         }
       });
+    },
+    async xgLL(row,val){
+      const res = await this.$api.update_user_info({
+        user_id:row.uid,
+        level:val
+      })
+      if (res.code == 200) {
+        this.$message({
+          message: '修改成功',
+          type: "success"
+        });
+        this.getData();
+      }
     },
     async tongguo(row){
       const res = await this.$api.user_check_realname({

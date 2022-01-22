@@ -15,6 +15,31 @@ const routes = [{
             component: () => import('./components/Home/Shouye'),
         }, ]
     }, {
+        path: '/Fenlei',
+        name: 'Fenlei',
+        component: () => import('./components/Fenlei'),
+        children: [{
+            path: 'Fenleiguanli',
+            name: 'Fenleiguanli',
+            component: () => import('./components/Fenlei/Fenleiguanli'),
+        }, {
+            path: 'Chengshiguanli',
+            name: 'Chengshiguanli',
+            component: () => import('./components/Fenlei/Chengshiguanli'),
+        },{
+            path: 'Chengshifuwu',
+            name: 'Chengshifuwu',
+            component: () => import('./components/Fenlei/Chengshifuwu'),
+        }, {
+            path: 'Xinxiguanli',
+            name: 'Xinxiguanli',
+            component: () => import('./components/Fenlei/Xinxiguanli'),
+        }, {
+            path: 'Tianjiaxinxi',
+            name: 'Tianjiaxinxi',
+            component: () => import('./components/Fenlei/Tianjiaxinxi'),
+        }]
+    }, {
         path: '/Yonghu',
         name: 'Yonghu',
         component: () => import('./components/Yonghu'),
@@ -24,6 +49,15 @@ const routes = [{
             component: () => import('./components/Yonghu/Yonghuguanli'),
         }]
     }, {
+        path: '/Fanyong',
+        name: 'Fanyong',
+        component: () => import('./components/Fanyong'),
+        children: [{
+            path: 'Fanyongliebiao',
+            name: 'Fanyongliebiao',
+            component: () => import('./components/Fanyong/Fanyongliebiao'),
+        }]
+    }, {
         path: '/Dingdan',
         name: 'Dingdan',
         component: () => import('./components/Dingdan'),
@@ -31,7 +65,7 @@ const routes = [{
             path: 'Dingdanguanli',
             name: 'Dingdanguanli',
             component: () => import('./components/Dingdan/Dingdanguanli'),
-        },{
+        }, {
             path: 'Tixianliebiao',
             name: 'Tixianliebiao',
             component: () => import('./components/Dingdan/Tixianliebiao'),
@@ -155,6 +189,14 @@ const routes = [{
         name: 'Shezhi',
         component: () => import('./components/Shezhi'),
         children: [{
+            path: 'Gongjuguanli',
+            name: 'Gongjuguanli',
+            component: () => import('./components/Shezhi/Gongjuguanli'),
+        },{
+            path: 'Yonghudengjiguanli',
+            name: 'Yonghudengjiguanli',
+            component: () => import('./components/Shezhi/Yonghudengjiguanli'),
+        }, {
             path: 'Xiaoxiguanli',
             name: 'Xiaoxiguanli',
             component: () => import('./components/Shezhi/Xiaoxiguanli'),
@@ -178,6 +220,10 @@ const routes = [{
             path: 'Shujuzhongxin',
             name: 'Shujuzhongxin',
             component: () => import('./components/Shezhi/Shujuzhongxin'),
+        }, {
+            path: 'Guanjianciguanli',
+            name: 'Guanjianciguanli',
+            component: () => import('./components/Shezhi/Guanjianciguanli'),
         }]
     },
 ]

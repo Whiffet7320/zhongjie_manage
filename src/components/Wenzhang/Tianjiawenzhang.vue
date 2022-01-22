@@ -1,63 +1,75 @@
 <template>
   <div class="index">
     <div class="nav1">
-      <el-button @click="toBack" class="btn" size="small" icon="el-icon-arrow-left">返回</el-button>
+      <!-- <el-button @click="toBack" class="btn" size="small" icon="el-icon-arrow-left">返回</el-button> -->
       <div class="tit1">文章管理</div>
     </div>
     <div class="nav2">
       <div class="tit1">
-        <el-tabs v-model="activeName">
-          <el-tab-pane label="文章信息" name="1"></el-tab-pane>
-          <!-- <el-tab-pane label="商品详情" name="2"></el-tab-pane> -->
-          <!-- <el-tab-pane label="其他设置" name="3"></el-tab-pane> -->
-        </el-tabs>
         <!-- 商品信息 -->
         <template v-if="activeName == '1'">
           <div class="myForm">
             <el-form :model="lhForm" ref="lhForm" label-width="100px" class="demo-ruleForm">
               <el-row>
-                <el-col :span="12">
-                  <el-form-item label="标题：">
-                    <el-input disabled size="small" v-model="lhForm.title"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <!-- <el-row>
-                <el-col :span="12">
-                  <el-form-item label="封面图：">
-                    <div @click="companyList" class="myImg">
-                      <el-image :src="lhForm.pic" fit="fill" style="width: 60px; height: 60px">
-                        <div slot="error" class="image-slot">
-                          <i class="el-icon-picture-outline"></i>
-                        </div>
-                      </el-image>
-                      <div @click.stop="delImg" class="closeBtn">
-                        <el-button circle>×</el-button>
-                      </div>
-                    </div>
-                  </el-form-item>
-                </el-col>
-              </el-row> -->
-              <el-row>
-                <el-col :span="12">
+                <el-col :span="20">
                   <el-form-item label="类型：">
-                    <el-select disabled size="small" v-model="lhForm.type" placeholder="请选择">
-                      <el-option label="咨询" value="advice"></el-option>
-                      <el-option label="新闻" value="news"></el-option>
-                    </el-select>
+                    <el-radio-group v-model="formInline.rad1" size="small" @change="changRad1">
+                      <el-radio-button label="notice">通知</el-radio-button>
+                      <el-radio-button label="help">帮助中心</el-radio-button>
+                      <el-radio-button label="about">关于我们</el-radio-button>
+                      <el-radio-button label="mch">拉商户获现金</el-radio-button>
+                      <el-radio-button label="agent">拉经纪人获现金</el-radio-button>
+                    </el-radio-group>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
+                <el-col :span="12">
+                  <el-form-item label="标题(中)：">
+                    <el-input size="small" v-model="lhForm.title" placeholder="请输入内容"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="标题(英)：">
+                    <el-input size="small" v-model="lhForm.english_title" placeholder="请输入内容"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row v-show="formInline.rad1 == 'notice'">
+                <el-col :span="12">
+                  <el-form-item label="详情(中)：">
+                    <el-input size="small" v-model="lhForm.content" placeholder="请输入内容"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row v-show="formInline.rad1 == 'notice'">
+                <el-col :span="12">
+                  <el-form-item label="详情(英)：">
+                    <el-input size="small" v-model="lhForm.english_content" placeholder="请输入内容"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row v-show="formInline.rad1 != 'notice'">
                 <el-col :span="20">
                   <div class="myEditor">
-                    <div class="txt">商品详情：</div>
+                    <div class="txt">详情(中)：</div>
                     <div id="editor"></div>
                   </div>
                 </el-col>
               </el-row>
+              <el-row v-show="formInline.rad1 != 'notice'">
+                <el-col :span="20">
+                  <div class="myEditor">
+                    <div class="txt">详情(英)：</div>
+                    <div id="editor2"></div>
+                  </div>
+                </el-col>
+              </el-row>
+
               <el-form-item>
-                <!-- <el-button size="small" type="primary" @click="onSubmitForm">保存</el-button> -->
+                <el-button size="small" type="primary" @click="onSubmitFormcyy">保存</el-button>
                 <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
               </el-form-item>
             </el-form>
@@ -86,19 +98,24 @@ export default {
   },
   data() {
     return {
+      id: "",
+      formInline: {
+        rad1: "notice"
+      },
       radioArr: [],
-      radioArr2:[],
+      radioArr2: [],
       editId: "",
       activeName: "1",
       editor: null,
+      editor2: null,
       tableData: [],
       total: 0,
       lhDialogVisible: false,
       lhForm: {
         title: "",
+        english_title: "",
         content: "",
-        pic: "",
-        type:'',
+        english_content: ""
       },
       imgFile: null,
       isAdd: true
@@ -108,19 +125,26 @@ export default {
     this.getData();
   },
   methods: {
+    changRad1(e) {
+      console.log(e);
+      this.getData();
+    },
     async getData() {
-      console.log(this.wenzhangObj)
-      if (this.wenzhangObj) {
-        // 编辑
-        this.editId = this.wenzhangObj.id;
-        this.lhForm.title = this.wenzhangObj.title;
-        // this.lhForm.pic = this.wenzhangObj.img;
-        this.lhForm.content = this.wenzhangObj.content;
-        this.lhForm.type = this.wenzhangObj.tag;
-      }
-      const res = await this.$api.articlesTypes();
-      this.radioArr = res.data;
-      console.log(this.lhForm);
+      const res = await this.$api.article({
+        tag: this.formInline.rad1
+      });
+      console.log(res.data);
+      this.id = res.data.id;
+      this.lhForm.title = res.data.title;
+      this.lhForm.english_title = res.data.english_title;
+      this.lhForm.content = res.data.content;
+      this.lhForm.english_content = res.data.english_content;
+      setTimeout(() => {
+        this.editor2.txt.html(this.lhForm.english_content);
+      }, 200);
+      setTimeout(() => {
+        this.editor.txt.html(this.lhForm.content);
+      }, 200);
     },
     // 上传图片
     companyList() {
@@ -177,6 +201,35 @@ export default {
       this.$set(this.lhForm, "pic", "");
     },
     // 保存
+    async onSubmitFormcyy() {
+      if (this.formInline.rad1 != "notice") {
+        this.lhForm.content = document.getElementsByClassName(
+          "w-e-text"
+        )[0].innerHTML;
+        this.lhForm.english_content = document.getElementsByClassName(
+          "w-e-text"
+        )[1].innerHTML;
+      }
+      const res = await this.$api.updateArticle(
+        {
+          tag: this.formInline.rad1,
+          title: this.lhForm.title,
+          english_title: this.lhForm.english_title,
+          content: this.lhForm.content,
+          english_content: this.lhForm.english_content
+        },
+        this.id
+      );
+      if (res.code == 200) {
+        this.$message({
+          message: "修改成功",
+          type: "success"
+        });
+      } else {
+        this.$message.error(res.msg);
+        this.getData();
+      }
+    },
     async onSubmitForm() {
       this.lhForm.content = document.getElementsByClassName(
         "w-e-text"
@@ -410,39 +463,60 @@ export default {
       "redo"
     ];
     this.editor.config.uploadImgServer = "/upload-img";
-    this.$api.uploadToken().then(res => {
-      console.log(res.data);
-      let myData = res.data;
-      let client = new window.OSS.Wrapper({
-        region: myData.region, //oss地址
-        accessKeyId: myData.accessKeyId, //ak
-        accessKeySecret: myData.accessKeySecret, //secret
-        stsToken: myData.stsToken,
-        bucket: myData.bucket //oss名字
-      });
-      this.editor.config.customUploadImg = async function(
-        resultFiles,
-        insertImgFn
-      ) {
-        // resultFiles 是 input 中选中的文件列表
-        // insertImgFn 是获取图片 url 后，插入到编辑器的方法
-        var file_re = null;
-        var imgtype = resultFiles[0].type.substr(6, 4);
-        var store = `${new Date().getTime()}.${imgtype}`;
-        file_re = await that.readFileAsBuffer(resultFiles[0]);
-        client
-          .put(store, file_re)
-          .then(function(res) {
-            console.log(res.url);
-            insertImgFn(res.url);
-          })
-          .catch(function(err) {
-            console.log(err);
-          });
-      };
-    });
+    this.editor.config.customUploadImg = async function(
+      resultFiles,
+      insertImgFn
+    ) {
+      // resultFiles 是 input 中选中的文件列表
+      // insertImgFn 是获取图片 url 后，插入到编辑器的方法
+      that.imgFile = new FormData();
+      that.imgFile.append("image", resultFiles[0]);
+      const res = await that.$api.productUpload(that.imgFile);
+      insertImgFn(`${that.$url}/${res}`);
+    };
     this.editor.create();
-     this.editor.txt.html(this.lhForm.content);
+    setTimeout(() => {
+      this.editor.txt.html(this.lhForm.content);
+    }, 200);
+    //
+    this.editor2 = new E("#editor2");
+    this.editor2.config.menus = [
+      "head",
+      "bold",
+      "fontSize",
+      "fontName",
+      "italic",
+      "underline",
+      "strikeThrough",
+      "indent",
+      "lineHeight",
+      "foreColor",
+      "backColor",
+      "list",
+      "justify",
+      "emoticon",
+      "image",
+      "table",
+      "undo",
+      "redo"
+    ];
+    this.editor2.config.uploadImgServer = "/upload-img";
+    // this.editor2.config.uploadImgShowBase64 = true; // 使用 base64 保存图片
+    this.editor2.config.customUploadImg = async function(
+      resultFiles,
+      insertImgFn
+    ) {
+      // resultFiles 是 input 中选中的文件列表
+      // insertImgFn 是获取图片 url 后，插入到编辑器的方法
+      that.imgFile = new FormData();
+      that.imgFile.append("image", resultFiles[0]);
+      const res = await that.$api.productUpload(that.imgFile);
+      insertImgFn(`${that.$url}/${res}`);
+    };
+    this.editor2.create();
+    setTimeout(() => {
+      this.editor2.txt.html(this.lhForm.english_content);
+    }, 200);
   }
 };
 </script>

@@ -35,11 +35,12 @@
               </el-image>
             </template>
           </vxe-table-column>-->
-          <vxe-table-column field="withdraw_price" title="提现金额"></vxe-table-column>
+          <vxe-table-column field="money" title="提现金额"></vxe-table-column>
           <vxe-table-column field="myTime" title="申请时间"></vxe-table-column>
           <vxe-table-column field="myStatus" title="状态"></vxe-table-column>
-          <vxe-table-column field="bankinfo.bank_name" title="银行卡开户行"></vxe-table-column>
-          <vxe-table-column field="bankinfo.bank_number" title="银行卡卡号"></vxe-table-column>
+          <vxe-table-column field="real_name" title="用户姓名"></vxe-table-column>
+          <vxe-table-column field="bank_name" title="银行卡开户行"></vxe-table-column>
+          <vxe-table-column field="bank_number" title="银行卡卡号"></vxe-table-column>
           <vxe-table-column title="操作状态" width="140">
             <template slot-scope="scope">
               <div class="flex">
@@ -252,7 +253,7 @@ export default {
       }
     },
     async submitForm() {
-      const res = await this.$api.order_send({
+      const res = await this.$api.withdraw_check({
         id: this.fahuoId,
         express_name: this.fahuoForm.express_name,
         express_code: this.fahuoForm.express_code

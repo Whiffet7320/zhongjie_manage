@@ -153,7 +153,8 @@ export default {
 #login {
   width: 100%;
   height: 100vh;
-  background-color: #000000;
+  // background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
   .container {
     position: relative;
     width: 100%;

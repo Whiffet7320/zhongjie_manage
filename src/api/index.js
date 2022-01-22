@@ -270,6 +270,228 @@ export default {
             }
         })
     },
+    category(obj) {
+        return myGet({
+            url: `${urls.category}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    addCategory(obj) {
+        return myPost({
+            url: `${urls.category}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    upDateCategory(obj, id) {
+        return myPut({
+            url: `${urls.category}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    delCategory(id) {
+        return myDelete({
+            url: `${urls.category}/${id}`,
+        })
+    },
+    country(obj) {
+        return myGet({
+            url: `${urls.country}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    addCountry(obj) {
+        return myPost({
+            url: `${urls.country}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    upDateCountry(obj, id) {
+        return myPut({
+            url: `${urls.country}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    delCountry(id) {
+        return myDelete({
+            url: `${urls.country}/${id}`,
+        })
+    },
+    ccrelation(obj) {
+        return myGet({
+            url: `${urls.ccrelation}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    addCcrelation(obj) {
+        return myPost({
+            url: `${urls.ccrelation}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    upDateCcrelation(obj, id) {
+        return myPut({
+            url: `${urls.ccrelation}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    delCcrelation(id) {
+        return myDelete({
+            url: `${urls.ccrelation}/${id}`,
+        })
+    },
+    search_key(obj) {
+        return myGet({
+            url: `${urls.search_key}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    addSearch_key(obj) {
+        return myPost({
+            url: `${urls.search_key}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    article(obj) {
+        return myGet({
+            url: `${urls.article}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    updateArticle(obj,id) {
+        return myPut({
+            url: `${urls.article}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    country_server(obj) {
+        return myGet({
+            url: `${urls.country_server}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    user_level(obj) {
+        return myGet({
+            url: `${urls.user_level}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    Adduser_level(obj) {
+        return myPost({
+            url: `${urls.user_level}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    upDateuser_level(obj, id) {
+        return myPut({
+            url: `${urls.user_level}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    deluser_level(id) {
+        return myDelete({
+            url: `${urls.user_level}/${id}`,
+        })
+    },
+    upDateCountry_server(obj, id) {
+        return myPut({
+            url: `${urls.country_server}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    tool(obj) {
+        return myGet({
+            url: `${urls.tool}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    addTool(obj) {
+        return myPost({
+            url: `${urls.tool}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    upDateTool(obj, id) {
+        return myPut({
+            url: `${urls.tool}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    delTool(id) {
+        return myDelete({
+            url: `${urls.tool}/${id}`,
+        })
+    },
+    upDateSearch_key(obj, id) {
+        return myPut({
+            url: `${urls.search_key}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    delSearch_key(id) {
+        return myDelete({
+            url: `${urls.search_key}/${id}`,
+        })
+    },
+    input_user_order(obj) {
+        return myPost({
+            url: `${urls.input_user_order}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    user_order_list(obj) {
+        return myGet({
+            url: `${urls.user_order_list}`,
+            params: {
+                ...obj
+            }
+        })
+    },
     user_list(obj) {
         return myGet({
             url: `${urls.user_list}`,
@@ -278,6 +500,23 @@ export default {
             }
         })
     },
+    update_user_info(obj) {
+        return myPost({
+            url: urls.update_user_info,
+            data: {
+                ...obj
+            }
+        })
+    },
+    wallet_log(obj) {
+        return myGet({
+            url: `${urls.wallet_log}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+
     order_list(obj) {
         return myGet({
             url: `${urls.order_list}`,
@@ -336,6 +575,17 @@ export default {
             }
         })
     },
+    async tool_upload(image) {
+        var configs = {
+            headers: {
+                "Content-Type": "multipart/form-data;charse=UTF-8",
+                'token': `${sessionStorage.getItem("token")}`,
+            },
+        };
+        const res = await axios
+            .post(`${urls.baseUrl}/admin/tool_upload`, image, configs)
+        return res.data
+    },
     async productUpload(image) {
         var configs = {
             headers: {
@@ -345,7 +595,7 @@ export default {
         };
         const res = await axios
             .post(`${urls.baseUrl}/admin/upload_product_pic`, image, configs)
-        return `${urls.baseUrl}/${res.data.data.path}`
+        return res.data.data.path
     },
     async upload_pic(image) {
         var configs = {
@@ -356,6 +606,6 @@ export default {
         };
         const res = await axios
             .post(`${urls.baseUrl}/admin/upload_pic`, image, configs)
-            return res.data
+        return res.data
     },
 }

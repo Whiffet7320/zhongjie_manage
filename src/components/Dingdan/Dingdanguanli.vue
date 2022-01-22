@@ -4,7 +4,7 @@
       <div class="tit1">订单管理</div>
     </div>
     <div class="nav2">
-      <div class="myForm">
+      <!-- <div class="myForm">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="订单状态：">
             <el-radio-group v-model="formInline.rad1" size="small" @change="changRad1">
@@ -16,37 +16,13 @@
             </el-radio-group>
           </el-form-item>
         </el-form>
+      </div> -->
+      <div class="tit1">
+        <el-button @click="toAddShop" size="small" type="primary" icon="el-icon-plus">订单录入</el-button>
       </div>
-      <!-- <div class="tit1">
-        <el-button @click="toAddShop" size="small" type="primary" icon="el-icon-plus">添加商品</el-button>
-      </div>-->
       <div class="myTable">
         <vxe-table :data="tableData">
-          <vxe-table-column type="expand" width="30" :fixed="null">
-            <template #content="{ row }">
-              <template>
-                <div class="xiala">
-                  <el-row :gutter="20">
-                    <el-col :span="5">
-                      <div class="item">收货人：{{row.addressinfo.real_name}}</div>
-                    </el-col>
-                    <el-col :span="5">
-                      <div class="item">收货人手机号：{{row.addressinfo.phone}}</div>
-                    </el-col>
-                  </el-row>
-                  <div style="margin-top: 16px"></div>
-                  <el-row :gutter="20">
-                    <el-col :span="10">
-                      <div
-                        class="item"
-                      >地址：{{row.addressinfo.province}} {{row.addressinfo.city}} {{row.addressinfo.district}} {{row.addressinfo.detail}}</div>
-                    </el-col>
-                  </el-row>
-                </div>
-              </template>
-            </template>
-          </vxe-table-column>
-          <vxe-table-column field="trade_no" title="订单号"></vxe-table-column>
+          <vxe-table-column field="id" title="ID"></vxe-table-column>
           <!-- <vxe-table-column field="myNickname" title="昵称"></vxe-table-column>
           <vxe-table-column field="avatar" title="发布者头像">
             <template slot-scope="scope">
@@ -62,12 +38,15 @@
               </el-image>
             </template>
           </vxe-table-column>-->
-          <vxe-table-column field="pay_price" title="支付金额"></vxe-table-column>
-          <vxe-table-column field="myStatus" title="状态"></vxe-table-column>
-          <vxe-table-column field="express_name" title="快递公司"></vxe-table-column>
-          <vxe-table-column field="express_code" title="快递单号"></vxe-table-column>
-          <vxe-table-column field="remark" title="备注"></vxe-table-column>
-          <vxe-table-column title="操作状态" width="140">
+          <vxe-table-column field="title" title="标题"></vxe-table-column>
+          <vxe-table-column field="price" title="金额"></vxe-table-column>
+          <vxe-table-column field="first_back_money" title="一级返佣(%)"></vxe-table-column>
+          <vxe-table-column field="second_back_money" title="二级返佣(%)"></vxe-table-column>
+          <vxe-table-column field="third_back_money" title="三级返佣(%)"></vxe-table-column>
+          <vxe-table-column field="userinfo.nickname" title="用户名"></vxe-table-column>
+          <vxe-table-column field="userinfo.account" title="手机号"></vxe-table-column>
+          <vxe-table-column field="add_time" title="添加时间"></vxe-table-column>
+          <!-- <vxe-table-column title="操作状态" width="140">
             <template slot-scope="scope">
               <div class="flex">
                 <el-button
@@ -79,7 +58,7 @@
                 <el-button size="small" @click="toDelShop(scope.row)" type="text">删除</el-button>
               </div>
             </template>
-          </vxe-table-column>
+          </vxe-table-column> -->
         </vxe-table>
         <el-pagination
           class="fenye"
@@ -93,25 +72,37 @@
         ></el-pagination>
       </div>
     </div>
-    <!-- 发货 -->
+    <!-- 订单录入 -->
     <el-dialog
-      title="发货"
+      title="订单录入"
       :visible.sync="fahuoDialogVisible"
       width="30%"
       :before-close="fahuoHandleClose"
     >
       <div class="fahuomyForm">
         <el-form :model="fahuoForm" ref="fahuoForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="快递单号">
-            <el-input size="small" v-model="fahuoForm.express_code"></el-input>
-          </el-form-item>
-          <el-form-item label="快递公司">
-            <el-select size="small" v-model="fahuoForm.express_name" placeholder="请选择">
-              <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          <el-form-item label="用户">
+            <el-select size="small" v-model="fahuoForm.user_id" placeholder="请选择">
+              <el-option v-for="item in options" :key="item.uid" :label="item.nickname" :value="item.uid"></el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="订单标题">
+            <el-input size="small" v-model="fahuoForm.title"></el-input>
+          </el-form-item>
+          <el-form-item label="金额">
+            <el-input size="small" v-model="fahuoForm.money"></el-input>
+          </el-form-item>
+          <el-form-item label="一级返佣(%)">
+            <el-input size="small" v-model="fahuoForm.first_back_money"></el-input>
+          </el-form-item>
+          <el-form-item label="二级返佣(%)">
+            <el-input size="small" v-model="fahuoForm.second_back_money"></el-input>
+          </el-form-item>
+          <el-form-item label="三级返佣(%)">
+            <el-input size="small" v-model="fahuoForm.third_back_money"></el-input>
+          </el-form-item>
           <el-form-item>
-            <el-button size="small" type="primary" @click="submitForm">发货</el-button>
+            <el-button size="small" type="primary" @click="submitForm">保存</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -205,11 +196,16 @@ export default {
   },
   data() {
     return {
+      isAdd:false,
       fahuoId: "",
       fahuoDialogVisible: false,
       fahuoForm: {
-        express_code: "",
-        express_name: ""
+        title: "",
+        money: "",
+        user_id:'',
+        first_back_money:'',
+        second_back_money:'',
+        third_back_money:'',
       },
       searchPinlunForm: {
         keyword: ""
@@ -237,15 +233,14 @@ export default {
   },
   methods: {
     async getFenleiData() {
-      const res = await this.$api.express_list();
+      const res = await this.$api.user_list();
       console.log(res);
-      this.options = res.data;
+      this.options = res.data.data;
     },
     async getData() {
-      const res = await this.$api.order_list({
+      const res = await this.$api.user_order_list({
         limit: this.jishiShougouPageSize,
         page: this.jishiShougouPage,
-        status:this.formInline.rad1
       });
       console.log(res.data.data);
       this.total = res.data.total;
@@ -278,10 +273,13 @@ export default {
       this.getData()
     },
     async submitForm() {
-      const res = await this.$api.order_send({
-        id: this.fahuoId,
-        express_id: this.fahuoForm.express_name,
-        express_code: this.fahuoForm.express_code
+      const res = await this.$api.input_user_order({
+        user_id: this.fahuoForm.user_id,
+        money: this.fahuoForm.money,
+        title: this.fahuoForm.title,
+        first_back_money: this.fahuoForm.first_back_money,
+        second_back_money: this.fahuoForm.second_back_money,
+        third_back_money: this.fahuoForm.third_back_money,
       });
       if (res.code == 200) {
         this.$message({
@@ -295,7 +293,7 @@ export default {
     fahuo(row) {
       this.fahuoForm.express_code = "";
       this.fahuoForm.express_name = "";
-      this.fahuoId = row.id;
+      this.fahuoId = row.uid;
       this.fahuoDialogVisible = true;
     },
     fahuoHandleClose() {
@@ -384,8 +382,11 @@ export default {
       this.getData();
     },
     toAddShop() {
-      this.$store.commit("shopObj", null);
-      this.$router.push({ name: "Tianjiashangping" });
+      for (const key in this.addForm) {
+        this.$set(this.addForm, key, "");
+      }
+      this.isAdd = true;
+      this.fahuoDialogVisible = true;
     },
     // 分页
     handleSizeChange(val) {

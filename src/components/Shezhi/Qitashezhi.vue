@@ -24,7 +24,22 @@
         <vxe-table :data="tableData">
           <vxe-table-column field="id" title="ID"></vxe-table-column>
           <vxe-table-column field="name" title="名称"></vxe-table-column>
-          <vxe-table-column field="value" title="内容"></vxe-table-column>
+          <vxe-table-column field="value" title="内容">
+            <template slot-scope="scope">
+              <span style="font-size:12px" v-if="scope.row.tag != 'img' && scope.row.tag != 'english_img' && scope.row.tag != 'video_img' && lhForm.tag != 'english_video_img'">{{scope.row.value}}</span>
+              <el-image
+              v-else
+                :src="scope.row.value"
+                :preview-src-list="[scope.row.value]"
+                fit="fill"
+                style="width: 40px; height: 40px"
+              >
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+            </template>
+          </vxe-table-column>
           <vxe-table-column title="操作状态" width="160">
             <template slot-scope="scope">
               <div class="flex">
@@ -59,7 +74,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row v-if="lhForm.tag != 'img'">
+          <el-row v-if="lhForm.tag != 'img' && lhForm.tag != 'english_img' && lhForm.tag != 'video_img' && lhForm.tag != 'english_video_img'">
             <el-col :span="20" >
               <el-form-item label="设置值：">
                 <el-input size="small" placeholder="请输入设置值" v-model="lhForm.value"></el-input>
@@ -130,7 +145,8 @@ export default {
       lhForm: {
         key: "",
         value: "",
-        desc: ""
+        desc: "",
+        tag:"",
       },
       imgFile: null,
       isAdd: true
@@ -154,7 +170,7 @@ export default {
       sessionStorage.setItem("img", 123);
       const res = await this.$api.productUpload(this.imgFile);
       console.log(res);
-      this.$set(this.lhForm, "value", res);
+      this.$set(this.lhForm, "value", `${this.$url}/${res}`);
       this.$refs.fileInputList.value = "";
     },
     // 上传图片
