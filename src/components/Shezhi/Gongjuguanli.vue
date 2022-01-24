@@ -154,8 +154,8 @@
           <el-row>
             <el-col :span="20">
               <el-form-item label="工具下载地址">
-                <el-button size="small" v-if="isAdd" @click="$refs.fileInputList1.click();">选择文件</el-button>
-                <el-button size="small" v-else @click="$refs.fileInputList1.click();">更换文件</el-button>
+                <el-button size="small" v-if="isAdd" v-loading.fullscreen.lock="fullscreenLoading" @click="$refs.fileInputList1.click();">选择文件</el-button>
+                <el-button size="small" v-else v-loading.fullscreen.lock="fullscreenLoading" @click="$refs.fileInputList1.click();">更换文件</el-button>
                 <input
                   class="displayN"
                   name="companyfile"
@@ -214,6 +214,7 @@ export default {
   },
   data() {
     return {
+      fullscreenLoading:false,
       myImg: "",
       searchForm: {
         pid: "",
@@ -244,8 +245,8 @@ export default {
       id: "",
       File: null,
       isAdd: false,
-      fenleiOption:[],
-      chengshiOption:[],
+      fenleiOption: [],
+      chengshiOption: []
     };
   },
   watch: {
@@ -261,8 +262,8 @@ export default {
   created() {
     this.$store.commit("jishiShougouPage", 1);
     this.getData();
-    this.getFenlei()
-    this.getChengshi()
+    this.getFenlei();
+    this.getChengshi();
   },
   methods: {
     async getFenlei() {
@@ -303,6 +304,7 @@ export default {
       });
     },
     async companyfile(event) {
+      this.fullscreenLoading = true;
       const that = this;
       console.log(event.target);
       var file = event.target.files[0];
@@ -310,10 +312,23 @@ export default {
       this.File.append("file", file);
       const res = await that.$api.tool_upload(this.File);
       console.log(res.data);
-      this.$set(this.addForm, "tool_url", res.data.path);
-      this.$set(this.addForm, "file_type", res.data.filetype);
-      this.$set(this.addForm, "file_size", res.data.filesize);
-    //   that.$refs.fileInputList1.value = "";
+      if (res.code == 200) {
+        this.$message({
+          message: '上传成功',
+          type: "success"
+        });
+        this.fullscreenLoading = false;
+        this.$set(this.addForm, "tool_url", res.data.path);
+        this.$set(this.addForm, "file_type", res.data.filetype);
+        this.$set(this.addForm, "file_size", res.data.filesize);
+      }else{
+        this.fullscreenLoading = false;
+        this.$message({
+          message: res.message,
+          type: "success"
+        });
+      }
+      //   that.$refs.fileInputList1.value = "";
     },
     // 上传图片
     companyList() {
@@ -384,7 +399,7 @@ export default {
       this.addForm.img = row.myimg;
       this.addForm.category_id = row.category_id;
       this.addForm.country_id = row.country_id;
-    //   this.$set(this.$refs.fileInputList1,'value',row.mytool_url)
+      //   this.$set(this.$refs.fileInputList1,'value',row.mytool_url)
       // this.$refs.fileInputList1.value = row.tool_url;
       this.addForm.tool_url = row.tool_url;
       this.addForm.file_size = row.file_size;

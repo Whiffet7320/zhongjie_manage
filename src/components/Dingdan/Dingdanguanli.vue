@@ -16,7 +16,7 @@
             </el-radio-group>
           </el-form-item>
         </el-form>
-      </div> -->
+      </div>-->
       <div class="tit1">
         <el-button @click="toAddShop" size="small" type="primary" icon="el-icon-plus">订单录入</el-button>
       </div>
@@ -45,20 +45,15 @@
           <vxe-table-column field="third_back_money" title="三级返佣(%)"></vxe-table-column>
           <vxe-table-column field="userinfo.nickname" title="用户名"></vxe-table-column>
           <vxe-table-column field="userinfo.account" title="手机号"></vxe-table-column>
+          <vxe-table-column field="about_time" title="预计到账时间"></vxe-table-column>
           <vxe-table-column field="add_time" title="添加时间"></vxe-table-column>
-          <!-- <vxe-table-column title="操作状态" width="140">
+          <vxe-table-column title="操作状态" width="90">
             <template slot-scope="scope">
               <div class="flex">
-                <el-button
-                  size="small"
-                  :disabled="scope.row.status != 0 || scope.row.paid != 1"
-                  @click="fahuo(scope.row)"
-                  type="text"
-                >发货</el-button>
-                <el-button size="small" @click="toDelShop(scope.row)" type="text">删除</el-button>
+                <el-button size="small" @click="toEdit(scope.row)" type="text">编辑</el-button>
               </div>
             </template>
-          </vxe-table-column> -->
+          </vxe-table-column>
         </vxe-table>
         <el-pagination
           class="fenye"
@@ -83,7 +78,12 @@
         <el-form :model="fahuoForm" ref="fahuoForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="用户">
             <el-select size="small" filterable v-model="fahuoForm.user_id" placeholder="请选择">
-              <el-option v-for="item in options" :key="item.uid" :label="item.nickname" :value="item.uid"></el-option>
+              <el-option
+                v-for="item in options"
+                :key="item.uid"
+                :label="item.nickname"
+                :value="item.uid"
+              ></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="订单标题">
@@ -92,14 +92,17 @@
           <el-form-item label="金额">
             <el-input size="small" v-model="fahuoForm.money"></el-input>
           </el-form-item>
-          <el-form-item label="一级返佣(%)">
+          <el-form-item label="一级返佣">
             <el-input size="small" v-model="fahuoForm.first_back_money"></el-input>
           </el-form-item>
-          <el-form-item label="二级返佣(%)">
+          <el-form-item label="二级返佣">
             <el-input size="small" v-model="fahuoForm.second_back_money"></el-input>
           </el-form-item>
-          <el-form-item label="三级返佣(%)">
+          <el-form-item label="三级返佣">
             <el-input size="small" v-model="fahuoForm.third_back_money"></el-input>
+          </el-form-item>
+          <el-form-item label="预计到账时间">
+            <el-input size="small" v-model="fahuoForm.about_time"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button size="small" type="primary" @click="submitForm">保存</el-button>
@@ -196,16 +199,18 @@ export default {
   },
   data() {
     return {
-      isAdd:false,
+      id: "",
+      isAdd: false,
       fahuoId: "",
       fahuoDialogVisible: false,
       fahuoForm: {
         title: "",
         money: "",
-        user_id:'',
-        first_back_money:'',
-        second_back_money:'',
-        third_back_money:'',
+        user_id: "",
+        first_back_money: "",
+        second_back_money: "",
+        third_back_money: "",
+        about_time: ""
       },
       searchPinlunForm: {
         keyword: ""
@@ -217,7 +222,7 @@ export default {
       //
       activeName: "1",
       formInline: {
-        rad1:'-1',
+        rad1: "-1",
         category_id: "",
         name: ""
       },
@@ -234,8 +239,8 @@ export default {
   methods: {
     async getFenleiData() {
       const res = await this.$api.user_list({
-        page:1,
-        limit:1000000
+        page: 1,
+        limit: 1000000
       });
       console.log(res);
       this.options = res.data.data;
@@ -243,7 +248,7 @@ export default {
     async getData() {
       const res = await this.$api.user_order_list({
         limit: this.jishiShougouPageSize,
-        page: this.jishiShougouPage,
+        page: this.jishiShougouPage
       });
       console.log(res.data.data);
       this.total = res.data.total;
@@ -271,26 +276,60 @@ export default {
         }
       });
     },
-    changRad1(e){
-      console.log(e)
-      this.getData()
+    toEdit(row) {
+      this.isAdd = false;
+      this.id = row.id;
+      this.fahuoForm.title = row.title;
+      this.fahuoForm.money = row.price;
+      this.fahuoForm.user_id = row.user_id;
+      this.fahuoForm.first_back_money = row.first_back_money;
+      this.fahuoForm.second_back_money = row.second_back_money;
+      this.fahuoForm.third_back_money = row.third_back_money;
+      this.fahuoForm.about_time = row.about_time;
+      this.fahuoDialogVisible = true;
+    },
+    changRad1(e) {
+      console.log(e);
+      this.getData();
     },
     async submitForm() {
-      const res = await this.$api.input_user_order({
-        user_id: this.fahuoForm.user_id,
-        money: this.fahuoForm.money,
-        title: this.fahuoForm.title,
-        first_back_money: this.fahuoForm.first_back_money,
-        second_back_money: this.fahuoForm.second_back_money,
-        third_back_money: this.fahuoForm.third_back_money,
-      });
-      if (res.code == 200) {
-        this.$message({
-          message: res.message,
-          type: "success"
+      if (this.isAdd) {
+        const res = await this.$api.input_user_order({
+          user_id: this.fahuoForm.user_id,
+          money: this.fahuoForm.money,
+          title: this.fahuoForm.title,
+          first_back_money: this.fahuoForm.first_back_money,
+          second_back_money: this.fahuoForm.second_back_money,
+          third_back_money: this.fahuoForm.third_back_money,
+          about_time: this.fahuoForm.about_time
         });
-        this.getData();
-        this.fahuoDialogVisible = false;
+        if (res.code == 200) {
+          this.$message({
+            message: res.message,
+            type: "success"
+          });
+          this.getData();
+          this.fahuoDialogVisible = false;
+        }
+      }else{
+        const res = await this.$api.input_user_order({
+          user_id: this.fahuoForm.user_id,
+          money: this.fahuoForm.money,
+          title: this.fahuoForm.title,
+          first_back_money: this.fahuoForm.first_back_money,
+          second_back_money: this.fahuoForm.second_back_money,
+          third_back_money: this.fahuoForm.third_back_money,
+          about_time: this.fahuoForm.about_time,
+          id:this.id
+        });
+        if (res.code == 200) {
+          this.$message({
+            message: res.message,
+            type: "success"
+          });
+          this.getData();
+          this.fahuoDialogVisible = false;
+        }
       }
     },
     fahuo(row) {
