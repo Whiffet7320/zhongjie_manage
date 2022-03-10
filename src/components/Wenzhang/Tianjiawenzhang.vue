@@ -460,7 +460,8 @@ export default {
       "image",
       "table",
       "undo",
-      "redo"
+      "redo",
+      'video'
     ];
     this.editor.config.uploadImgServer = "/upload-img";
     this.editor.config.customUploadImg = async function(
@@ -498,7 +499,8 @@ export default {
       "image",
       "table",
       "undo",
-      "redo"
+      "redo",
+      'video'
     ];
     this.editor2.config.uploadImgServer = "/upload-img";
     // this.editor2.config.uploadImgShowBase64 = true; // 使用 base64 保存图片

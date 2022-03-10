@@ -270,6 +270,35 @@ export default {
             }
         })
     },
+    news(obj) {
+        return myGet({
+            url: `${urls.news}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    addNews(obj) {
+        return myPost({
+            url: `${urls.news}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    delNews(id) {
+        return myDelete({
+            url: `${urls.news}/${id}`,
+        })
+    },
+    upDateNews(obj, id) {
+        return myPut({
+            url: `${urls.news}/${id}`,
+            data: {
+                ...obj
+            }
+        })
+    },
     category(obj) {
         return myGet({
             url: `${urls.category}`,
@@ -297,6 +326,38 @@ export default {
     delCategory(id) {
         return myDelete({
             url: `${urls.category}/${id}`,
+        })
+    },
+    admin_list(obj) {
+        return myGet({
+            url: `${urls.admin_list}`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    add_admin(obj) {
+        return myPost({
+            url: `${urls.add_admin}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    update_admin(obj) {
+        return myPost({
+            url: `${urls.update_admin}`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    delete_admin(obj) {
+        return myPost({
+            url: `${urls.delete_admin}`,
+            data: {
+                ...obj
+            }
         })
     },
     country(obj) {

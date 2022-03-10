@@ -26,7 +26,7 @@
           <vxe-table-column field="name" title="名称"></vxe-table-column>
           <vxe-table-column field="value" title="内容">
             <template slot-scope="scope">
-              <span style="font-size:12px" v-if="scope.row.tag != 'img' && scope.row.tag != 'english_img' && scope.row.tag != 'video_img' && lhForm.tag != 'english_video_img'">{{scope.row.value}}</span>
+              <span style="font-size:12px" v-if="scope.row.tag != 'img' && scope.row.tag != 'english_img' && scope.row.tag != 'video_img' && scope.row.tag != 'english_video_img' && scope.row.tag != 'my_share_img' && scope.row.tag != 'my_share_other_img' && scope.row.tag != 'my_share_english_img' && scope.row.tag != 'my_share_english_other_img'">{{scope.row.value}}</span>
               <el-image
               v-else
                 :src="scope.row.value"
@@ -74,7 +74,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row v-if="lhForm.tag != 'img' && lhForm.tag != 'english_img' && lhForm.tag != 'video_img' && lhForm.tag != 'english_video_img'">
+          <el-row v-if="lhForm.tag != 'img' && lhForm.tag != 'english_img' && lhForm.tag != 'video_img' && lhForm.tag != 'english_video_img' && lhForm.tag != 'my_share_img' && lhForm.tag != 'my_share_other_img' && lhForm.tag != 'my_share_english_img' && lhForm.tag != 'my_share_english_other_img'">
             <el-col :span="20" >
               <el-form-item label="设置值：">
                 <el-input size="small" placeholder="请输入设置值" v-model="lhForm.value"></el-input>

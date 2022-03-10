@@ -22,6 +22,41 @@
       </div>
       <div class="myTable">
         <vxe-table :data="tableData">
+          <vxe-table-column type="expand" width="30" :fixed="null">
+            <template #content="{ row }">
+              <div class="xiala">
+                <el-row :gutter="20">
+                  <el-col :span="6">
+                    <div class="item">步骤一标题：{{row.step_one_title}}</div>
+                  </el-col>
+                  <el-col :span="6">
+                    <div class="item">步骤二标题：{{row.step_two_title}}</div>
+                  </el-col>
+                  <el-col :span="6">
+                    <div class="item">步骤三标题：{{row.step_three_title}}</div>
+                  </el-col>
+                  <el-col :span="6">
+                    <div class="item">步骤四标题：{{row.step_four_title}}</div>
+                  </el-col>
+                </el-row>
+                <div style="margin-top: 16px"></div>
+                <el-row :gutter="20">
+                  <el-col :span="6">
+                    <div class="item">步骤一描述：{{row.step_one_title}}</div>
+                  </el-col>
+                  <el-col :span="6">
+                    <div class="item">步骤二描述：{{row.step_two_desc}}</div>
+                  </el-col>
+                  <el-col :span="6">
+                    <div class="item">步骤三描述：{{row.step_three_desc}}</div>
+                  </el-col>
+                  <el-col :span="6">
+                    <div class="item">步骤四描述：{{row.step_four_desc}}</div>
+                  </el-col>
+                </el-row>
+              </div>
+            </template>
+          </vxe-table-column>
           <vxe-table-column field="id" title="ID"></vxe-table-column>
           <!-- <vxe-table-column field="myNickname" title="昵称"></vxe-table-column>
           <vxe-table-column field="avatar" title="发布者头像">
@@ -44,8 +79,9 @@
           <vxe-table-column field="second_back_money" title="二级返佣(%)"></vxe-table-column>
           <vxe-table-column field="third_back_money" title="三级返佣(%)"></vxe-table-column>
           <vxe-table-column field="userinfo.nickname" title="用户名"></vxe-table-column>
-          <vxe-table-column field="userinfo.account" title="手机号"></vxe-table-column>
+          <!-- <vxe-table-column field="userinfo.account" title="手机号"></vxe-table-column> -->
           <vxe-table-column field="about_time" title="预计到账时间"></vxe-table-column>
+          <vxe-table-column field="myStep" title="当前步骤"></vxe-table-column>
           <vxe-table-column field="add_time" title="添加时间"></vxe-table-column>
           <vxe-table-column title="操作状态" width="90">
             <template slot-scope="scope">
@@ -100,6 +136,54 @@
           </el-form-item>
           <el-form-item label="三级返佣">
             <el-input size="small" v-model="fahuoForm.third_back_money"></el-input>
+          </el-form-item>
+          <el-form-item label="步骤一标题">
+            <el-input size="small" v-model="fahuoForm.step_one_title"></el-input>
+          </el-form-item>
+          <el-form-item label="步骤一描述">
+            <el-input type="textarea" size="small" v-model="fahuoForm.step_one_desc"></el-input>
+          </el-form-item>
+          <el-form-item label="步骤二标题">
+            <el-input size="small" v-model="fahuoForm.step_two_title"></el-input>
+          </el-form-item>
+          <el-form-item label="步骤二描述">
+            <el-input type="textarea" size="small" v-model="fahuoForm.step_two_desc"></el-input>
+          </el-form-item>
+          <el-form-item label="步骤三标题">
+            <el-input size="small" v-model="fahuoForm.step_three_title"></el-input>
+          </el-form-item>
+          <el-form-item label="步骤三描述">
+            <el-input type="textarea" size="small" v-model="fahuoForm.step_three_desc"></el-input>
+          </el-form-item>
+          <el-form-item label="步骤四标题">
+            <el-input size="small" v-model="fahuoForm.step_four_title"></el-input>
+          </el-form-item>
+          <el-form-item label="步骤四描述">
+            <el-input type="textarea" size="small" v-model="fahuoForm.step_four_desc"></el-input>
+          </el-form-item>
+          <el-form-item label="当前步骤">
+            <el-select size="small" v-model="fahuoForm.step_status" placeholder="请选择">
+              <el-option
+                size="small"
+                label="步骤一"
+                :value="1"
+              ></el-option>
+              <el-option
+                size="small"
+                label="步骤二"
+                :value="2"
+              ></el-option>
+              <el-option
+                size="small"
+                label="步骤三"
+                :value="3"
+              ></el-option>
+              <el-option
+                size="small"
+                label="步骤四"
+                :value="4"
+              ></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="预计到账时间">
             <el-input size="small" v-model="fahuoForm.about_time"></el-input>
@@ -210,7 +294,16 @@ export default {
         first_back_money: "",
         second_back_money: "",
         third_back_money: "",
-        about_time: ""
+        about_time: "",
+        step_one_title: "",
+        step_one_desc: "",
+        step_two_title: "",
+        step_two_desc: "",
+        step_three_title: "",
+        step_three_desc: "",
+        step_four_title: "",
+        step_four_desc: "",
+        step_status:'',
       },
       searchPinlunForm: {
         keyword: ""
@@ -256,6 +349,7 @@ export default {
       this.tableData.forEach(ele => {
         ele.myNickname =
           ele.nickname == "" || !ele.nickname ? "未实名用户" : ele.nickname;
+        ele.myStep = ele.step_status == 1 ? '步骤一' : ele.step_status == 2 ? '步骤二' : ele.step_status == 3 ? '步骤三' : "步骤四"
         if (ele.paid == 1) {
           ele.myStatus =
             ele.status == 0
@@ -286,6 +380,15 @@ export default {
       this.fahuoForm.second_back_money = row.second_back_money;
       this.fahuoForm.third_back_money = row.third_back_money;
       this.fahuoForm.about_time = row.about_time;
+      this.fahuoForm.step_one_title = row.step_one_title;
+      this.fahuoForm.step_one_desc = row.step_one_desc;
+      this.fahuoForm.step_two_title = row.step_two_title;
+      this.fahuoForm.step_two_desc = row.step_two_desc;
+      this.fahuoForm.step_three_title = row.step_three_title;
+      this.fahuoForm.step_three_desc = row.step_three_desc;
+      this.fahuoForm.step_four_title = row.step_four_title;
+      this.fahuoForm.step_four_desc = row.step_four_desc;
+      this.fahuoForm.step_status = row.step_status;
       this.fahuoDialogVisible = true;
     },
     changRad1(e) {
@@ -301,6 +404,15 @@ export default {
           first_back_money: this.fahuoForm.first_back_money,
           second_back_money: this.fahuoForm.second_back_money,
           third_back_money: this.fahuoForm.third_back_money,
+          step_one_title: this.fahuoForm.step_one_title,
+          step_one_desc: this.fahuoForm.step_one_desc,
+          step_two_title: this.fahuoForm.step_two_title,
+          step_two_desc: this.fahuoForm.step_two_desc,
+          step_three_title: this.fahuoForm.step_three_title,
+          step_three_desc: this.fahuoForm.step_three_desc,
+          step_four_title: this.fahuoForm.step_four_title,
+          step_four_desc: this.fahuoForm.step_four_desc,
+          step_status: this.fahuoForm.step_status,
           about_time: this.fahuoForm.about_time
         });
         if (res.code == 200) {
@@ -311,7 +423,7 @@ export default {
           this.getData();
           this.fahuoDialogVisible = false;
         }
-      }else{
+      } else {
         const res = await this.$api.input_user_order({
           user_id: this.fahuoForm.user_id,
           money: this.fahuoForm.money,
@@ -320,7 +432,16 @@ export default {
           second_back_money: this.fahuoForm.second_back_money,
           third_back_money: this.fahuoForm.third_back_money,
           about_time: this.fahuoForm.about_time,
-          id:this.id
+          step_one_title: this.fahuoForm.step_one_title,
+          step_one_desc: this.fahuoForm.step_one_desc,
+          step_two_title: this.fahuoForm.step_two_title,
+          step_two_desc: this.fahuoForm.step_two_desc,
+          step_three_title: this.fahuoForm.step_three_title,
+          step_three_desc: this.fahuoForm.step_three_desc,
+          step_four_title: this.fahuoForm.step_four_title,
+          step_four_desc: this.fahuoForm.step_four_desc,
+          step_status: this.fahuoForm.step_status,
+          id: this.id
         });
         if (res.code == 200) {
           this.$message({
@@ -424,8 +545,8 @@ export default {
       this.getData();
     },
     toAddShop() {
-      for (const key in this.addForm) {
-        this.$set(this.addForm, key, "");
+      for (const key in this.fahuoForm) {
+        this.$set(this.fahuoForm, key, "");
       }
       this.isAdd = true;
       this.fahuoDialogVisible = true;

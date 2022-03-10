@@ -44,6 +44,7 @@
           }"
           align="center"
           :data="tableData"
+          @sort-change="sortChangeEvent"
         >
           <vxe-table-column field="id" title="ID"></vxe-table-column>
           <vxe-table-column tree-node field="category_name" title="分类名称(中文)"></vxe-table-column>
@@ -57,7 +58,16 @@
               </el-image>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="sort" title="排序"></vxe-table-column>
+          <vxe-table-column field="sort" title="排序" sortable>
+            <template slot-scope="scope">
+              <el-input
+                size="small"
+                @change="xgLL(scope.row,$event)"
+                v-model="scope.row.sort"
+                placeholder
+              ></el-input>
+            </template>
+          </vxe-table-column>
           <!-- <vxe-table-column field="is_show" title="状态(是否显示)">
             <template slot-scope="scope">
               <el-switch
@@ -229,7 +239,8 @@ export default {
       imgStatus: "",
       imgFile: "",
       id: "",
-      isAdd: false
+      isAdd: false,
+      order_by: "desc"
     };
   },
   watch: {
@@ -250,7 +261,8 @@ export default {
     async getData() {
       const res = await this.$api.category({
         page: this.jishiShougouPage,
-        limit: this.jishiShougouPageSize
+        limit: this.jishiShougouPageSize,
+        order_by: this.order_by
       });
       console.log(res);
       this.tableData = res.data.data;
@@ -258,6 +270,33 @@ export default {
       this.tableData.forEach(ele => {
         ele.myIcon_url = `${this.$url}/${ele.icon_url}`;
       });
+    },
+    sortChangeEvent({ sortList }) {
+      console.log(sortList);
+      if (sortList[0]) {
+        if (sortList[0].order == "asc") {
+          this.order_by = "desc";
+          this.getData();
+        } else {
+          this.order_by = "asc";
+          this.getData();
+        }
+      }
+    },
+    async xgLL(row, e) {
+      const res = await this.$api.upDateCategory(
+        {
+          sort: e
+        },
+        row.id
+      );
+      if (res.code == 200) {
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+        this.getData();
+      }
     },
     // 开关（显示/隐藏）
     async changeKG(row) {

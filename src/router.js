@@ -151,9 +151,17 @@ const routes = [{
             name: 'Wenzhangliebiao',
             component: () => import('./components/Wenzhang/Wenzhangliebiao'),
         }, {
+            path: 'Xinwenliebiao',
+            name: 'Xinwenliebiao',
+            component: () => import('./components/Wenzhang/Xinwenliebiao'),
+        }, {
             path: 'Tianjiawenzhang',
             name: 'Tianjiawenzhang',
             component: () => import('./components/Wenzhang/Tianjiawenzhang'),
+        }, {
+            path: 'TianjiaXinwen',
+            name: 'TianjiaXinwen',
+            component: () => import('./components/Wenzhang/TianjiaXinwen'),
         }]
     }, {
         path: '/Qita',
@@ -189,6 +197,10 @@ const routes = [{
         name: 'Shezhi',
         component: () => import('./components/Shezhi'),
         children: [{
+            path: 'Guanliyuanliebiao',
+            name: 'Guanliyuanliebiao',
+            component: () => import('./components/Shezhi/Guanliyuanliebiao'),
+        },{
             path: 'Gongjuguanli',
             name: 'Gongjuguanli',
             component: () => import('./components/Shezhi/Gongjuguanli'),

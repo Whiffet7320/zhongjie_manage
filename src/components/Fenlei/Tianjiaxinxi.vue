@@ -282,16 +282,16 @@ export default {
       this.lhForm.content = document.getElementsByClassName(
         "w-e-text"
       )[0].innerHTML;
-      this.lhForm.content2 = document.getElementsByClassName(
-        "w-e-text"
-      )[1].innerHTML;
-      this.lhForm.content3 = document.getElementsByClassName(
-        "w-e-text"
-      )[2].innerHTML;
       this.lhForm.content4 = document.getElementsByClassName(
         "w-e-text"
-      )[3].innerHTML;
+      )[1].innerHTML;
+      this.lhForm.content2 = document.getElementsByClassName(
+        "w-e-text"
+      )[2].innerHTML;
       this.lhForm.content5 = document.getElementsByClassName(
+        "w-e-text"
+      )[3].innerHTML;
+      this.lhForm.content3 = document.getElementsByClassName(
         "w-e-text"
       )[4].innerHTML;
       this.lhForm.content6 = document.getElementsByClassName(
@@ -523,7 +523,8 @@ export default {
       "image",
       "table",
       "undo",
-      "redo"
+      "redo",
+      'video'
     ];
     this.editor.config.uploadImgServer = "/upload-img";
     // this.editor.config.uploadImgShowBase64 = true; // 使用 base64 保存图片
@@ -560,7 +561,8 @@ export default {
       "image",
       "table",
       "undo",
-      "redo"
+      "redo",
+      'video'
     ];
     this.editor2.config.uploadImgServer = "/upload-img";
     // this.editor2.config.uploadImgShowBase64 = true; // 使用 base64 保存图片
@@ -597,7 +599,8 @@ export default {
       "image",
       "table",
       "undo",
-      "redo"
+      "redo",
+      'video'
     ];
     this.editor3.config.uploadImgServer = "/upload-img";
     // this.editor3.config.uploadImgShowBase64 = true; // 使用 base64 保存图片
@@ -635,7 +638,8 @@ export default {
       "image",
       "table",
       "undo",
-      "redo"
+      "redo",
+      'video'
     ];
     this.editor4.config.uploadImgServer = "/upload-img";
     // this.editor4.config.uploadImgShowBase64 = true; // 使用 base64 保存图片
@@ -672,7 +676,8 @@ export default {
       "image",
       "table",
       "undo",
-      "redo"
+      "redo",
+      'video'
     ];
     this.editor5.config.uploadImgServer = "/upload-img";
     // this.editor5.config.uploadImgShowBase64 = true; // 使用 base64 保存图片
@@ -709,7 +714,8 @@ export default {
       "image",
       "table",
       "undo",
-      "redo"
+      "redo",
+      'video'
     ];
     this.editor6.config.uploadImgServer = "/upload-img";
     // this.editor6.config.uploadImgShowBase64 = true; // 使用 base64 保存图片

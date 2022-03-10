@@ -32,8 +32,12 @@ export default new Vuex.Store({
     wenzhangPage: 1, //文章列表
     wenzhangPageSize: 10,
     wenzhangObj:null,
+    xinwenObj:null,
   },
   mutations: {
+    xinwenObj(state, str) {
+      state.xinwenObj = str;
+    },
     headerTit(state, str) {
       state.headerTit = str;
     },

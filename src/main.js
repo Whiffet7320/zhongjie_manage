@@ -11,6 +11,14 @@ import 'xe-utils';
 import VXETable from 'vxe-table';
 import 'vxe-table/lib/style.css';
 import VueParticles from 'vue-particles'  
+import VueQuillEditor from 'vue-quill-editor'
+// import 'tinymce/themes/silver/theme'
+// import Tinymce from 'tinymce'
+import 'quill/dist/quill.core.css' // import styles
+import 'quill/dist/quill.snow.css' // for snow theme
+import 'quill/dist/quill.bubble.css' // for bubble theme
+
+Vue.use(VueQuillEditor)
 Vue.use(VueParticles)  
 Vue.use(VXETable)
 
@@ -18,8 +26,9 @@ Vue.use(VXETable)
   
 // }
 // Vue.prototype.$uploadOSS = uploadOSS;
+// Vue.prototype.$tinymce = Tinymce;
 Vue.prototype.$api = api;
-Vue.prototype.$url = 'http://zhongjieapi.xingmangkeji.cn'
+Vue.prototype.$url = 'https://api.brokersalliance.ltd'
 // Vue.prototype.$url = 'https://pangxie.xingmangkeji.cn'
 
 Vue.use(ElementUI);

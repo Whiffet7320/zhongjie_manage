@@ -137,6 +137,7 @@
             <span>文章</span>
           </template>
           <el-menu-item :route="{ name: 'Tianjiawenzhang' }" index="9-1">文章列表</el-menu-item>
+          <el-menu-item :route="{ name: 'Xinwenliebiao' }" index="9-2">新闻列表</el-menu-item>
         </el-submenu>
         <el-submenu index="8">
           <template slot="title">
@@ -148,6 +149,7 @@
           <el-menu-item :route="{ name: 'Guanjianciguanli' }" index="8-20">关键词设置</el-menu-item>
           <el-menu-item :route="{ name: 'Yonghudengjiguanli' }" index="8-21">用户等级管理</el-menu-item>
           <el-menu-item :route="{ name: 'Gongjuguanli' }" index="8-22">工具管理</el-menu-item>
+          <el-menu-item :route="{ name: 'Guanliyuanliebiao' }" index="8-23">管理员管理</el-menu-item>
           <!-- <el-menu-item :route="{ name: 'Lunbotushezhi' }" index="8-3">轮播图设置</el-menu-item>
           <el-menu-item :route="{ name: 'Lunbotuliebiao' }" index="8-4">轮播图列表</el-menu-item>
           <el-menu-item :route="{ name: 'Kaipinyeshezhi' }" index="8-5">开屏页设置</el-menu-item>
@@ -311,6 +313,13 @@ export default {
           `设置 / <span style="color: #515a61;
         font-weight: 700;">工具管理</span>`
         );
+      } else if (to.path == "/Shezhi/Guanliyuanliebiao") {
+        this.menuActiveIndex = "8-23";
+        this.$store.commit(
+          "headerTit",
+          `设置 / <span style="color: #515a61;
+        font-weight: 700;">管理员管理</span>`
+        );
       } else if (to.path == "/Shezhi/Lunbotushezhi") {
         this.menuActiveIndex = "8-3";
         this.$store.commit(
@@ -352,6 +361,19 @@ export default {
           "headerTit",
           `文章 / <span style="color: #515a61;
         font-weight: 700;">文章列表</span>`
+        );
+      } else if (to.path == "/Wenzhang/Xinwenliebiao") {
+        this.menuActiveIndex = "9-2";
+        this.$store.commit(
+          "headerTit",
+          `文章 / <span style="color: #515a61;
+        font-weight: 700;">新闻列表</span>`
+        );
+      } else if (to.path == "/Wenzhang/TianjiaXinwen") {
+        this.$store.commit(
+          "headerTit",
+          `文章 / <span style="color: #515a61;
+        font-weight: 700;">添加/修改新闻</span>`
         );
       } else if (to.path == "/Xiaoyuanpindan/Bangbangpinche") {
         this.menuActiveIndex = "11-1";
